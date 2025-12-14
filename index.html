@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Diet Mate</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 랜딩 페이지 */
+        .landing {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+        
+        .landing-logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .landing-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .landing-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 50px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+        
+        /* 인증 페이지 */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            background: white;
+        }
+        
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .auth-logo-icon {
+            width: 80px;
+            height: 80px;
+            background: #667eea;
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .auth-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c00;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        /* 대시보드 */
+        .dashboard {
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 0 0 30px 30px;
+        }
+        
+        .header-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        /* 물 마시기 */
+        .water-tracker {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .water-cup {
+            aspect-ratio: 1;
+            background: #e3f2fd;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .water-cup.filled {
+            background: #2196f3;
+            transform: scale(1.1);
+        }
+        
+        /* 미션 */
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .mission-card {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mission-card.completed {
+            background: #667eea;
+            color: white;
+        }
+        
+        .mission-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .mission-label {
+            font-weight: bold;
+        }
+        
+        /* 하단 네비게이션 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #e0e0e0;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        /* 탭 컨텐츠 */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 커뮤니티 */
+        .chat-container {
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+        
+        .chat-message.mine {
+            margin-left: auto;
+        }
+        
+        .message-author {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .message-bubble {
+            padding: 12px 15px;
+            border-radius: 15px;
+            background: #f5f5f5;
+        }
+        
+        .chat-message.mine .message-bubble {
+            background: #667eea;
+            color: white;
+        }
+        
+        .chat-input-container {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+        
+        .send-btn {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* 설정 */
+        .settings-item {
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logout-btn {
+            background: #ff5252;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        
+        /* 유틸리티 */
+        .hidden {
+            display: none !important;
+        }
+        
+        .mt-20 {
+            margin-top: 20px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* 로딩 */
+        .loading {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="loading">
+            <div>
+                <div class="spinner" style="margin: 0 auto 20px;"></div>
+                <p style="font-size: 1.5rem; font-weight: bold;">Diet Mate 로딩중...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Firebase 초기화
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrw00jym_dKATz26qUzsALSqfYeAAkM-I",
+            authDomain: "mate-9f45e.firebaseapp.com",
+            projectId: "mate-9f45e",
+            storageBucket: "mate-9f45e.firebasestorage.app",
+            messagingSenderId: "1077932492908",
+            appId: "1:1077932492908:web:722c068177e2e715183049"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const appId = 'diet-mate-v2';
+        
+        // 전역 변수
+        let currentUser = null;
+        let currentProfile = null;
+        let currentView = 'landing';
+        let currentTab = 'home';
+        let isSignUp = false;
+        let todayLog = { checks: {}, water: 0 };
+        
+        // 유틸리티
+        const getTodayString = () => {
+            const d = new Date();
+            return d.getFullYear() + '-' + 
+                   String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+                   String(d.getDate()).padStart(2, '0');
+        };
+        
+        // 렌더링
+        const render = () => {
+            const app = document.getElementById('app');
+            
+            if (currentView === 'landing') {
+                app.innerHTML = `
+                    <div class="landing">
+                        <div class="landing-logo">💪</div>
+                        <h1 class="landing-title">DIET MATE</h1>
+                        <p class="landing-subtitle">나만의 스마트한 다이어트 파트너</p>
+                        <button class="btn btn-primary" onclick="showAuth()">시작하기 →</button>
+                    </div>
+                `;
+            } else if (currentView === 'auth') {
+                app.innerHTML = `
+                    <div class="auth-container container">
+                        <div class="auth-logo">
+                            <div class="auth-logo-icon">💪</div>
+                            <h1 class="auth-title">DIET MATE</h1>
+                        </div>
+                        
+                        <form onsubmit="handleAuth(event)">
+                            <div id="error-msg" class="error-message"></div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">이메일</label>
+                                <input type="email" id="email" class="form-input" placeholder="name@example.com" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">비밀번호</label>
+                                <input type="password" id="password" class="form-input" placeholder="6자 이상" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <span id="auth-btn-text">${isSignUp ? '회원가입' : '로그인'}</span>
+                            </button>
+                        </form>
+                        
+                        <div class="text-center mt-20">
+                            <span>${isSignUp ? '이미 계정이 있으신가요?' : '아직 계정이 없으신가요?'}</span>
+                            <button onclick="toggleAuthMode()" style="color: #667eea; font-weight: bold; border: none; background: none; cursor: pointer; margin-left: 10px;">
+                                ${isSignUp ? '로그인하기' : '회원가입하기'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (currentView === 'onboarding') {
+                showOnboarding();
+            } else if (currentView === 'dashboard') {
+                showDashboard();
+            }
+        };
+        
+        // 인증 관련
+        window.showAuth = () => {
+            currentView = 'auth';
+            render();
+        };
+        
+        window.toggleAuthMode = () => {
+            isSignUp = !isSignUp;
+            render();
+        };
+        
+        window.handleAuth = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            try {
+                if (isSignUp) {
+                    await auth.createUserWithEmailAndPassword(email, password);
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                }
+            } catch (error) {
+                errorMsg.textContent = '로그인 실패: ' + error.message;
+                errorMsg.classList.add('show');
+            }
+        };
+        
+        // 온보딩
+        const showOnboarding = () => {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="auth-container container">
+                    <h2 class="auth-title">프로필 설정</h2>
+                    
+                    <div class="form-group">
+                        <label class="form-label">닉네임</label>
+                        <input type="text" id="nickname" class="form-input" placeholder="예: 다이어터" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">성별</label>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" onclick="selectGender('male')" id="gender-male" class="btn" style="flex: 1; background: #f5f5f5;">👨 남성</button>
+                            <button type="button" onclick="selectGender('female')" id="gender-female" class="btn" style="flex: 1; background: #f5f5f5;">👩 여성</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">키 (cm)</label>
+                        <input type="number" id="height" class="form-input" value="170" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">현재 체중 (kg)</label>
+                        <input type="number" id="start-weight" class="form-input" value="60" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">목표 체중 (kg)</label>
+                        <input type="number" id="target-weight" class="form-input" value="55" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">목표 날짜</label>
+                        <input type="date" id="target-date" class="form-input" required>
+                    </div>
+                    
+                    <button onclick="completeOnboarding()" class="btn btn-primary" style="width: 100%;">시작하기</button>
+                </div>
+            `;
+        };
+        
+        let selectedGender = 'male';
+        
+        window.selectGender = (gender) => {
+            selectedGender = gender;
+            document.getElementById('gender-male').style.background = gender === 'male' ? '#667eea' : '#f5f5f5';
+            document.getElementById('gender-male').style.color = gender === 'male' ? 'white' : 'black';
+            document.getElementById('gender-female').style.background = gender === 'female' ? '#667eea' : '#f5f5f5';
+            document.getElementById('gender-female').style.color = gender === 'female' ? 'white' : 'black';
+        };
+        
+        window.completeOnboarding = async () => {
+            const profile = {
+                name: document.getElementById('nickname').value,
+                gender: selectedGender,
+                height: document.getElementById('height').value,
+                startWeight: document.getElementById('start-weight').value,
+                currentWeight: document.getElementById('start-weight').value,
+                targetWeight: document.getElementById('target-weight').value,
+                targetDate: document.getElementById('target-date').value,
+                joinedAt: new Date().toISOString()
+            };
+            
+            await db.collection('artifacts').doc(appId).collection('users')
+                .doc(currentUser.uid).collection('profile').doc('main').set(profile);
+            
+            currentProfile = profile;
+            currentView = 'dashboard';
+            render();
+        };
+        
+        // 대시보드
+        const showDashboard = () => {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="dashboard">
+                    <div id="tab-home" class="tab-content active">
+                        <div class="header">
+                            <h2 class="header-title">${currentProfile.name}님,<br>안녕하세요! 👋</h2>
+                            <p class="header-subtitle">오늘도 목표를 향해 달려봐요</p>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="card">
+                                <h3 class="card-title">💧 물 마시기 (<span id="water-count">0</span>/8)</h3>
+                                <div class="water-tracker" id="water-tracker"></div>
+                            </div>
+                            
+                            <div class="card">
+                                <h3 class="card-title">✅ 오늘의 미션</h3>
+                                <div class="missions-grid" id="missions-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-community" class="tab-content">
+                        <div class="header">
+                            <h2 class="header-title">💬 수다방</h2>
+                        </div>
+                        
+                        <div class="chat-container" id="chat-messages"></div>
+                        
+                        <div class="chat-input-container">
+                            <div class="chat-input-wrapper">
+                                <input type="text" id="chat-input" class="chat-input" placeholder="메시지 입력...">
+                                <button onclick="sendMessage()" class="send-btn">전송</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-settings" class="tab-content">
+                        <div class="header">
+                            <h2 class="header-title">⚙️ 설정</h2>
+                        </div>
+                        
+                        <div class="content">
+                            <div class="card">
+                                <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
+                                    <div style="font-size: 3rem;">${currentProfile.gender === 'male' ? '👨' : '👩'}</div>
+                                    <div>
+                                        <h3 style="font-size: 1.5rem; font-weight: bold;">${currentProfile.name}님</h3>
+                                        <p style="color: #666;">${currentProfile.height}cm • ${currentProfile.currentWeight}kg</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <h3 class="card-title">내 목표</h3>
+                                <div style="padding: 15px 0; border-bottom: 1px solid #f5f5f5;">
+                                    <div style="display: flex; justify-between;">
+                                        <span>목표 체중</span>
+                                        <span style="font-weight: bold;">${currentProfile.targetWeight}kg</span>
+                                    </div>
+                                </div>
+                                <div style="padding: 15px 0;">
+                                    <div style="display: flex; justify-between;">
+                                        <span>목표 날짜</span>
+                                        <span style="font-weight: bold;">${currentProfile.targetDate}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="handleLogout()" class="logout-btn">로그아웃</button>
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-nav">
+                        <div class="nav-item active" onclick="switchTab('home')">
+                            <div class="nav-icon">🏠</div>
+                            <div class="nav-label">홈</div>
+                        </div>
+                        <div class="nav-item" onclick="switchTab('community')">
+                            <div class="nav-icon">💬</div>
+                            <div class="nav-label">소통</div>
+                        </div>
+                        <div class="nav-item" onclick="switchTab('settings')">
+                            <div class="nav-icon">⚙️</div>
+                            <div class="nav-label">설정</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            initWaterTracker();
+            initMissions();
+            loadTodayLog();
+        };
+        
+        // 탭 전환
+        window.switchTab = (tab) => {
+            currentTab = tab;
+            
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if (tab === 'community') {
+                loadCommunityMessages();
+            }
+        };
+        
+        // 물 마시기
+        const initWaterTracker = () => {
+            const container = document.getElementById('water-tracker');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 8; i++) {
+                const cup = document.createElement('div');
+                cup.className = 'water-cup';
+                cup.textContent = '💧';
+                cup.onclick = () => toggleWater(i);
+                container.appendChild(cup);
+            }
+        };
+        
+        window.toggleWater = async (index) => {
+            const cups = document.querySelectorAll('.water-cup');
+            cups[index].classList.toggle('filled');
+            
+            const filled = document.querySelectorAll('.water-cup.filled').length;
+            document.getElementById('water-count').textContent = filled;
+            
+            todayLog.water = filled * 250;
+            await saveTodayLog();
+        };
+        
+        // 미션
+        const initMissions = () => {
+            const missions = [
+                { id: 'morning', label: '아침 운동', icon: '🏃' },
+                { id: 'water', label: '물 8잔', icon: '💧' },
+                { id: 'meal', label: '건강한 식사', icon: '🥗' },
+                { id: 'diary', label: '일기 쓰기', icon: '📝' }
+            ];
+            
+            const grid = document.getElementById('missions-grid');
+            grid.innerHTML = missions.map(m => `
+                <div class="mission-card" id="mission-${m.id}" onclick="toggleMission('${m.id}')">
+                    <div class="mission-icon">${m.icon}</div>
+                    <div class="mission-label">${m.label}</div>
+                </div>
+            `).join('');
+        };
+        
+        window.toggleMission = async (id) => {
+            const card = document.getElementById('mission-' + id);
+            card.classList.toggle('completed');
+            
+            if (!todayLog.checks) todayLog.checks = {};
+            todayLog.checks[id] = card.classList.contains('completed');
+            
+            await saveTodayLog();
+        };
+        
+        // 오늘 로그 저장
+        const saveTodayLog = async () => {
+            const today = getTodayString();
+            await db.collection('artifacts').doc(appId).collection('users')
+                .doc(currentUser.uid).collection('logs').doc(today).set({
+                    ...todayLog,
+                    date: today
+                }, { merge: true });
+        };
+        
+        // 오늘 로그 로드
+        const loadTodayLog = async () => {
+            const today = getTodayString();
+            const doc = await db.collection('artifacts').doc(appId).collection('users')
+                .doc(currentUser.uid).collection('logs').doc(today).get();
+            
+            if (doc.exists) {
+                todayLog = doc.data();
+                
+                // 물 복원
+                const filled = (todayLog.water || 0) / 250;
+                const cups = document.querySelectorAll('.water-cup');
+                for (let i = 0; i < filled; i++) {
+                    cups[i].classList.add('filled');
+                }
+                document.getElementById('water-count').textContent = filled;
+                
+                // 미션 복원
+                if (todayLog.checks) {
+                    Object.keys(todayLog.checks).forEach(id => {
+                        if (todayLog.checks[id]) {
+                            const card = document.getElementById('mission-' + id);
+                            if (card) card.classList.add('completed');
+                        }
+                    });
+                }
+            }
+        };
+        
+        // 커뮤니티
+        const loadCommunityMessages = () => {
+            db.collection('artifacts').doc(appId).collection('public').doc('data')
+                .collection('community_posts').orderBy('createdAt', 'desc').limit(50)
+                .onSnapshot(snapshot => {
+                    const container = document.getElementById('chat-messages');
+                    const messages = snapshot.docs.map(d => ({ id: d.id, ...d.data() })).reverse();
+                    
+                    container.innerHTML = messages.map(msg => {
+                        const isMe = msg.uid === currentUser.uid;
+                        return `
+                            <div class="chat-message ${isMe ? 'mine' : ''}">
+                                <div class="message-author">${msg.author || '익명'}</div>
+                                <div class="message-bubble">${msg.text}</div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    container.scrollTop = container.scrollHeight;
+                });
+        };
+        
+        window.sendMessage = async () => {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            await db.collection('artifacts').doc(appId).collection('public').doc('data')
+                .collection('community_posts').add({
+                    text,
+                    author: currentProfile.name,
+                    uid: currentUser.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            
+            input.value = '';
+        };
+        
+        // 로그아웃
+        window.handleLogout = async () => {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                await auth.signOut();
+            }
+        };
+        
+        // 인증 상태 변화 감지
+        auth.onAuthStateChanged(async (user) => {
+            currentUser = user;
+            
+            if (user) {
+                const profileDoc = await db.collection('artifacts').doc(appId).collection('users')
+                    .doc(user.uid).collection('profile').doc('main').get();
+                
+                if (profileDoc.exists) {
+                    currentProfile = profileDoc.data();
+                    currentView = 'dashboard';
+                } else {
+                    currentView = 'onboarding';
+                }
+            } else {
+                currentView = 'landing';
+            }
+            
+            render();
+        });
+    </script>
+</body>
+</html>
