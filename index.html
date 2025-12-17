@@ -2611,7 +2611,7 @@
             try {
                 // 사용자 정보 가져오기
                 const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                    .collection('weights')
+                    .collection('logs')
                     .orderBy('date', 'desc')
                     .limit(1)
                     .get();
@@ -2686,7 +2686,7 @@
             try {
                 // 사용자 정보 가져오기
                 const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                    .collection('weights')
+                    .collection('logs')
                     .orderBy('date', 'desc')
                     .limit(1)
                     .get();
@@ -2941,7 +2941,7 @@
 
                 // 현재 체중 가져오기
                 const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                    .collection('weights')
+                    .collection('logs')
                     .orderBy('date', 'desc')
                     .limit(1)
                     .get();
@@ -3335,17 +3335,76 @@ ${userMessage}
             return messages[code] || '오류가 발생했습니다. 다시 시도해주세요.';
         }
 
+      // [수정 1] 프로필 로딩 안전장치 (기능 유지 + 데이터 복구)
         auth.onAuthStateChanged(async (user) => {
             if (user) {
+                console.log("로그인 성공:", user.email);
                 currentUser = user;
-                const profileDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(user.uid).get();
-                currentProfile = profileDoc.data();
+                
+                try {
+                    // 1. 옛날 데이터 위치 확인 (profile/main 서랍)
+                    const oldDoc = await db.collection('artifacts').doc('diet-mate-v2')
+                                    .collection('users').doc(user.uid)
+                                    .collection('profile').doc('main').get();
+                    
+                    // 2. 새 데이터 위치 확인 (users/uid 서랍)
+                    const newDoc = await db.collection('artifacts').doc('diet-mate-v2')
+                                    .collection('users').doc(user.uid).get();
 
-                document.getElementById('auth').classList.add('hidden');
-                document.getElementById('landing').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
+                    let profileData = {
+                        name: user.displayName || '회원',
+                        goalWeight: 0,
+                        startWeight: 0,
+                        createdAt: firebase.firestore.Timestamp.now()
+                    };
 
-                await initializeDashboard();
+                    // 3. 데이터 합치기 (옛날 데이터가 있으면 우선 적용)
+                    if (oldDoc.exists) {
+                        const old = oldDoc.data();
+                        profileData.name = old.name || old.displayName || profileData.name;
+                        // 옛날 'targetWeight'를 새 'goalWeight'로 연결
+                        profileData.goalWeight = old.targetWeight || old.goalWeight || 0;
+                        // 시작 체중이 없으면 일단 0 (나중에 로그에서 찾음)
+                        profileData.startWeight = old.startWeight || old.startweight || 0;
+                    } 
+                    
+                    if (newDoc.exists) {
+                        const curr = newDoc.data();
+                        if (curr.name) profileData.name = curr.name;
+                        if (curr.goalWeight) profileData.goalWeight = curr.goalWeight;
+                        if (curr.startWeight) profileData.startWeight = curr.startWeight;
+                    }
+
+                    // [추가] 시작 체중이 0이면, 첫 번째 기록을 찾아서 복구 (그래프 살리기)
+                    if (profileData.startWeight === 0) {
+                        const firstLog = await db.collection('artifacts').doc('diet-mate-v2')
+                                        .collection('users').doc(user.uid)
+                                        .collection('logs').orderBy('date', 'asc').limit(1).get();
+                        if (!firstLog.empty) {
+                            profileData.startWeight = firstLog.docs[0].data().weight;
+                        }
+                    }
+
+                    // 전역 변수에 저장
+                    currentProfile = profileData;
+                    
+                    // 화면 업데이트
+                    if(document.getElementById('profileName')) document.getElementById('profileName').textContent = currentProfile.name;
+                    if(document.getElementById('profileEmail')) document.getElementById('profileEmail').textContent = user.email;
+
+                    document.getElementById('auth').classList.add('hidden');
+                    document.getElementById('landing').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+
+                    await initializeDashboard();
+
+                } catch (error) {
+                    console.error("로딩 에러:", error);
+                    // 에러가 나도 멈추지 말고 대시보드 강제 실행
+                    document.getElementById('auth').classList.add('hidden');
+                    document.getElementById('landing').classList.add('hidden');
+                    document.getElementById('dashboard').classList.remove('hidden');
+                }
             }
         });
 
@@ -3419,7 +3478,7 @@ ${userMessage}
 
             // 체중 데이터 로드
             const weightData = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('weights').orderBy('date', 'asc').get();
+                .collection('logs').orderBy('date', 'asc').get();
 
             const weights = weightData.docs.map(doc => ({
                 date: doc.data().date.toDate(),
@@ -3503,7 +3562,7 @@ ${userMessage}
             }
 
             await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('weights').add({
+                .collection('logs').add({
                     weight: weight,
                     date: firebase.firestore.Timestamp.now()
                 });
@@ -4690,7 +4749,7 @@ ${userMessage}
 
         async function checkDayData(dateStr) {
             const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('weights')
+                .collection('logs')
                 .where('date', '>=', firebase.firestore.Timestamp.fromDate(new Date(dateStr)))
                 .where('date', '<', firebase.firestore.Timestamp.fromDate(new Date(new Date(dateStr).getTime() + 86400000)))
                 .limit(1)
@@ -4709,7 +4768,7 @@ ${userMessage}
 
             // 해당 날짜의 데이터 수집
             const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('weights')
+                .collection('logs')
                 .where('date', '>=', firebase.firestore.Timestamp.fromDate(date))
                 .where('date', '<', firebase.firestore.Timestamp.fromDate(new Date(date.getTime() + 86400000)))
                 .get();
@@ -4779,55 +4838,75 @@ ${userMessage}
         }
 
         // ==================== 소통 탭 ====================
+        // [수정 2] 소통방 불러오기 (옛날 주소 + 안전장치)
         async function loadCommunityMessages() {
-            db.collection('artifacts').doc('diet-mate-v2').collection('public')
-                .orderBy('timestamp', 'asc')
-                .limit(50)
-                .onSnapshot(snapshot => {
-                    const container = document.getElementById('chatContainer');
-                    container.innerHTML = '';
+            try {
+                // 경로: public -> data -> posts (옛날 경로)
+                db.collection('artifacts').doc('diet-mate-v2').collection('public')
+                    .doc('data').collection('posts')
+                    .orderBy('at', 'asc') // 옛날 시간 필드 'at' 사용
+                    .limit(50)
+                    .onSnapshot(snapshot => {
+                        const container = document.getElementById('chatContainer');
+                        if (!container) return;
+                        
+                        container.innerHTML = '';
+                        snapshot.forEach(doc => {
+                            const msg = doc.data();
+                            const msgDiv = document.createElement('div');
+                            msgDiv.className = 'chat-message';
+                            if (msg.userId === currentUser.uid) msgDiv.classList.add('mine');
 
-                    snapshot.forEach(doc => {
-                        const msg = doc.data();
-                        const msgDiv = document.createElement('div');
-                        msgDiv.className = 'chat-message';
+                            // 날짜 안전하게 변환
+                            let timeStr = "";
+                            try {
+                                const d = msg.at ? msg.at.toDate() : new Date();
+                                timeStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+                            } catch(e) { timeStr = "날짜 오류"; }
 
-                        if (msg.userId === currentUser.uid) {
-                            msgDiv.classList.add('mine');
-                        }
+                            // 내용 표시 (옛날 필드 호환)
+                            const name = msg.name || msg.userName || '익명';
+                            const text = msg.text || msg.message || '';
 
-                        const timestamp = msg.timestamp ? msg.timestamp.toDate() : new Date();
-                        const timeStr = `${timestamp.getFullYear()}-${String(timestamp.getMonth() + 1).padStart(2, '0')}-${String(timestamp.getDate()).padStart(2, '0')} ${String(timestamp.getHours()).padStart(2, '0')}:${String(timestamp.getMinutes()).padStart(2, '0')}`;
-
-                        msgDiv.innerHTML = `
-                            <div class="message-header">
-                                <span class="message-author">${msg.userName}</span>
-                                <span class="message-time">${timeStr}</span>
-                            </div>
-                            <div class="message-bubble">${msg.message}</div>
-                        `;
-
-                        container.appendChild(msgDiv);
+                            msgDiv.innerHTML = `
+                                <div class=\"message-header\">
+                                    <span class=\"message-author\">${name}</span>
+                                    <span class=\"message-time\">${timeStr}</span>
+                                </div>
+                                <div class=\"message-bubble\">${text}</div>
+                            `;
+                            container.appendChild(msgDiv);
+                        });
+                        container.scrollTop = container.scrollHeight;
                     });
-
-                    container.scrollTop = container.scrollHeight;
-                });
+            } catch (e) {
+                console.error("채팅 로드 실패:", e);
+            }
         }
 
+        // [수정 3] 채팅 보내기 (옛날 주소로 전송)
         async function sendCommunityMessage() {
             const input = document.getElementById('communityInput');
             const message = input.value.trim();
-
+            
             if (!message) return;
+            if (!currentProfile) {
+                alert("프로필 로딩 중입니다. 잠시만 기다려주세요.");
+                return;
+            }
 
-            await db.collection('artifacts').doc('diet-mate-v2').collection('public').add({
-                userId: currentUser.uid,
-                userName: currentProfile.name,
-                message: message,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-
-            input.value = '';
+            try {
+                await db.collection('artifacts').doc('diet-mate-v2').collection('public')
+                    .doc('data').collection('posts').add({
+                    userId: currentUser.uid,
+                    name: currentProfile.name, // 내 이름
+                    text: message,             // 메시지 내용
+                    at: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                input.value = '';
+            } catch (e) {
+                alert("메시지 전송 실패: " + e.message);
+            }
         }
 
         // ==================== 알림 탭 ====================
@@ -4957,7 +5036,7 @@ ${userMessage}
             // 절약 칼로리 (간단 계산)
             const startWeight = currentProfile.startWeight || 0;
             const weightData = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('weights').orderBy('date', 'desc').limit(1).get();
+                .collection('logs').orderBy('date', 'desc').limit(1).get();
 
             const currentWeight = weightData.empty ? startWeight : weightData.docs[0].data().weight;
             const weightLost = startWeight - currentWeight;
@@ -4988,7 +5067,7 @@ ${userMessage}
                     photos: []
                 };
 
-                const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid).collection('weights').get();
+                const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid).collection('logs').get();
                 weights.forEach(doc => data.weights.push({ id: doc.id, ...doc.data() }));
 
                 const plans = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid).collection('plans').get();
@@ -5035,7 +5114,7 @@ ${userMessage}
                     for (const weight of data.weights) {
                         const { id, ...weightData } = weight;
                         await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                            .collection('weights').add(weightData);
+                            .collection('logs').add(weightData);
                     }
 
                     // 플랜 데이터 복원
