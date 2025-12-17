@@ -478,10 +478,12 @@
             border-radius: 10px;
         }
 
+        /* [수정] 물 마시기 화면이 폰에서 잘리는 문제 해결 */
         .water-tracker {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            display: flex;
+            flex-wrap: wrap;       /* 줄바꿈 허용 (이게 없어서 잘린 겁니다) */
             gap: 10px;
+            justify-content: center;
         }
 
         .water-cup {
@@ -2331,7 +2333,7 @@
                         <div class="profile-avatar">💪</div>
                         <div class="profile-info">
                             <h3 id="profileName">사용자</h3>
-                            <p id="profileEmail">email@example.com</p>
+                            <p id="profileEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e2878f838b8ea2879a838f928e87cc818d8f">[email&#160;protected]</a></p>
                         </div>
                     </div>
 
@@ -2353,6 +2355,11 @@
                             <div class="stat-label">예상 달성일</div>
                         </div>
                     </div>
+                </div>
+
+                <div class="settings-item" onclick="openProfileSettings()">
+                    <span>👤 프로필 재설정</span>
+                    <span>→</span>
                 </div>
 
                 <div class="settings-item" onclick="exportData()">
@@ -2406,7 +2413,38 @@
         </div>
     </div>
 
-    <script>
+    <!-- 프로필 재설정 모달 -->
+    <div id="profileSettingsModal" class="category-change-overlay hidden">
+        <div class="category-change-modal">
+            <div class="category-modal-header">
+                <h3>👤 프로필 재설정</h3>
+                <button class="modal-close-btn" onclick="closeProfileSettings()">×</button>
+            </div>
+            <p class="category-modal-description">목표 체중과 시작 체중을 다시 설정할 수 있습니다.</p>
+            
+            <div class="form-group">
+                <label class="form-label">닉네임</label>
+                <input type="text" id="editName" class="form-input" placeholder="닉네임을 입력하세요">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">시작 체중 (kg)</label>
+                <input type="number" id="editStartWeight" class="form-input" placeholder="86" step="0.1" min="0">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">목표 체중 (kg)</label>
+                <input type="number" id="editGoalWeight" class="form-input" placeholder="75" step="0.1" min="0">
+            </div>
+            
+            <div class="merge-actions" style="margin-top: 25px;">
+                <button class="merge-btn merge-cancel" onclick="closeProfileSettings()">취소</button>
+                <button class="merge-btn merge-confirm" onclick="saveProfileSettings()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // ==================== Firebase 초기화 ====================
         const firebaseConfig = {
             apiKey: "AIzaSyDrw00jym_dKATz26qUzsALSqfYeAAkM-I",
@@ -3335,21 +3373,21 @@ ${userMessage}
             return messages[code] || '오류가 발생했습니다. 다시 시도해주세요.';
         }
 
-      // [수정 1] 프로필 로딩 안전장치 (기능 유지 + 데이터 복구)
+        // ==================== Firebase Auth State Listener ====================
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 console.log("로그인 성공:", user.email);
                 currentUser = user;
-                
+
                 try {
-                    // 1. 옛날 데이터 위치 확인 (profile/main 서랍)
+                    // 1. 옛날 데이터 위치 확인 (profile/main)
                     const oldDoc = await db.collection('artifacts').doc('diet-mate-v2')
-                                    .collection('users').doc(user.uid)
-                                    .collection('profile').doc('main').get();
-                    
-                    // 2. 새 데이터 위치 확인 (users/uid 서랍)
+                        .collection('users').doc(user.uid)
+                        .collection('profile').doc('main').get();
+
+                    // 2. 새 데이터 위치 확인 (users/uid)
                     const newDoc = await db.collection('artifacts').doc('diet-mate-v2')
-                                    .collection('users').doc(user.uid).get();
+                        .collection('users').doc(user.uid).get();
 
                     let profileData = {
                         name: user.displayName || '회원',
@@ -3362,12 +3400,10 @@ ${userMessage}
                     if (oldDoc.exists) {
                         const old = oldDoc.data();
                         profileData.name = old.name || old.displayName || profileData.name;
-                        // 옛날 'targetWeight'를 새 'goalWeight'로 연결
                         profileData.goalWeight = old.targetWeight || old.goalWeight || 0;
-                        // 시작 체중이 없으면 일단 0 (나중에 로그에서 찾음)
                         profileData.startWeight = old.startWeight || old.startweight || 0;
-                    } 
-                    
+                    }
+
                     if (newDoc.exists) {
                         const curr = newDoc.data();
                         if (curr.name) profileData.name = curr.name;
@@ -3375,38 +3411,102 @@ ${userMessage}
                         if (curr.startWeight) profileData.startWeight = curr.startWeight;
                     }
 
-                    // [추가] 시작 체중이 0이면, 첫 번째 기록을 찾아서 복구 (그래프 살리기)
-                    if (profileData.startWeight === 0) {
-                        const firstLog = await db.collection('artifacts').doc('diet-mate-v2')
-                                        .collection('users').doc(user.uid)
-                                        .collection('logs').orderBy('date', 'asc').limit(1).get();
+                    // ========== 🔥 자동 복구 및 마이그레이션 ==========
+                    let needsUpdate = false;
+                    let updateData = {};
+
+                    // 시작 체중 복구 (logs에서)
+                    if (!profileData.startWeight || profileData.startWeight === 0) {
+                        console.log("⚠️ 시작 체중이 없음. logs에서 복구 시도...");
+
+                        const firstLog = await db.collection('artifacts')
+                            .doc('diet-mate-v2')
+                            .collection('users').doc(user.uid)
+                            .collection('logs')
+                            .orderBy('date', 'asc')
+                            .limit(1).get();
+
                         if (!firstLog.empty) {
                             profileData.startWeight = firstLog.docs[0].data().weight;
+                            updateData.startWeight = profileData.startWeight;
+                            needsUpdate = true;
+                            console.log("✅ 시작 체중 복구:", profileData.startWeight, "kg");
                         }
                     }
 
-                    // 전역 변수에 저장
+                    // 목표 체중 복구 (profile/main 또는 targetWeight에서)
+                    if (!profileData.goalWeight || profileData.goalWeight === 0) {
+                        console.log("⚠️ 목표 체중이 없음. 복구 시도...");
+
+                        // oldDoc에서 이미 확인했으니 재사용
+                        if (oldDoc.exists) {
+                            const old = oldDoc.data();
+                            profileData.goalWeight = old.targetWeight || old.goalWeight || 0;
+
+                            if (profileData.goalWeight > 0) {
+                                updateData.goalWeight = profileData.goalWeight;
+                                needsUpdate = true;
+                                console.log("✅ 목표 체중 복구 (profile/main):", profileData.goalWeight, "kg");
+                            }
+                        }
+
+                        // 현재 문서의 targetWeight 확인
+                        if (profileData.goalWeight === 0 && newDoc.exists) {
+                            const curr = newDoc.data();
+                            profileData.goalWeight = curr.targetWeight || 0;
+
+                            if (profileData.goalWeight > 0) {
+                                updateData.goalWeight = profileData.goalWeight;
+                                needsUpdate = true;
+                                console.log("✅ 목표 체중 복구 (targetWeight):", profileData.goalWeight, "kg");
+                            }
+                        }
+                    }
+
+                    // 기본 정보 확보
+                    if (!updateData.name && profileData.name) {
+                        updateData.name = profileData.name;
+                    }
+                    if (!updateData.email && user.email) {
+                        updateData.email = user.email;
+                    }
+
+                    // Firebase에 저장 (복구된 데이터가 있으면)
+                    if (needsUpdate && Object.keys(updateData).length > 0) {
+                        console.log("💾 복구된 데이터를 Firebase에 저장:", updateData);
+
+                        await db.collection('artifacts')
+                            .doc('diet-mate-v2')
+                            .collection('users')
+                            .doc(user.uid)
+                            .set(updateData, { merge: true });
+
+                        console.log("✅ 프로필 자동 복구 완료!");
+                    }
+                    // ========== 자동 복구 끝 ==========
+
                     currentProfile = profileData;
-                    
-                    // 화면 업데이트
-                    if(document.getElementById('profileName')) document.getElementById('profileName').textContent = currentProfile.name;
-                    if(document.getElementById('profileEmail')) document.getElementById('profileEmail').textContent = user.email;
 
-                    document.getElementById('auth').classList.add('hidden');
+                    // 대시보드 초기화
                     document.getElementById('landing').classList.add('hidden');
+                    document.getElementById('auth').classList.add('hidden');
                     document.getElementById('dashboard').classList.remove('hidden');
-
                     await initializeDashboard();
 
                 } catch (error) {
-                    console.error("로딩 에러:", error);
-                    // 에러가 나도 멈추지 말고 대시보드 강제 실행
-                    document.getElementById('auth').classList.add('hidden');
-                    document.getElementById('landing').classList.add('hidden');
-                    document.getElementById('dashboard').classList.remove('hidden');
+                    console.error('프로필 로드 실패:', error);
+                    showErrorMessage('프로필 로드에 실패했습니다.');
                 }
+            } else {
+                // 로그아웃 상태
+                currentUser = null;
+                currentProfile = null;
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('auth').classList.add('hidden');
+                document.getElementById('landing').classList.remove('hidden');
             }
         });
+
 
         function logout() {
             if (confirm('로그아웃 하시겠습니까?')) {
@@ -3464,6 +3564,8 @@ ${userMessage}
                 loadPlanTab();
             } else if (tabName === 'album') {
                 loadAlbumTab();
+            } else if (tabName === 'community') {
+                loadCommunityMessages();
             }
         }
 
@@ -5170,6 +5272,92 @@ ${userMessage}
             }
 
             deferredPrompt = null;
+        }
+
+        // ==================== 프로필 재설정 ====================
+        function openProfileSettings() {
+            const modal = document.getElementById('profileSettingsModal');
+            
+            // 현재 값으로 초기화
+            document.getElementById('editName').value = currentProfile.name || '';
+            document.getElementById('editStartWeight').value = currentProfile.startWeight || '';
+            document.getElementById('editGoalWeight').value = currentProfile.goalWeight || '';
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeProfileSettings() {
+            document.getElementById('profileSettingsModal').classList.add('hidden');
+        }
+
+        async function saveProfileSettings() {
+            const name = document.getElementById('editName').value.trim();
+            const startWeight = parseFloat(document.getElementById('editStartWeight').value);
+            const goalWeight = parseFloat(document.getElementById('editGoalWeight').value);
+            
+            // 유효성 검사
+            if (!name) {
+                alert('닉네임을 입력해주세요.');
+                return;
+            }
+            
+            if (!startWeight || startWeight <= 0) {
+                alert('시작 체중을 올바르게 입력해주세요.');
+                return;
+            }
+            
+            if (!goalWeight || goalWeight <= 0) {
+                alert('목표 체중을 올바르게 입력해주세요.');
+                return;
+            }
+            
+            if (goalWeight >= startWeight) {
+                alert('목표 체중은 시작 체중보다 작아야 합니다.');
+                return;
+            }
+            
+            try {
+                // Firebase에 저장
+                await db.collection('artifacts')
+                    .doc('diet-mate-v2')
+                    .collection('users')
+                    .doc(currentUser.uid)
+                    .set({
+                        name: name,
+                        startWeight: startWeight,
+                        goalWeight: goalWeight,
+                        email: currentUser.email,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                
+                // 로컬 프로필 업데이트
+                currentProfile.name = name;
+                currentProfile.startWeight = startWeight;
+                currentProfile.goalWeight = goalWeight;
+                
+                // UI 업데이트
+                document.getElementById('headerSubtitle').textContent = `${name}님, 환영합니다!`;
+                document.getElementById('profileName').textContent = name;
+                
+                // 모달 닫기
+                closeProfileSettings();
+                
+                alert('✅ 프로필이 성공적으로 업데이트되었습니다!');
+                
+                // 홈 탭 새로고침
+                if (currentTab === 'home') {
+                    await loadHomeTab();
+                }
+                
+                // 설정 탭 새로고침
+                if (currentTab === 'settings') {
+                    await loadSettings();
+                }
+                
+            } catch (error) {
+                console.error('프로필 업데이트 실패:', error);
+                alert('❌ 프로필 업데이트에 실패했습니다. 다시 시도해주세요.');
+            }
         }
 
         // ==================== 초기 실행 ====================
