@@ -2610,7 +2610,7 @@
         async function analyzeNutritionFromImage(file, imageUrl) {
             try {
                 // 사용자 정보 가져오기
-                const weightsSnapshot = await db.collection('users').doc(currentUser.uid)
+                const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('weights')
                     .orderBy('date', 'desc')
                     .limit(1)
@@ -2685,7 +2685,7 @@
         async function analyzeNutritionFromText(text) {
             try {
                 // 사용자 정보 가져오기
-                const weightsSnapshot = await db.collection('users').doc(currentUser.uid)
+                const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('weights')
                     .orderBy('date', 'desc')
                     .limit(1)
@@ -2764,7 +2764,7 @@
                 const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
                 const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
 
-                const foodPhotosSnapshot = await db.collection('users').doc(currentUser.uid)
+                const foodPhotosSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos')
                     .where('category', '==', 'food')
                     .where('uploadedAt', '>=', firebase.firestore.Timestamp.fromDate(todayStart))
@@ -2921,7 +2921,7 @@
                 const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
                 const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
 
-                const foodPhotosSnapshot = await db.collection('users').doc(currentUser.uid)
+                const foodPhotosSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos')
                     .where('category', '==', 'food')
                     .where('uploadedAt', '>=', firebase.firestore.Timestamp.fromDate(todayStart))
@@ -2940,7 +2940,7 @@
                 });
 
                 // 현재 체중 가져오기
-                const weightsSnapshot = await db.collection('users').doc(currentUser.uid)
+                const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('weights')
                     .orderBy('date', 'desc')
                     .limit(1)
@@ -2996,7 +2996,7 @@ ${userMessage}
                 const oneHourBefore = new Date(mealTime.getTime() - 60 * 60 * 1000);
                 const oneHourAfter = new Date(mealTime.getTime() + 60 * 60 * 1000);
 
-                const plansSnapshot = await db.collection('users').doc(currentUser.uid)
+                const plansSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('plans')
                     .where('date', '>=', firebase.firestore.Timestamp.fromDate(oneHourBefore))
                     .where('date', '<=', firebase.firestore.Timestamp.fromDate(oneHourAfter))
@@ -3055,7 +3055,7 @@ ${userMessage}
             try {
                 const threeHoursAgo = new Date(newMealTime.getTime() - 3 * 60 * 60 * 1000);
 
-                const recentMealsSnapshot = await db.collection('users').doc(currentUser.uid)
+                const recentMealsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos')
                     .where('category', '==', 'food')
                     .where('uploadedAt', '>=', firebase.firestore.Timestamp.fromDate(threeHoursAgo))
@@ -3109,7 +3109,7 @@ ${userMessage}
                 }
 
                 // 기존 식사 데이터 가져오기
-                const recentMealDoc = await db.collection('users').doc(currentUser.uid)
+                const recentMealDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(recentMealDocId).get();
 
                 const recentData = recentMealDoc.data();
@@ -3129,7 +3129,7 @@ ${userMessage}
                     .join(' + ') || null;
 
                 // Firestore 업데이트
-                await db.collection('users').doc(currentUser.uid)
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(recentMealDocId).update({
                         nutrition: mergedNutrition,
                         text: mergedText
@@ -3163,7 +3163,7 @@ ${userMessage}
                 }
 
                 // 새 문서로 저장
-                await db.collection('users').doc(currentUser.uid)
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').add(pendingMealData);
 
                 // Bottom Sheet 닫기
@@ -3233,7 +3233,7 @@ ${userMessage}
                 }
 
                 // 스마트 병합 대상이 아니거나 식단이 아닌 경우 바로 저장
-                await db.collection('users').doc(currentUser.uid)
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').add(cardData);
 
                 // 앨범 새로고침
@@ -3293,7 +3293,7 @@ ${userMessage}
                     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                     await userCredential.user.updateProfile({ displayName });
 
-                    await db.collection('users').doc(userCredential.user.uid).set({
+                    await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(userCredential.user.uid).set({
                         name: displayName,
                         email: email,
                         goalWeight: goalWeight,
@@ -3338,7 +3338,7 @@ ${userMessage}
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUser = user;
-                const profileDoc = await db.collection('users').doc(user.uid).get();
+                const profileDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(user.uid).get();
                 currentProfile = profileDoc.data();
 
                 document.getElementById('auth').classList.add('hidden');
@@ -3418,7 +3418,7 @@ ${userMessage}
             document.getElementById('goalWeightDisplay').textContent = goalWeight.toFixed(1);
 
             // 체중 데이터 로드
-            const weightData = await db.collection('users').doc(currentUser.uid)
+            const weightData = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('weights').orderBy('date', 'asc').get();
 
             const weights = weightData.docs.map(doc => ({
@@ -3502,7 +3502,7 @@ ${userMessage}
                 return;
             }
 
-            await db.collection('users').doc(currentUser.uid)
+            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('weights').add({
                     weight: weight,
                     date: firebase.firestore.Timestamp.now()
@@ -3619,7 +3619,7 @@ ${userMessage}
             const todayStr = today.toISOString().split('T')[0];
             document.getElementById('planDate').textContent = `${today.getMonth() + 1}월 ${today.getDate()}일 플랜`;
 
-            const plans = await db.collection('users').doc(currentUser.uid)
+            const plans = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('plans')
                 .where('date', '==', todayStr)
                 .orderBy('time', 'asc')
@@ -3668,7 +3668,7 @@ ${userMessage}
         async function addPlan(time, category, activity, value) {
             const today = new Date().toISOString().split('T')[0];
 
-            await db.collection('users').doc(currentUser.uid)
+            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('plans').add({
                     date: today,
                     time: time,
@@ -3684,7 +3684,7 @@ ${userMessage}
         async function deletePlan(planId) {
             if (!confirm('이 플랜을 삭제하시겠습니까?')) return;
 
-            await db.collection('users').doc(currentUser.uid)
+            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('plans').doc(planId).delete();
 
             await loadPlanTab();
@@ -3763,7 +3763,7 @@ ${userMessage}
                     const duration = now - fastingState.startTime;
                     const today = new Date().toISOString().split('T')[0];
 
-                    await db.collection('users').doc(currentUser.uid)
+                    await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                         .collection('fastingRecords').add({
                             startTime: firebase.firestore.Timestamp.fromMillis(fastingState.startTime),
                             endTime: firebase.firestore.Timestamp.fromMillis(now),
@@ -3847,7 +3847,7 @@ ${userMessage}
             const duration = now - fastingState.startTime;
             const today = new Date().toISOString().split('T')[0];
 
-            await db.collection('users').doc(currentUser.uid)
+            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('fastingRecords').add({
                     startTime: firebase.firestore.Timestamp.fromMillis(fastingState.startTime),
                     endTime: firebase.firestore.Timestamp.fromMillis(now),
@@ -3861,7 +3861,7 @@ ${userMessage}
         async function loadTodayFastingStats() {
             try {
                 const today = new Date().toISOString().split('T')[0];
-                const records = await db.collection('users').doc(currentUser.uid)
+                const records = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('fastingRecords')
                     .where('date', '==', today)
                     .get();
@@ -3935,7 +3935,7 @@ ${userMessage}
 
         // ==================== 앨범 탭 ====================
         async function loadAlbumTab() {
-            const photos = await db.collection('users').doc(currentUser.uid)
+            const photos = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('photos')
                 .orderBy('uploadedAt', 'desc')
                 .get();
@@ -4249,7 +4249,7 @@ ${userMessage}
                     }
 
                     // 스마트 병합 대상이 아니거나 식단이 아닌 경우 바로 저장
-                    await db.collection('users').doc(currentUser.uid)
+                    await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                         .collection('photos').add(photoData);
 
                     // 앨범 새로고침
@@ -4305,7 +4305,7 @@ ${userMessage}
 
         async function openPhotoModal(url, photoId) {
             // Phase 4: 현재 사진 데이터 가져오기 (카테고리 정보 필요)
-            const photoDoc = await db.collection('users').doc(currentUser.uid)
+            const photoDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('photos').doc(photoId).get();
             const photoData = photoDoc.data();
             const currentCategory = photoData ? photoData.category : null;
@@ -4363,7 +4363,7 @@ ${userMessage}
         async function deletePhoto(photoId) {
             if (!confirm('이 사진을 삭제하시겠습니까?')) return;
 
-            await db.collection('users').doc(currentUser.uid)
+            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('photos').doc(photoId).delete();
 
             document.querySelector('.photo-modal').remove();
@@ -4410,7 +4410,7 @@ ${userMessage}
 
             try {
                 // Firestore에서 현재 사진 데이터 가져오기
-                const photoDoc = await db.collection('users').doc(currentUser.uid)
+                const photoDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(changingPhotoId).get();
                 const photoData = photoDoc.data();
 
@@ -4434,7 +4434,7 @@ ${userMessage}
                 }
 
                 // 카테고리 변경 실행
-                await db.collection('users').doc(currentUser.uid)
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(changingPhotoId).update({
                         category: newCategory
                     });
@@ -4493,7 +4493,7 @@ ${userMessage}
                 thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
                 // Firestore에서 최근 30일 식단 조회
-                const mealsSnapshot = await db.collection('users').doc(currentUser.uid)
+                const mealsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos')
                     .where('category', '==', 'food')
                     .where('uploadedAt', '>=', firebase.firestore.Timestamp.fromDate(thirtyDaysAgo))
@@ -4568,9 +4568,9 @@ ${userMessage}
 
             try {
                 // 두 식사 데이터 가져오기
-                const sourceDoc = await db.collection('users').doc(currentUser.uid)
+                const sourceDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(sourceId).get();
-                const targetDoc = await db.collection('users').doc(currentUser.uid)
+                const targetDoc = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(targetId).get();
 
                 const sourceData = sourceDoc.data();
@@ -4600,14 +4600,14 @@ ${userMessage}
                 }
 
                 // target 업데이트
-                await db.collection('users').doc(currentUser.uid)
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(targetId).update({
                         nutrition: mergedNutrition,
                         text: mergedText || null
                     });
 
                 // source 삭제
-                await db.collection('users').doc(currentUser.uid)
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('photos').doc(sourceId).delete();
 
                 alert('식사가 성공적으로 병합되었습니다.');
@@ -4689,7 +4689,7 @@ ${userMessage}
         }
 
         async function checkDayData(dateStr) {
-            const weights = await db.collection('users').doc(currentUser.uid)
+            const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('weights')
                 .where('date', '>=', firebase.firestore.Timestamp.fromDate(new Date(dateStr)))
                 .where('date', '<', firebase.firestore.Timestamp.fromDate(new Date(new Date(dateStr).getTime() + 86400000)))
@@ -4708,18 +4708,18 @@ ${userMessage}
             const date = new Date(dateStr);
 
             // 해당 날짜의 데이터 수집
-            const weights = await db.collection('users').doc(currentUser.uid)
+            const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('weights')
                 .where('date', '>=', firebase.firestore.Timestamp.fromDate(date))
                 .where('date', '<', firebase.firestore.Timestamp.fromDate(new Date(date.getTime() + 86400000)))
                 .get();
 
-            const plans = await db.collection('users').doc(currentUser.uid)
+            const plans = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('plans')
                 .where('date', '==', dateStr)
                 .get();
 
-            const photos = await db.collection('users').doc(currentUser.uid)
+            const photos = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('photos')
                 .where('uploadedAt', '>=', firebase.firestore.Timestamp.fromDate(date))
                 .where('uploadedAt', '<', firebase.firestore.Timestamp.fromDate(new Date(date.getTime() + 86400000)))
@@ -4780,7 +4780,7 @@ ${userMessage}
 
         // ==================== 소통 탭 ====================
         async function loadCommunityMessages() {
-            db.collection('community')
+            db.collection('artifacts').doc('diet-mate-v2').collection('public')
                 .orderBy('timestamp', 'asc')
                 .limit(50)
                 .onSnapshot(snapshot => {
@@ -4820,7 +4820,7 @@ ${userMessage}
 
             if (!message) return;
 
-            await db.collection('community').add({
+            await db.collection('artifacts').doc('diet-mate-v2').collection('public').add({
                 userId: currentUser.uid,
                 userName: currentProfile.name,
                 message: message,
@@ -4956,7 +4956,7 @@ ${userMessage}
 
             // 절약 칼로리 (간단 계산)
             const startWeight = currentProfile.startWeight || 0;
-            const weightData = await db.collection('users').doc(currentUser.uid)
+            const weightData = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                 .collection('weights').orderBy('date', 'desc').limit(1).get();
 
             const currentWeight = weightData.empty ? startWeight : weightData.docs[0].data().weight;
@@ -4988,13 +4988,13 @@ ${userMessage}
                     photos: []
                 };
 
-                const weights = await db.collection('users').doc(currentUser.uid).collection('weights').get();
+                const weights = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid).collection('weights').get();
                 weights.forEach(doc => data.weights.push({ id: doc.id, ...doc.data() }));
 
-                const plans = await db.collection('users').doc(currentUser.uid).collection('plans').get();
+                const plans = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid).collection('plans').get();
                 plans.forEach(doc => data.plans.push({ id: doc.id, ...doc.data() }));
 
-                const photos = await db.collection('users').doc(currentUser.uid).collection('photos').get();
+                const photos = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid).collection('photos').get();
                 photos.forEach(doc => data.photos.push({ id: doc.id, ...doc.data() }));
 
                 const jsonStr = JSON.stringify(data, null, 2);
@@ -5034,14 +5034,14 @@ ${userMessage}
                     // 체중 데이터 복원
                     for (const weight of data.weights) {
                         const { id, ...weightData } = weight;
-                        await db.collection('users').doc(currentUser.uid)
+                        await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                             .collection('weights').add(weightData);
                     }
 
                     // 플랜 데이터 복원
                     for (const plan of data.plans) {
                         const { id, ...planData } = plan;
-                        await db.collection('users').doc(currentUser.uid)
+                        await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                             .collection('plans').add(planData);
                     }
 
