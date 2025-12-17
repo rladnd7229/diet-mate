@@ -487,6 +487,7 @@
         }
 
         .water-cup {
+            width: calc(25% - 10px);  /* 한 줄에 4개 */
             aspect-ratio: 1;
             background: #e3f2fd;
             border-radius: 15px;
@@ -496,6 +497,7 @@
             font-size: 2rem;
             cursor: pointer;
             transition: all 0.3s;
+            min-width: 60px;  /* 최소 너비 보장 */
         }
 
         .water-cup.filled {
@@ -721,6 +723,29 @@
         .fasting-btn:hover {
             background: white;
             color: #667eea;
+        }
+
+        /* Phase 2: 단식 프리셋 버튼 */
+        .fasting-preset-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .fasting-preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+        }
+
+        .fasting-preset-btn:active {
+            transform: translateY(0);
         }
 
         .fasting-duration-input {
@@ -1804,6 +1829,120 @@
             font-size: 0.9rem;
         }
 
+        /* ==================== 알림 권한 배너 ==================== */
+        .notification-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(238, 90, 111, 0.3);
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .notification-banner-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-banner-icon { font-size: 1.8rem; }
+
+        .notification-banner-text { flex: 1; }
+
+        .notification-banner-title {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .notification-banner-desc {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .notification-banner-button {
+            padding: 10px 20px;
+            background: white;
+            color: #ff6b6b;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .notification-banner-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* D-Day 표시 스타일 */
+        .dday-display {
+            text-align: center;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            color: white;
+            margin-top: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        .dday-main {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .dday-sub {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* 권장 칼로리 표시 */
+        .calorie-recommendation {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .calorie-rec-title {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .calorie-rec-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .calorie-rec-unit {
+            font-size: 1rem;
+            color: #667eea;
+        }
+
+        .calorie-rec-desc {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
         /* ==================== 설정 탭 ==================== */
         .profile-card {
             background: white;
@@ -1938,6 +2077,19 @@
             padding: 20px;
         }
 
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
         .modal-content {
             background: white;
             border-radius: 20px;
@@ -2059,6 +2211,18 @@
         </p>
     </div>
 
+    <!-- 알림 권한 배너 -->
+    <div id="notificationBanner" class="notification-banner hidden">
+        <div class="notification-banner-content">
+            <div class="notification-banner-icon">🔔</div>
+            <div class="notification-banner-text">
+                <div class="notification-banner-title">알림 받기</div>
+                <div class="notification-banner-desc">식사 시간과 운동 알림을 받으세요</div>
+            </div>
+        </div>
+        <button class="notification-banner-button" onclick="requestNotificationPermission()">허용</button>
+    </div>
+
     <!-- 대시보드 -->
     <div id="dashboard" class="dashboard hidden">
         <div class="header">
@@ -2099,6 +2263,12 @@
                         <span id="weightLost">감량: 0kg</span>
                         <span id="weightRemaining">남은 감량: 0kg</span>
                     </div>
+                    
+                    <!-- D-Day 표시 (새로 추가) -->
+                    <div id="ddayDisplay" class="dday-display hidden">
+                        <div class="dday-main">D-0</div>
+                        <div class="dday-sub">목표일 설정 필요</div>
+                    </div>
                 </div>
 
                 <!-- 영양 대시보드 -->
@@ -2133,6 +2303,19 @@
                         <canvas id="nutritionChart"></canvas>
                     </div>
                 </div>
+                <!-- 권장 칼로리 카드 (새로 추가) -->
+                <div class="card">
+                    <h3 class="card-title">🎯 맞춤 권장 섭취량</h3>
+                    <div class="calorie-recommendation">
+                        <div class="calorie-rec-title">오늘의 목표 칼로리</div>
+                        <div>
+                            <span class="calorie-rec-value" id="recommendedCalories">0</span>
+                            <span class="calorie-rec-unit">kcal</span>
+                        </div>
+                        <div class="calorie-rec-desc">나이, 키, 체중 기반 계산</div>
+                    </div>
+                </div>
+
 
                 <div class="card">
                     <h3 class="card-title">📊 체중 그래프</h3>
@@ -2169,6 +2352,12 @@
                         <input type="number" id="waterGoal" placeholder="목표 (L)" value="2" step="0.1">
                         <button class="btn-add-weight" onclick="updateWaterTracker()">설정</button>
                     </div>
+                    <!-- ========== Phase 2: 물 섭취량 표시 ========== -->
+                    <div style="text-align: center; margin: 15px 0; font-size: 1.1rem; color: #2196f3; font-weight: bold;">
+                        <span id="waterIntake">0 ml</span> / <span id="waterGoalDisplay">2000 ml</span>
+                        <span style="display: block; font-size: 0.9rem; color: #666; margin-top: 5px;" id="waterPercentage">0%</span>
+                    </div>
+                    <!-- ============================================ -->
                     <div class="water-tracker" id="waterTracker"></div>
                 </div>
             </div>
@@ -2183,6 +2372,27 @@
                     🤖 AI 플랜 추천받기
                 </button>
                 <div id="planList"></div>
+
+                <!-- ========== Phase 2: 시간표 입력 UI ========== -->
+                <div class="card" style="margin-top: 20px;">
+                    <h3 class="card-title">📅 오늘의 일정</h3>
+                    <button class="btn-add-plan" style="width: 100%; margin-bottom: 10px;" onclick="addScheduleItem()">+ 일정 추가</button>
+                    <div id="scheduleList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+
+                <!-- ========== Phase 2: 일기 기능 ========== -->
+                <div class="card" style="margin-top: 20px;">
+                    <h3 class="card-title">📝 오늘의 일기</h3>
+                    <textarea id="dailyDiary"
+                              placeholder="오늘의 기분과 생각을 자유롭게 기록해보세요..."
+                              style="width: 100%; min-height: 120px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; resize: vertical; font-family: inherit;"
+                              oninput="saveDailyPlan()"
+                              onchange="saveDailyPlan()"></textarea>
+                    <div style="text-align: right; margin-top: 10px; font-size: 0.9rem; color: #666;">
+                        <span id="diaryCharCount">0</span> / 500자
+                    </div>
+                </div>
+                <!-- =========================================== -->
             </div>
 
             <!-- 단식 탭 -->
@@ -2202,10 +2412,31 @@
                         </div>
                     </div>
 
+                    <!-- ========== Phase 2: 프리셋 버튼 ========== -->
+                    <div style="margin-bottom: 20px;">
+                        <div style="text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 10px;">프리셋 선택</div>
+                        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                            <button class="fasting-preset-btn" onclick="setFastingPreset(12)">12:12</button>
+                            <button class="fasting-preset-btn" onclick="setFastingPreset(16)">16:8</button>
+                            <button class="fasting-preset-btn" onclick="setFastingPreset(18)">18:6</button>
+                            <button class="fasting-preset-btn" onclick="setFastingPreset(20)">20:4</button>
+                            <button class="fasting-preset-btn" onclick="setFastingPreset(24)">24h</button>
+                        </div>
+                    </div>
+                    <!-- ======================================== -->
+
                     <div class="fasting-duration-input" id="fastingDurationInput">
                         <input type="number" id="fastingHours" placeholder="시간" value="16">
                         <span style="align-self: center;">시간</span>
                     </div>
+
+                    <!-- ========== Phase 2: 현재 단계 표시 ========== -->
+                    <div id="fastingStageDisplay" style="text-align: center; margin: 15px 0; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; display: none;">
+                        <div style="font-size: 2rem;" id="fastingStageEmoji">🍽️</div>
+                        <div style="font-size: 1.1rem; font-weight: bold; margin-top: 5px;" id="fastingStageTitle">소화 단계</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 5px;" id="fastingStageDesc">음식을 소화하는 단계입니다</div>
+                    </div>
+                    <!-- =========================================== -->
 
                     <div class="fasting-controls">
                         <button class="fasting-btn" id="fastingStartBtn" onclick="startFasting()">시작</button>
@@ -2436,11 +2667,134 @@
                 <label class="form-label">목표 체중 (kg)</label>
                 <input type="number" id="editGoalWeight" class="form-input" placeholder="75" step="0.1" min="0">
             </div>
+
+            <div class="form-group">
+                <label class="form-label">나이</label>
+                <input type="number" id="editAge" class="form-input" placeholder="30" min="10" max="120">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">키 (cm)</label>
+                <input type="number" id="editHeight" class="form-input" placeholder="170.0" step="0.1">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">성별</label>
+                <select id="editGender" class="form-input">
+                    <option value="">선택하세요</option>
+                    <option value="male">남성</option>
+                    <option value="female">여성</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">목표 날짜</label>
+                <input type="date" id="editTargetDate" class="form-input">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">활동량</label>
+                <select id="editActivityLevel" class="form-input">
+                    <option value="sedentary">거의 운동 안 함</option>
+                    <option value="light">가벼운 운동 (주 1-3회)</option>
+                    <option value="moderate">보통 운동 (주 3-5회)</option>
+                    <option value="active">많은 운동 (주 6-7회)</option>
+                    <option value="veryActive">매우 많은 운동 (하루 2회)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">목표</label>
+                <select id="editGoal" class="form-input">
+                    <option value="lose">체중 감량</option>
+                    <option value="maintain">체중 유지</option>
+                    <option value="gain">체중 증가</option>
+                </select>
+            </div>
             
             <div class="merge-actions" style="margin-top: 25px;">
                 <button class="merge-btn merge-cancel" onclick="closeProfileSettings()">취소</button>
                 <button class="merge-btn merge-confirm" onclick="saveProfileSettings()">저장</button>
             </div>
+        </div>
+    </div>
+
+    <!-- 초기 설정 필수 모달 (프로필이 없을 때 강제 표시) -->
+    <div id="initialProfileSetupModal" class="modal-overlay" style="display: none; z-index: 9999;">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3 style="text-align: center; margin-bottom: 10px;">🎯 환영합니다!</h3>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Diet Mate를 시작하기 위해 기본 정보를 입력해주세요.
+            </p>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">닉네임</label>
+                <input type="text" id="initialSetupName" class="form-input"
+                       placeholder="예: 홍길동" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">현재 체중 (kg)</label>
+                <input type="number" id="initialSetupStartWeight" class="form-input"
+                       step="0.1" placeholder="예: 70.0" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label class="form-label">목표 체중 (kg)</label>
+                <input type="number" id="initialSetupGoalWeight" class="form-input"
+                       step="0.1" placeholder="예: 65.0" required>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">나이</label>
+                <input type="number" id="initialSetupAge" class="form-input"
+                       placeholder="예: 30" min="10" max="120">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">키 (cm)</label>
+                <input type="number" id="initialSetupHeight" class="form-input"
+                       step="0.1" placeholder="예: 170.0">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">성별</label>
+                <select id="initialSetupGender" class="form-input">
+                    <option value="">선택하세요</option>
+                    <option value="male">남성</option>
+                    <option value="female">여성</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">목표 날짜</label>
+                <input type="date" id="initialSetupTargetDate" class="form-input">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">활동량</label>
+                <select id="initialSetupActivityLevel" class="form-input">
+                    <option value="sedentary">거의 운동 안 함</option>
+                    <option value="light" selected>가벼운 운동 (주 1-3회)</option>
+                    <option value="moderate">보통 운동 (주 3-5회)</option>
+                    <option value="active">많은 운동 (주 6-7회)</option>
+                    <option value="veryActive">매우 많은 운동 (하루 2회)</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label class="form-label">목표</label>
+                <select id="initialSetupGoal" class="form-input">
+                    <option value="lose" selected>체중 감량</option>
+                    <option value="maintain">체중 유지</option>
+                    <option value="gain">체중 증가</option>
+                </select>
+            </div>
+            </div>
+
+            <button class="merge-btn merge-confirm" style="width: 100%;"
+                    onclick="completeInitialSetup()">
+                시작하기 🚀
+            </button>
         </div>
     </div>
 
@@ -2477,6 +2831,186 @@
         let pendingMealData = null;
         let recentMealDocId = null;
 
+
+        // ==================== 알림 권한 요청 ====================
+        
+        // 알림 권한 상태 확인 및 배너 표시
+        function checkNotificationPermission() {
+            if (!('Notification' in window)) {
+                console.log('이 브라우저는 알림을 지원하지 않습니다.');
+                return;
+            }
+
+            const permission = Notification.permission;
+            console.log('현재 알림 권한:', permission);
+
+            if (permission === 'default') {
+                // 아직 권한을 묻지 않은 상태 → 배너 표시
+                document.getElementById('notificationBanner').classList.remove('hidden');
+            } else if (permission === 'denied') {
+                console.warn('알림 권한이 거부되었습니다.');
+            } else if (permission === 'granted') {
+                console.log('✅ 알림 권한이 허용되었습니다!');
+            }
+        }
+
+        // 알림 권한 요청 함수
+        async function requestNotificationPermission() {
+            try {
+                const permission = await Notification.requestPermission();
+                
+                if (permission === 'granted') {
+                    console.log('✅ 알림 권한 허용됨!');
+                    document.getElementById('notificationBanner').classList.add('hidden');
+                    
+                    // 테스트 알림 발송
+                    new Notification('Diet Mate 알림 활성화', {
+                        body: '이제 식사 시간과 운동 알림을 받을 수 있어요! 💪',
+                        icon: 'https://via.placeholder.com/192',
+                        badge: 'https://via.placeholder.com/96'
+                    });
+                    
+                    showSuccessToast('알림이 활성화되었습니다! 🔔');
+                } else if (permission === 'denied') {
+                    alert('알림이 차단되었습니다.\n\n설정 > 사이트 설정 > 알림에서 다시 활성화할 수 있습니다.');
+                    document.getElementById('notificationBanner').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('알림 권한 요청 실패:', error);
+            }
+        }
+
+        // ==================== BMR/TDEE 계산 ====================
+        
+        /**
+         * BMR (기초대사량) 계산 - Harris-Benedict 공식
+         */
+        function calculateBMR(weight, height, age, gender) {
+            if (gender === 'male') {
+                return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+        }
+
+        /**
+         * TDEE (총 에너지 소비량) 계산
+         */
+        function calculateTDEE(bmr, activityLevel = 'light') {
+            const multipliers = {
+                sedentary: 1.2,
+                light: 1.375,
+                moderate: 1.55,
+                active: 1.725,
+                veryActive: 1.9
+            };
+            return bmr * (multipliers[activityLevel] || 1.375);
+        }
+
+        /**
+         * 목표 칼로리 계산
+         */
+        function calculateGoalCalories(tdee, goal = 'lose') {
+            if (goal === 'lose') {
+                return Math.round(tdee - 500);
+            } else if (goal === 'gain') {
+                return Math.round(tdee + 300);
+            } else {
+                return Math.round(tdee);
+            }
+        }
+
+        /**
+         * 권장 칼로리 업데이트
+         */
+        function updateRecommendedCalories(profile, currentWeight) {
+            if (!profile.age || !profile.height || !currentWeight || !profile.gender) {
+                console.warn('프로필 정보 부족:', { age: profile.age, height: profile.height, weight: currentWeight, gender: profile.gender });
+                document.getElementById('recommendedCalories').textContent = '0';
+                return 0;
+            }
+
+            const bmr = calculateBMR(currentWeight, profile.height, profile.age, profile.gender);
+            const tdee = calculateTDEE(bmr, profile.activityLevel || 'light');
+            const goalCalories = calculateGoalCalories(tdee, profile.goal || 'lose');
+
+            document.getElementById('recommendedCalories').textContent = goalCalories;
+            
+            console.log(`
+🔢 권장 칼로리 계산:
+- 체중: ${currentWeight}kg, 키: ${profile.height}cm, 나이: ${profile.age}세, 성별: ${profile.gender}
+- BMR: ${Math.round(bmr)} kcal
+- TDEE: ${Math.round(tdee)} kcal
+- 목표 칼로리: ${goalCalories} kcal
+            `);
+
+            return goalCalories;
+        }
+
+        // ==================== D-Day 계산 ====================
+        
+        /**
+         * D-Day 표시 업데이트
+         */
+        function updateDDayDisplay(targetDate) {
+            const ddayDisplay = document.getElementById('ddayDisplay');
+            
+            if (!targetDate) {
+                ddayDisplay.classList.add('hidden');
+                return;
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const target = new Date(targetDate);
+            target.setHours(0, 0, 0, 0);
+
+            const diffTime = target - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffWeeks = Math.floor(diffDays / 7);
+
+            const ddayMain = ddayDisplay.querySelector('.dday-main');
+            const ddaySub = ddayDisplay.querySelector('.dday-sub');
+
+            const year = target.getFullYear();
+            const month = String(target.getMonth() + 1).padStart(2, '0');
+            const day = String(target.getDate()).padStart(2, '0');
+            const dateStr = `${year.toString().slice(2)}-${month}-${day}`;
+
+            if (diffDays > 0) {
+                ddayMain.textContent = `D-${diffDays}`;
+                ddaySub.textContent = `목표일: ${dateStr} (약 ${diffWeeks}주)`;
+            } else if (diffDays === 0) {
+                ddayMain.textContent = `D-DAY`;
+                ddaySub.textContent = `🎉 목표일입니다!`;
+            } else {
+                ddayMain.textContent = `D+${Math.abs(diffDays)}`;
+                ddaySub.textContent = `목표일 ${Math.abs(diffDays)}일 경과`;
+            }
+
+            ddayDisplay.classList.remove('hidden');
+        }
+
+
+        // ========== Phase 1: 영양 섭취 관리 ==========
+        let todayIntake = {
+            calories: 0,
+            carbs: 0,
+            protein: 0,
+            fat: 0,
+            meals: []
+        };
+
+        let dailyNutrition = {
+            totalCalories: 2400,
+            targetCarbs: 300,
+            targetProtein: 120,
+            targetFat: 60
+        };
+
+        let midnightResetInterval = null;
+
         // Phase 4: 배치 작업을 위한 변수
         let isSelectMode = false;
         let selectedItems = new Set();
@@ -2489,11 +3023,9 @@
         // Phase 4: 수동 병합을 위한 변수
         let mergingSourceId = null; // 현재 선택한 식사 (병합될 항목)
 
-        // Gemini API 키 배열 (사용자가 실제 키로 교체해야 함)
+        // Gemini API 키 배열
         const API_KEYS = [
-            'AIzaSyA9pV6incQB-IoNyfStdnmtF5-Lnc7nV2c',
-            'YOUR_GEMINI_API_KEY_2',
-            'YOUR_GEMINI_API_KEY_3'
+            'AIzaSyB9qZ82FYcbW73FPXdUngIp7HD_kYU6Odg'
         ];
         let currentAPIKeyIndex = 0;
 
@@ -2898,6 +3430,317 @@
             await loadNutritionDashboard();
         }
 
+        // ========== Phase 1: 실시간 영양 섭취 관리 함수 ==========
+
+        // 식사 추가 함수
+        function addMeal(category, foodName, nutrition) {
+            if (!nutrition || typeof nutrition !== 'object') {
+                console.warn('유효하지 않은 영양 정보:', nutrition);
+                return;
+            }
+
+            const meal = {
+                category: category || '식사',
+                foodName: foodName || '음식',
+                nutrition: {
+                    calories: parseFloat(nutrition.calories) || 0,
+                    carbs: parseFloat(nutrition.carbs) || 0,
+                    protein: parseFloat(nutrition.protein) || 0,
+                    fat: parseFloat(nutrition.fat) || 0
+                },
+                timestamp: new Date().toISOString()
+            };
+
+            todayIntake.meals.push(meal);
+            todayIntake.calories += meal.nutrition.calories;
+            todayIntake.carbs += meal.nutrition.carbs;
+            todayIntake.protein += meal.nutrition.protein;
+            todayIntake.fat += meal.nutrition.fat;
+
+            console.log(`✅ 식사 추가됨: ${foodName} (${meal.nutrition.calories}kcal)`);
+
+            updateNutritionUI();
+            checkCalorieOverage();
+
+            // Firestore에 저장
+            saveTodayNutritionToFirestore();
+
+            // ========== Phase 1: 캘린더 통합 ==========
+            saveToDailyLog(new Date(), 'nutrition', {
+                foodName: foodName,
+                calories: meal.nutrition.calories,
+                carbs: meal.nutrition.carbs,
+                protein: meal.nutrition.protein,
+                fat: meal.nutrition.fat,
+                timestamp: meal.timestamp
+            });
+            // ========================================
+        }
+
+        // UI 업데이트 함수
+        function updateNutritionUI() {
+            document.getElementById('todayMealCount').textContent = todayIntake.meals.length;
+            document.getElementById('todayCalories').textContent = Math.round(todayIntake.calories);
+            document.getElementById('todayCarbs').textContent = Math.round(todayIntake.carbs);
+            document.getElementById('todayProtein').textContent = Math.round(todayIntake.protein);
+            document.getElementById('todayFat').textContent = Math.round(todayIntake.fat);
+
+            // 차트 업데이트
+            if (todayIntake.carbs > 0 || todayIntake.protein > 0 || todayIntake.fat > 0) {
+                renderNutritionChart(todayIntake.carbs, todayIntake.protein, todayIntake.fat);
+            }
+
+            console.log('📊 영양 UI 업데이트 완료:', todayIntake);
+        }
+
+        // 칼로리 초과 체크
+        async function checkCalorieOverage() {
+            const remaining = dailyNutrition.totalCalories - todayIntake.calories;
+
+            if (remaining < 0) {
+                const overage = Math.abs(remaining);
+                const userName = currentProfile?.name || '회원';
+
+                const warningMessage = `${userName} 회원님, 오늘 목표 칼로리를 ${Math.round(overage)}kcal 초과하셨습니다. 힘든 거 알지만 저녁 식사를 가볍게 하시거나 운동으로 소모해보세요! 💪`;
+
+                showAIToast(warningMessage, 8000);
+                console.warn('⚠️ 칼로리 초과:', overage, 'kcal');
+            } else if (remaining < 300 && todayIntake.meals.length >= 2) {
+                const userName = currentProfile?.name || '회원';
+                showAIToast(`${userName} 회원님, 오늘 남은 칼로리가 ${Math.round(remaining)}kcal입니다. 잘 관리하고 계시네요! 👍`, 5000);
+            }
+        }
+
+        // 자정 초기화 함수
+        async function resetDailyNutrition() {
+            console.log('🌙 자정 초기화 시작...');
+
+            // 오늘 데이터를 Firestore에 최종 저장
+            await saveTodayNutritionToFirestore();
+
+            // todayIntake 초기화
+            todayIntake = {
+                calories: 0,
+                carbs: 0,
+                protein: 0,
+                fat: 0,
+                meals: []
+            };
+
+            updateNutritionUI();
+            console.log('✅ 영양 데이터 초기화 완료');
+        }
+
+        // 자정 초기화 타이머 설정
+        function setupMidnightReset() {
+            if (midnightResetInterval) {
+                clearInterval(midnightResetInterval);
+            }
+
+            // 1분마다 체크
+            midnightResetInterval = setInterval(() => {
+                const now = new Date();
+                if (now.getHours() === 0 && now.getMinutes() === 0) {
+                    resetDailyNutrition();
+                }
+            }, 60000); // 1분마다 체크
+
+            console.log('⏰ 자정 초기화 타이머 설정 완료');
+        }
+
+        // Firestore에 오늘 영양 데이터 저장
+        async function saveTodayNutritionToFirestore() {
+            if (!currentUser) return;
+
+            try {
+                const today = new Date();
+                const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+                await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyNutrition').doc(dateStr)
+                    .set({
+                        date: dateStr,
+                        calories: todayIntake.calories,
+                        carbs: todayIntake.carbs,
+                        protein: todayIntake.protein,
+                        fat: todayIntake.fat,
+                        mealCount: todayIntake.meals.length,
+                        meals: todayIntake.meals,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+
+                console.log('💾 영양 데이터 Firestore 저장 완료:', dateStr);
+            } catch (error) {
+                console.error('❌ 영양 데이터 저장 실패:', error);
+            }
+        }
+
+        // 오늘 영양 데이터 로드 (앱 시작 시)
+        async function loadTodayNutrition() {
+            if (!currentUser) return;
+
+            try {
+                const today = new Date();
+                const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+                const doc = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyNutrition').doc(dateStr)
+                    .get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    todayIntake = {
+                        calories: data.calories || 0,
+                        carbs: data.carbs || 0,
+                        protein: data.protein || 0,
+                        fat: data.fat || 0,
+                        meals: data.meals || []
+                    };
+                    updateNutritionUI();
+                    console.log('📥 오늘 영양 데이터 로드 완료:', todayIntake);
+                } else {
+                    console.log('📝 오늘은 아직 식사 기록이 없습니다.');
+                }
+            } catch (error) {
+                console.error('❌ 영양 데이터 로드 실패:', error);
+            }
+        }
+
+        // ========== Phase 1: 캘린더 통합 함수 ==========
+
+        // 일일 로그에 데이터 저장 (캘린더 연동)
+        async function saveToDailyLog(date, type, data) {
+            if (!currentUser) {
+                console.warn('⚠️ 사용자가 로그인되지 않음');
+                return;
+            }
+
+            try {
+                // 날짜를 YYYY-MM-DD 형식으로 변환
+                const dateObj = date instanceof Date ? date : new Date(date);
+                const dateStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+
+                // 기존 로그 가져오기
+                const logRef = db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyLogs').doc(dateStr);
+
+                const logDoc = await logRef.get();
+                let logData = logDoc.exists ? logDoc.data() : { date: dateStr };
+
+                // 타입별 데이터 저장
+                switch(type) {
+                    case 'weight':
+                        logData.weight = data.weight;
+                        logData.weightTimestamp = data.timestamp || firebase.firestore.FieldValue.serverTimestamp();
+                        break;
+
+                    case 'nutrition':
+                        if (!logData.nutrition) {
+                            logData.nutrition = {
+                                calories: 0,
+                                carbs: 0,
+                                protein: 0,
+                                fat: 0,
+                                meals: []
+                            };
+                        }
+                        // 영양 데이터 누적
+                        logData.nutrition.calories = (logData.nutrition.calories || 0) + (data.calories || 0);
+                        logData.nutrition.carbs = (logData.nutrition.carbs || 0) + (data.carbs || 0);
+                        logData.nutrition.protein = (logData.nutrition.protein || 0) + (data.protein || 0);
+                        logData.nutrition.fat = (logData.nutrition.fat || 0) + (data.fat || 0);
+                        if (data.foodName) {
+                            logData.nutrition.meals.push({
+                                foodName: data.foodName,
+                                calories: data.calories,
+                                timestamp: data.timestamp || new Date().toISOString()
+                            });
+                        }
+                        break;
+
+                    case 'exercise':
+                        if (!logData.exercises) logData.exercises = [];
+                        logData.exercises.push({
+                            name: data.name,
+                            duration: data.duration,
+                            timestamp: data.timestamp || new Date().toISOString()
+                        });
+                        break;
+
+                    case 'fasting':
+                        logData.fasting = {
+                            duration: data.duration, // 분 단위
+                            startTime: data.startTime,
+                            endTime: data.endTime,
+                            stage: data.stage || '단식 완료'
+                        };
+                        break;
+
+                    case 'water':
+                        logData.water = data.amount; // ml 단위
+                        break;
+
+                    case 'plan':
+                        logData.plan = {
+                            schedules: data.schedules || [],
+                            diary: data.diary || ''
+                        };
+                        break;
+
+                    case 'photo_body':
+                    case 'photo_food':
+                    case 'photo_exercise':
+                        if (!logData.photos) logData.photos = [];
+                        logData.photos.push({
+                            category: type.replace('photo_', ''),
+                            url: data.url,
+                            timestamp: data.timestamp || new Date().toISOString()
+                        });
+                        break;
+
+                    default:
+                        console.warn('⚠️ 알 수 없는 타입:', type);
+                        return;
+                }
+
+                // Firestore에 저장
+                logData.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+                await logRef.set(logData, { merge: true });
+
+                console.log(`💾 일일 로그 저장 완료 [${dateStr}] ${type}:`, data);
+
+            } catch (error) {
+                console.error('❌ 일일 로그 저장 실패:', error);
+            }
+        }
+
+        // 특정 날짜의 통합 데이터 가져오기 (캘린더 조회용)
+        async function getDailyData(date) {
+            if (!currentUser) return null;
+
+            try {
+                const dateObj = date instanceof Date ? date : new Date(date);
+                const dateStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+
+                const logDoc = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyLogs').doc(dateStr)
+                    .get();
+
+                if (logDoc.exists) {
+                    return logDoc.data();
+                } else {
+                    return null;
+                }
+            } catch (error) {
+                console.error('❌ 일일 데이터 조회 실패:', error);
+                return null;
+            }
+        }
+
         // ==================== AI 토스트 팝업 함수 ====================
 
         // AI 토스트 표시
@@ -3182,6 +4025,14 @@ ${userMessage}
 
                 // UI 새로고침
                 await loadAlbumTab();
+
+                // ========== Phase 1: 실시간 영양 추적 (병합된 추가 칼로리만) ==========
+                // 기존 식사는 이미 카운트되어 있으므로, 새로 추가된 부분만 더함
+                if (pendingMealData.nutrition) {
+                    addMeal('식단 추가', pendingMealData.nutrition.foodName, pendingMealData.nutrition);
+                }
+                // ================================================================
+
                 await refreshDashboardNutrition();
 
                 showAIToast(`${currentProfile.name} 회원님, 식사가 합쳐졌습니다! 😊`, 3000);
@@ -3213,6 +4064,13 @@ ${userMessage}
 
                 // UI 새로고침
                 await loadAlbumTab();
+
+                // ========== Phase 1: 실시간 영양 추적 ==========
+                if (pendingMealData.nutrition) {
+                    addMeal('식단', pendingMealData.nutrition.foodName, pendingMealData.nutrition);
+                }
+                // ===============================================
+
                 await refreshDashboardNutrition();
 
                 showSuccessToast('새 식사로 저장되었습니다!');
@@ -3279,6 +4137,10 @@ ${userMessage}
 
                 // 식단인 경우 대시보드도 새로고침 및 AI 토스트 표시
                 if (categoryValue === 'food' && nutritionData) {
+                    // ========== Phase 1: 실시간 영양 추적 ==========
+                    addMeal('식단', nutritionData.foodName, nutritionData);
+                    // ===============================================
+
                     await refreshDashboardNutrition();
 
                     // 플랜과 비교 (선택적)
@@ -3335,6 +4197,12 @@ ${userMessage}
                         name: displayName,
                         email: email,
                         goalWeight: goalWeight,
+                        age: age,
+                        height: height,
+                        gender: gender,
+                        targetDate: targetDate,
+                        activityLevel: activityLevel,
+                        goal: goal,
                         startWeight: startWeight,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
@@ -3409,6 +4277,13 @@ ${userMessage}
                         if (curr.name) profileData.name = curr.name;
                         if (curr.goalWeight) profileData.goalWeight = curr.goalWeight;
                         if (curr.startWeight) profileData.startWeight = curr.startWeight;
+                        // 새 필드 로드 (나이, 키, 성별, 목표일, 활동량)
+                        if (curr.age) profileData.age = curr.age;
+                        if (curr.height) profileData.height = curr.height;
+                        if (curr.gender) profileData.gender = curr.gender;
+                        if (curr.targetDate) profileData.targetDate = curr.targetDate;
+                        if (curr.activityLevel) profileData.activityLevel = curr.activityLevel;
+                        if (curr.goal) profileData.goal = curr.goal;
                     }
 
                     // ========== 🔥 자동 복구 및 마이그레이션 ==========
@@ -3487,6 +4362,23 @@ ${userMessage}
 
                     currentProfile = profileData;
 
+                    // ========== 🔥 프로필 검증 추가 ==========
+                    if (!currentProfile.startWeight || !currentProfile.goalWeight ||
+                        currentProfile.startWeight === 0 || currentProfile.goalWeight === 0 ||
+                        !currentProfile.name || currentProfile.name === '회원') {
+
+                        console.warn('⚠️ 프로필이 불완전합니다. 초기 설정 모달 표시:', currentProfile);
+
+                        // 대시보드 숨기고 초기 설정 모달만 표시
+                        document.getElementById('landing').classList.add('hidden');
+                        document.getElementById('auth').classList.add('hidden');
+                        document.getElementById('dashboard').classList.add('hidden');
+
+                        showInitialProfileSetup();
+                        return; // 앱 초기화 중단
+                    }
+                    // ========================================
+
                     // 대시보드 초기화
                     document.getElementById('landing').classList.add('hidden');
                     document.getElementById('auth').classList.add('hidden');
@@ -3515,6 +4407,118 @@ ${userMessage}
             }
         }
 
+        // ==================== 초기 프로필 설정 ====================
+        function showInitialProfileSetup() {
+            const modal = document.getElementById('initialProfileSetupModal');
+            if (!modal) {
+                console.error('❌ 초기 설정 모달을 찾을 수 없습니다.');
+                return;
+            }
+
+            modal.style.display = 'flex';
+
+            // 기존 데이터가 있으면 미리 채우기 (복구 시도)
+            if (currentProfile) {
+                if (currentProfile.name && currentProfile.name !== '회원') {
+                    document.getElementById('initialSetupName').value = currentProfile.name;
+                }
+                if (currentProfile.startWeight && currentProfile.startWeight > 0) {
+                    document.getElementById('initialSetupStartWeight').value = currentProfile.startWeight;
+                }
+                if (currentProfile.goalWeight && currentProfile.goalWeight > 0) {
+                    document.getElementById('initialSetupGoalWeight').value = currentProfile.goalWeight;
+                }
+            }
+        }
+
+        async function completeInitialSetup() {
+            const name = document.getElementById('initialSetupName').value.trim();
+            const startWeight = parseFloat(document.getElementById('initialSetupStartWeight').value);
+            const goalWeight = parseFloat(document.getElementById('initialSetupGoalWeight').value);
+            const age = parseInt(document.getElementById('initialSetupAge').value) || null;
+            const height = parseFloat(document.getElementById('initialSetupHeight').value) || null;
+            const gender = document.getElementById('initialSetupGender').value || null;
+            const targetDateStr = document.getElementById('initialSetupTargetDate').value;
+            const targetDate = targetDateStr ? firebase.firestore.Timestamp.fromDate(new Date(targetDateStr)) : null;
+            const activityLevel = document.getElementById('initialSetupActivityLevel').value || 'light';
+            const goal = document.getElementById('initialSetupGoal').value || 'lose';
+
+            // 유효성 검사
+            if (!name || name.length < 2) {
+                alert('닉네임을 2자 이상 입력해주세요.');
+                return;
+            }
+            if (!startWeight || startWeight <= 0 || startWeight > 300) {
+                alert('현재 체중을 올바르게 입력해주세요. (1~300kg)');
+                return;
+            }
+            if (!goalWeight || goalWeight <= 0 || goalWeight > 300) {
+                alert('목표 체중을 올바르게 입력해주세요. (1~300kg)');
+                return;
+            }
+            if (goalWeight >= startWeight) {
+                alert('목표 체중은 현재 체중보다 작아야 합니다.');
+                return;
+            }
+
+            try {
+                // Firestore에 저장
+                await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid).set({
+                        name: name,
+                        startWeight: startWeight,
+                        goalWeight: goalWeight,
+                        age: age,
+                        height: height,
+                        gender: gender,
+                        targetDate: targetDate,
+                        activityLevel: activityLevel,
+                        goal: goal,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+
+                console.log('✅ 초기 프로필 설정 완료:', { name, startWeight, goalWeight });
+
+                // currentProfile 업데이트
+                currentProfile = {
+                    name: name,
+                    startWeight: startWeight,
+                    goalWeight: goalWeight,
+                    age: age,
+                    height: height,
+                    gender: gender,
+                    targetDate: targetDate,
+                    activityLevel: activityLevel,
+                    goal: goal,
+                        age: age,
+                        height: height,
+                        gender: gender,
+                        targetDate: targetDate,
+                        activityLevel: activityLevel,
+                        goal: goal,
+                    createdAt: firebase.firestore.Timestamp.now()
+                };
+
+                // 모달 닫기
+                document.getElementById('initialProfileSetupModal').style.display = 'none';
+
+                // 앱 초기화 및 대시보드 표시
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('headerSubtitle').textContent = `${currentProfile.name}님, 환영합니다!`;
+                document.getElementById('profileName').textContent = currentProfile.name;
+                document.getElementById('profileEmail').textContent = currentUser.email;
+
+                // 홈 탭 로드
+                await loadHomeTab();
+                switchTab('home');
+
+                alert(`🎉 환영합니다, ${name}님! Diet Mate와 함께 목표를 달성해보세요!`);
+            } catch (error) {
+                console.error('❌ 프로필 저장 실패:', error);
+                alert('프로필 저장에 실패했습니다. 다시 시도해주세요.');
+            }
+        }
+
         // ==================== 대시보드 초기화 ====================
         async function initializeDashboard() {
             document.getElementById('headerSubtitle').textContent = `${currentProfile.name}님, 환영합니다!`;
@@ -3532,9 +4536,15 @@ ${userMessage}
             initializeFasting();
             initializePWA();
             startNotificationCheck();
+            // 알림 권한 확인 (새로 추가)
+            checkNotificationPermission();
 
             // AI 채팅 기록 로드
             loadAIChatHistory();
+
+            // ========== Phase 1: 자정 초기화 타이머 설정 ==========
+            setupMidnightReset();
+            // ====================================================
         }
 
         // ==================== 탭 전환 ====================
@@ -3607,8 +4617,19 @@ ${userMessage}
             // 영양 대시보드 로드
             await loadNutritionDashboard();
 
+            // ========== Phase 1: 오늘의 영양 데이터 로드 ==========
+            await loadTodayNutrition();
+            // ====================================================
+
             // 물 마시기 트래커 초기화
             initializeWaterTracker();
+
+            // ========== 권장 칼로리 계산 및 D-Day 표시 (새로 추가) ==========
+            updateRecommendedCalories(currentProfile, currentWeight);
+            if (currentProfile.targetDate) {
+                updateDDayDisplay(currentProfile.targetDate.toDate ? currentProfile.targetDate.toDate() : currentProfile.targetDate);
+            }
+            // =================================================================
         }
 
         function drawWeightChart(weights) {
@@ -3663,14 +4684,40 @@ ${userMessage}
                 return;
             }
 
-            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('logs').add({
-                    weight: weight,
-                    date: firebase.firestore.Timestamp.now()
-                });
+            try {
+                const now = new Date();
 
-            document.getElementById('weightInput').value = '';
-            await loadHomeTab();
+                // Firestore에 저장
+                await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
+                    .collection('logs').add({
+                        weight: weight,
+                        date: firebase.firestore.Timestamp.now()
+                    });
+
+                // ========== Phase 1: 캘린더 통합 ==========
+                await saveToDailyLog(now, 'weight', {
+                    weight: weight,
+                    timestamp: now.toISOString()
+                });
+                // ========================================
+
+                console.log('✅ 체중 기록 추가:', weight, 'kg');
+
+                // 입력 필드 초기화
+                document.getElementById('weightInput').value = '';
+
+                // ========== Phase 1: 즉시 UI 업데이트 ==========
+                // 전체 홈탭을 다시 로드하여 그래프와 진행률 모두 업데이트
+                await loadHomeTab();
+
+                // 성공 메시지
+                showAIToast(`${currentProfile.name} 회원님, 체중이 기록되었습니다! (${weight}kg)`, 3000);
+                // ==============================================
+
+            } catch (error) {
+                console.error('❌ 체중 추가 실패:', error);
+                alert('체중 추가에 실패했습니다. 다시 시도해주세요.');
+            }
         }
 
         // AI 채팅
@@ -3756,6 +4803,16 @@ ${userMessage}
                 tracker.appendChild(cup);
             }
 
+            // ========== Phase 2: 물 섭취량 표시 업데이트 ==========
+            const filledCount = settings.filled ? settings.filled.length : 0;
+            const intakeMl = filledCount * cupSize;
+            const percentage = Math.min(100, Math.round((intakeMl / goalMl) * 100));
+
+            document.getElementById('waterIntake').textContent = `${intakeMl} ml`;
+            document.getElementById('waterGoalDisplay').textContent = `${goalMl} ml`;
+            document.getElementById('waterPercentage').textContent = `${percentage}%`;
+            // ====================================================
+
             localStorage.setItem(LS_KEYS.WATER_SETTINGS, JSON.stringify(settings));
         }
 
@@ -3772,6 +4829,17 @@ ${userMessage}
 
             localStorage.setItem(LS_KEYS.WATER_SETTINGS, JSON.stringify(settings));
             updateWaterTracker();
+
+            // ========== Phase 2: 캘린더 동기화 ==========
+            const cupSize = settings.cupSize || 250;
+            const totalIntake = settings.filled.length * cupSize;
+
+            if (totalIntake > 0) {
+                saveToDailyLog(new Date(), 'water', {
+                    amount: totalIntake
+                });
+            }
+            // ==========================================
         }
 
         // ==================== 플랜 탭 ====================
@@ -3809,6 +4877,10 @@ ${userMessage}
                 `;
                 planList.appendChild(planDiv);
             });
+
+            // ========== Phase 2: 일정 & 일기 로드 ==========
+            await loadDailyPlan();
+            // ============================================
         }
 
         function openAddPlanModal() {
@@ -3851,6 +4923,148 @@ ${userMessage}
             await loadPlanTab();
         }
 
+        // ========== Phase 2: 시간표 & 일기 함수 ==========
+
+        let dailySchedules = [];  // 오늘의 일정 배열
+
+        // 일정 항목 추가
+        function addScheduleItem() {
+            const time = prompt('시간을 입력하세요 (예: 07:00)', '07:00');
+            if (!time) return;
+
+            const activity = prompt('일정 내용을 입력하세요', '');
+            if (!activity) return;
+
+            const scheduleId = Date.now();
+            dailySchedules.push({
+                id: scheduleId,
+                time: time,
+                activity: activity
+            });
+
+            renderScheduleList();
+            saveDailyPlan();
+        }
+
+        // 일정 항목 삭제
+        function removeScheduleItem(scheduleId) {
+            dailySchedules = dailySchedules.filter(s => s.id !== scheduleId);
+            renderScheduleList();
+            saveDailyPlan();
+        }
+
+        // 일정 목록 렌더링
+        function renderScheduleList() {
+            const scheduleList = document.getElementById('scheduleList');
+            if (!scheduleList) return;
+
+            if (dailySchedules.length === 0) {
+                scheduleList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">일정이 없습니다.</p>';
+                return;
+            }
+
+            scheduleList.innerHTML = dailySchedules.map(schedule => `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                    <input type="time" value="${schedule.time}"
+                           onchange="updateScheduleTime(${schedule.id}, this.value)"
+                           style="padding: 5px; border: 1px solid #ddd; border-radius: 5px;">
+                    <input type="text" value="${schedule.activity}"
+                           onchange="updateScheduleActivity(${schedule.id}, this.value)"
+                           style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 5px;">
+                    <button onclick="removeScheduleItem(${schedule.id})"
+                            style="padding: 5px 10px; background: #ff5252; color: white; border: none; border-radius: 5px; cursor: pointer;">×</button>
+                </div>
+            `).join('');
+        }
+
+        // 일정 시간 업데이트
+        function updateScheduleTime(scheduleId, newTime) {
+            const schedule = dailySchedules.find(s => s.id === scheduleId);
+            if (schedule) {
+                schedule.time = newTime;
+                saveDailyPlan();
+            }
+        }
+
+        // 일정 내용 업데이트
+        function updateScheduleActivity(scheduleId, newActivity) {
+            const schedule = dailySchedules.find(s => s.id === scheduleId);
+            if (schedule) {
+                schedule.activity = newActivity;
+                saveDailyPlan();
+            }
+        }
+
+        // 일정 & 일기 저장
+        async function saveDailyPlan() {
+            const diary = document.getElementById('dailyDiary')?.value || '';
+
+            // 글자 수 업데이트
+            const charCount = diary.length;
+            const charCountEl = document.getElementById('diaryCharCount');
+            if (charCountEl) {
+                charCountEl.textContent = Math.min(charCount, 500);
+            }
+
+            if (!currentUser) return;
+
+            // Firestore에 저장 (선택사항)
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyPlans').doc(today)
+                    .set({
+                        schedules: dailySchedules,
+                        diary: diary.substring(0, 500),  // 500자 제한
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+
+                // 캘린더 동기화
+                await saveToDailyLog(new Date(), 'plan', {
+                    schedules: dailySchedules,
+                    diary: diary.substring(0, 500)
+                });
+
+                console.log('✅ 일정 & 일기 저장 완료');
+            } catch (error) {
+                console.error('❌ 일정 & 일기 저장 실패:', error);
+            }
+        }
+
+        // 일정 & 일기 불러오기
+        async function loadDailyPlan() {
+            if (!currentUser) return;
+
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const doc = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyPlans').doc(today)
+                    .get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    dailySchedules = data.schedules || [];
+
+                    const diaryEl = document.getElementById('dailyDiary');
+                    if (diaryEl) {
+                        diaryEl.value = data.diary || '';
+                        // 글자 수 업데이트
+                        const charCount = diaryEl.value.length;
+                        document.getElementById('diaryCharCount').textContent = charCount;
+                    }
+
+                    renderScheduleList();
+                    console.log('📥 일정 & 일기 로드 완료');
+                }
+            } catch (error) {
+                console.error('❌ 일정 & 일기 로드 실패:', error);
+            }
+        }
+
+        // ============================================
+
         async function suggestPlanWithAI() {
             // AI가 어제 데이터를 분석하여 플랜 추천
             const prompt = `사용자의 다이어트 앱을 위한 오늘의 플랜을 3-5가지 추천해주세요.
@@ -3888,6 +5102,48 @@ ${userMessage}
             // 누적 시간 로드
             await loadTodayFastingStats();
         }
+
+        // ========== Phase 2: 단식 프리셋 & 단계 함수 ==========
+
+        // 단식 단계 정의
+        const fastingStages = [
+            { startHour: 0, endHour: 4, title: "소화 단계", emoji: "🍽️", desc: "음식을 소화하고 있습니다" },
+            { startHour: 4, endHour: 8, title: "당 소모 단계", emoji: "⚡", desc: "체내 당이 소모되기 시작합니다" },
+            { startHour: 8, endHour: 12, title: "지방 연소 시작", emoji: "🔥", desc: "지방이 에너지로 전환되기 시작합니다" },
+            { startHour: 12, endHour: 16, title: "자가포식 활성화", emoji: "♻️", desc: "손상된 세포가 재생되고 있습니다" },
+            { startHour: 16, endHour: 72, title: "심화 자가포식", emoji: "✨", desc: "깊은 세포 재생이 일어나고 있습니다" }
+        ];
+
+        // 프리셋 설정 함수
+        function setFastingPreset(hours) {
+            document.getElementById('fastingHours').value = hours;
+            console.log(`✅ 단식 프리셋 설정: ${hours}시간`);
+        }
+
+        // 현재 단식 단계 가져오기
+        function getCurrentFastingStage(elapsedHours) {
+            for (const stage of fastingStages) {
+                if (elapsedHours >= stage.startHour && elapsedHours < stage.endHour) {
+                    return stage;
+                }
+            }
+            return fastingStages[fastingStages.length - 1];  // 마지막 단계 반환
+        }
+
+        // 단식 단계 표시 업데이트
+        function updateFastingStageDisplay(elapsedHours) {
+            const stage = getCurrentFastingStage(elapsedHours);
+            const stageDisplay = document.getElementById('fastingStageDisplay');
+
+            if (stageDisplay) {
+                stageDisplay.style.display = 'block';
+                document.getElementById('fastingStageEmoji').textContent = stage.emoji;
+                document.getElementById('fastingStageTitle').textContent = stage.title;
+                document.getElementById('fastingStageDesc').textContent = stage.desc;
+            }
+        }
+
+        // ===============================================
 
         function startFasting() {
             const hours = parseInt(document.getElementById('fastingHours').value) || 16;
@@ -3982,6 +5238,10 @@ ${userMessage}
             const elapsedHours = Math.floor(elapsed / (1000 * 60 * 60));
             const elapsedMinutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
             const elapsedSeconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+
+            // ========== Phase 2: 단계 표시 업데이트 ==========
+            updateFastingStageDisplay(elapsedHours);
+            // ===============================================
 
             const remainingHours = Math.floor(remaining / (1000 * 60 * 60));
             const remainingMinutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
@@ -4136,6 +5396,9 @@ ${userMessage}
                             <div class="text-card-emoji">${getCategoryEmoji(photo.category)}</div>
                             <div class="text-card-content">${photo.text}</div>
                             ${nutritionHtml}
+                            <div class="photo-date-label" style="position: relative; bottom: auto; left: auto; right: auto; margin-top: 10px; font-size: 0.8rem;">
+                                ${photo.uploadedAt ? new Date(photo.uploadedAt.toDate()).toLocaleDateString() : ''}
+                            </div>
                         `;
                     }
                     // 일반 이미지 카드
@@ -4418,6 +5681,10 @@ ${userMessage}
 
                     // 식단인 경우 대시보드도 새로고침 및 AI 토스트 표시
                     if (categoryValue === 'food' && nutritionData) {
+                        // ========== Phase 1: 실시간 영양 추적 ==========
+                        addMeal('식단', nutritionData.foodName, nutritionData);
+                        // ===============================================
+
                         await refreshDashboardNutrition();
 
                         // 플랜과 비교 (선택적)
@@ -5282,6 +6549,23 @@ ${userMessage}
             document.getElementById('editName').value = currentProfile.name || '';
             document.getElementById('editStartWeight').value = currentProfile.startWeight || '';
             document.getElementById('editGoalWeight').value = currentProfile.goalWeight || '';
+            document.getElementById('editAge').value = currentProfile.age || '';
+            document.getElementById('editHeight').value = currentProfile.height || '';
+            document.getElementById('editGender').value = currentProfile.gender || '';
+            
+            // 목표 날짜 포맷팅 (YYYY-MM-DD)
+            if (currentProfile.targetDate) {
+                const targetDate = currentProfile.targetDate.toDate ? currentProfile.targetDate.toDate() : new Date(currentProfile.targetDate);
+                const year = targetDate.getFullYear();
+                const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+                const day = String(targetDate.getDate()).padStart(2, '0');
+                document.getElementById('editTargetDate').value = `${year}-${month}-${day}`;
+            } else {
+                document.getElementById('editTargetDate').value = '';
+            }
+            
+            document.getElementById('editActivityLevel').value = currentProfile.activityLevel || 'light';
+            document.getElementById('editGoal').value = currentProfile.goal || 'lose';
             
             modal.classList.remove('hidden');
         }
@@ -5294,6 +6578,13 @@ ${userMessage}
             const name = document.getElementById('editName').value.trim();
             const startWeight = parseFloat(document.getElementById('editStartWeight').value);
             const goalWeight = parseFloat(document.getElementById('editGoalWeight').value);
+            const age = parseInt(document.getElementById('editAge').value) || currentProfile.age || null;
+            const height = parseFloat(document.getElementById('editHeight').value) || currentProfile.height || null;
+            const gender = document.getElementById('editGender').value || currentProfile.gender || null;
+            const targetDateStr = document.getElementById('editTargetDate').value;
+            const targetDate = targetDateStr ? firebase.firestore.Timestamp.fromDate(new Date(targetDateStr)) : currentProfile.targetDate;
+            const activityLevel = document.getElementById('editActivityLevel').value || currentProfile.activityLevel || 'light';
+            const goal = document.getElementById('editGoal').value || currentProfile.goal || 'lose';
             
             // 유효성 검사
             if (!name) {
@@ -5326,6 +6617,12 @@ ${userMessage}
                         name: name,
                         startWeight: startWeight,
                         goalWeight: goalWeight,
+                        age: age,
+                        height: height,
+                        gender: gender,
+                        targetDate: targetDate,
+                        activityLevel: activityLevel,
+                        goal: goal,
                         email: currentUser.email,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
