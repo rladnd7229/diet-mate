@@ -25,24 +25,34 @@
     <style>
         /* ==================== CSS 변수 (디자인 시스템) ==================== */
         :root {
-            /* 주요 색상 */
-            --primary: #667eea;
-            --primary-dark: #5568d3;
-            --primary-light: #8b9df6;
-            --secondary: #764ba2;
-            --accent: #f093fb;
+            /* === 주요 색상 (민트/청록 테마) === */
+            --primary: #00B89A;              /* 메인 민트 */
+            --primary-dark: #009688;         /* 진한 청록 */
+            --primary-light: #00D4AA;        /* 밝은 민트 */
+            --secondary: #26A69A;            /* 세컨더리 청록 */
+            --accent: #00E5CC;               /* 액센트 민트 */
+            --accent-secondary: #4DD0E1;     /* 액센트 시안 */
 
-            /* 상태 색상 */
-            --success: #4caf50;
-            --success-light: #81c784;
-            --warning: #ff9800;
-            --warning-light: #ffb74d;
-            --error: #ff5252;
-            --error-light: #ff8a80;
-            --info: #2196f3;
-            --info-light: #64b5f6;
+            /* === 그라데이션 조합용 보조 색상 === */
+            --gradient-teal: #009688;        /* 청록 */
+            --gradient-cyan: #00BCD4;        /* 시안 */
+            --gradient-blue: #2196F3;        /* 파랑 */
+            --gradient-purple: #9C27B0;      /* 보라 */
+            --gradient-pink: #E91E63;        /* 핑크 */
+            --gradient-lime: #7CB342;        /* 라임 */
 
-            /* 중립 색상 */
+            /* === 상태 색상 (민트 계열 재조정) === */
+            --success: #00C853;              /* 밝은 그린 */
+            --success-light: #69F0AE;        /* 연한 그린 */
+            --success-dark: #00A044;         /* 진한 그린 */
+            --warning: #FFA726;              /* 오렌지 */
+            --warning-light: #FFB74D;        /* 밝은 오렌지 */
+            --error: #EF5350;                /* 레드 */
+            --error-light: #FF8A80;          /* 연한 레드 */
+            --info: #00BCD4;                 /* 시안 (청록 계열) */
+            --info-light: #4DD0E1;           /* 밝은 시안 */
+
+            /* === 중립 색상 (동일 유지) === */
             --bg-primary: #f5f5f5;
             --bg-secondary: #ffffff;
             --bg-tertiary: #fafafa;
@@ -52,43 +62,96 @@
             --border: #e0e0e0;
             --border-light: #f0f0f0;
 
-            /* 그림자 */
+            /* === 그림자 (민트/청록 계열 추가) === */
             --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
             --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
             --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.15);
-            --shadow-primary: 0 4px 12px rgba(102, 126, 234, 0.3);
-            --shadow-success: 0 4px 12px rgba(76, 175, 80, 0.3);
+            --shadow-primary: 0 4px 16px rgba(0, 184, 154, 0.35);      /* 민트 글로우 */
+            --shadow-secondary: 0 4px 16px rgba(38, 166, 154, 0.35);   /* 청록 글로우 */
+            --shadow-success: 0 4px 12px rgba(0, 200, 83, 0.3);        /* 그린 글로우 */
+            --shadow-glow: 0 0 20px rgba(0, 212, 170, 0.5);            /* 강한 글로우 효과 */
 
-            /* 둥근 모서리 */
-            --radius-xs: 4px;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --radius-full: 9999px;
+            /* === 둥근 모서리 (각진 스타일로 변경) === */
+            --radius-xs: 4px;                /* 매우 작음 */
+            --radius-sm: 6px;                /* 작음 */
+            --radius-md: 8px;                /* 중간 (기본) */
+            --radius-lg: 8px;                /* 큼 (8px 고정) */
+            --radius-xl: 8px;                /* 매우 큼 (8px 고정) */
+            --radius-full: 9999px;           /* 원형 (프로필 등에만 사용) */
 
-            /* 간격 */
+            /* === 사이드바 관련 변수 (신규) === */
+            --sidebar-width: 260px;          /* 데스크탑 사이드바 너비 */
+            --sidebar-collapsed-width: 70px; /* 접힌 사이드바 너비 */
+            --sidebar-bg: #ffffff;           /* 사이드바 배경 */
+            --sidebar-border: #e0e0e0;       /* 사이드바 테두리 */
+
+            /* === 간격 (동일 유지) === */
             --spacing-xs: 4px;
             --spacing-sm: 8px;
             --spacing-md: 16px;
             --spacing-lg: 24px;
             --spacing-xl: 32px;
 
-            /* 전환 효과 */
+            /* === 전환 효과 (동일 유지) === */
             --transition-fast: 0.15s ease;
             --transition-base: 0.25s ease;
             --transition-slow: 0.35s ease;
 
-            /* Z-index */
+            /* === Z-index (사이드바 추가) === */
             --z-dropdown: 1000;
             --z-sticky: 1020;
+            --z-sidebar: 1025;               /* 신규: 사이드바 */
             --z-fixed: 1030;
             --z-modal-backdrop: 1040;
             --z-modal: 1050;
             --z-popover: 1060;
             --z-tooltip: 1070;
+        }
+
+        /* ==================== 화려한 그라데이션 프리셋 ==================== */
+        /* 민트 → 시안 → 파랑 (메인 그라데이션) */
+        .gradient-vibrant-1 {
+            background: linear-gradient(135deg, #00D4AA 0%, #00BCD4 50%, #2196F3 100%);
+        }
+
+        /* 청록 → 민트 → 라임 (생동감) */
+        .gradient-vibrant-2 {
+            background: linear-gradient(135deg, #009688 0%, #00B89A 50%, #7CB342 100%);
+        }
+
+        /* 민트 → 시안 → 보라 (대담한) */
+        .gradient-vibrant-3 {
+            background: linear-gradient(135deg, #00E5CC 0%, #00BCD4 50%, #9C27B0 100%);
+        }
+
+        /* 청록 → 핑크 (과감한 대비) */
+        .gradient-vibrant-4 {
+            background: linear-gradient(135deg, #26A69A 0%, #E91E63 100%);
+        }
+
+        /* 민트 → 파랑 (부드러운 생동감) */
+        .gradient-vibrant-5 {
+            background: linear-gradient(135deg, #00B89A 0%, #2196F3 100%);
+        }
+
+        /* 민트 → 청록 (프라이머리 그라데이션) */
+        .gradient-primary {
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+        }
+
+        /* 서브틀한 그라데이션 (카드 배경용) */
+        .gradient-subtle {
+            background: linear-gradient(135deg, #f0fffc 0%, #e0f7f4 100%);
+        }
+
+        /* 텍스트 그라데이션 */
+        .text-gradient {
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* ==================== 기본 스타일 ==================== */
@@ -112,7 +175,7 @@
         /* ==================== 랜딩 페이지 ==================== */
         .landing {
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00D4AA 0%, #00BCD4 50%, #2196F3 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -264,7 +327,9 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25), var(--shadow-glow);
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            color: white;
         }
 
         .btn-primary:active {
@@ -278,9 +343,9 @@
         }
 
         .btn-secondary:hover {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 184, 154, 0.4), var(--shadow-glow);
         }
 
         .btn-secondary:active {
@@ -320,8 +385,8 @@
         .auth-logo-icon {
             width: 100px;
             height: 100px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 25px;
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            border-radius: 8px;
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
@@ -410,11 +475,11 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #00D4AA 0%, #00BCD4 50%, #2196F3 100%);
             color: white;
             padding: 30px 20px;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 5px 20px rgba(0, 184, 154, 0.3);
         }
 
         .header-title {
@@ -444,8 +509,13 @@
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--border-light);
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.25), var(--shadow-glow);
+            border: 2px solid transparent;
+            background-image:
+                linear-gradient(white, white),
+                linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
         }
 
         .card:active {
@@ -463,14 +533,14 @@
             color: var(--text-primary);
         }
 
-        /* ==================== 하단 네비게이션 (8개 탭) ==================== */
+        /* ==================== 하단 네비게이션 (8개 탭) - 데스크탑에서 숨김 ==================== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: white;
-            display: flex;
+            display: none; /* 사이드바로 대체 */
             overflow-x: auto;
             padding: 12px 0;
             border-top: 1px solid #e0e0e0;
@@ -508,6 +578,224 @@
             font-size: 0.7rem;
             font-weight: bold;
             white-space: nowrap;
+        }
+
+        /* ==================== 사이드바 네비게이션 (신규) ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #ffffff 0%, #f0fffc 100%);
+            border-right: 1px solid var(--sidebar-border);
+            display: flex;
+            flex-direction: column;
+            z-index: var(--z-sidebar);
+            transition: transform var(--transition-base);
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 184, 154, 0.08);
+        }
+
+        /* 사이드바 헤더 */
+        .sidebar-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-light);
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            color: white;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .sidebar-logo-icon {
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .sidebar-logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        /* 사이드바 네비게이션 */
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--spacing-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .nav-item-sidebar {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item-sidebar::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            transform: scaleY(0);
+            transition: transform var(--transition-base);
+        }
+
+        .nav-item-sidebar:hover {
+            background: linear-gradient(135deg, #f0fffc 0%, #e0f7f4 100%);
+            color: var(--primary);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-item-sidebar:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-item-sidebar.active {
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            color: white;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .nav-item-sidebar.active::before {
+            transform: scaleY(1);
+            background: white;
+        }
+
+        .nav-icon-sidebar {
+            font-size: 1.5rem;
+            min-width: 24px;
+            transition: transform var(--transition-base);
+        }
+
+        .nav-item-sidebar:hover .nav-icon-sidebar {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .nav-item-sidebar.active .nav-icon-sidebar {
+            transform: scale(1.15);
+        }
+
+        .nav-label-sidebar {
+            font-size: 1rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* 사이드바 푸터 */
+        .sidebar-footer {
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #f0fffc 0%, #e0f7f4 100%);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .sidebar-user:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-user-info {
+            flex: 1;
+        }
+
+        .sidebar-user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sidebar-user-status {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* 메인 컨텐츠 영역 (사이드바만큼 왼쪽 마진) */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left var(--transition-base);
+        }
+
+        /* 모바일 햄버거 버튼 */
+        .mobile-menu-btn {
+            display: none; /* 데스크탑에서는 숨김 */
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: calc(var(--z-sidebar) + 1);
+            background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-primary);
+            transition: all var(--transition-base);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-menu-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* 사이드바 오버레이 (모바일) */
+        .sidebar-overlay {
+            display: none; /* 기본 숨김 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: calc(var(--z-sidebar) - 1);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
         }
 
         /* ==================== 탭 컨텐츠 ==================== */
@@ -562,11 +850,69 @@
         }
 
         .progress-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #009688 0%, #00B89A 50%, #7CB342 100%);
             color: white;
-            border-radius: 20px;
+            border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 진행률 섹션 shimmer 효과 */
+        .progress-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* 페이드인 애니메이션 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 슬라이드인 애니메이션 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 펄스 애니메이션 (중요 요소 강조) */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .progress-header {
@@ -764,19 +1110,19 @@
         }
 
         .nutrition-calories {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            background: linear-gradient(135deg, #26A69A 0%, #E91E63 100%);
         }
 
         .nutrition-carbs {
-            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            background: linear-gradient(135deg, #00B89A 0%, #2196F3 100%);
         }
 
         .nutrition-protein {
-            background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+            background: linear-gradient(135deg, #00E5CC 0%, #00BCD4 50%, #9C27B0 100%);
         }
 
         .nutrition-fat {
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background: linear-gradient(135deg, #00D4AA 0%, #00BCD4 50%, #2196F3 100%);
         }
 
         .nutrition-label {
@@ -2925,6 +3271,71 @@
             .nutrition-value {
                 font-size: 1.5rem;
             }
+
+            /* ==================== 사이드바 모바일 드래워 ==================== */
+            /* 사이드바를 드래워로 변환 */
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2);
+                transition: transform var(--transition-base);
+                z-index: 1030; /* 오버레이보다 위 */
+            }
+
+            /* 사이드바 열린 상태 */
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            /* 메인 컨텐츠 마진 제거 */
+            .main-content {
+                margin-left: 0;
+            }
+
+            /* 햄버거 버튼 표시 */
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1025;
+                background: linear-gradient(135deg, #00D4AA 0%, #009688 100%);
+                color: white;
+                width: 50px;
+                height: 50px;
+                border: none;
+                border-radius: 8px;
+                box-shadow: var(--shadow-primary);
+                cursor: pointer;
+                transition: all var(--transition-base);
+            }
+
+            .mobile-menu-btn:hover {
+                transform: scale(1.05);
+                box-shadow: var(--shadow-glow);
+            }
+
+            .mobile-menu-btn:active {
+                transform: scale(0.95);
+            }
+
+            /* 오버레이 */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1029;
+                opacity: 0;
+                transition: opacity var(--transition-base);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+                opacity: 1;
+            }
         }
 
         @media (max-width: 480px) {
@@ -2967,6 +3378,11 @@
             .timetable-row {
                 gap: 8px;
                 padding: 10px;
+            }
+
+            /* 사이드바 전체 너비 */
+            .sidebar {
+                width: 100%;
             }
         }
 
@@ -3058,12 +3474,72 @@
 
     <!-- 대시보드 -->
     <div id="dashboard" class="dashboard hidden">
-        <div class="header">
-            <h1 class="header-title">Diet Mate</h1>
-            <p class="header-subtitle" id="headerSubtitle">안녕하세요!</p>
-        </div>
+        <!-- 사이드바 네비게이션 -->
+        <aside class="sidebar" id="sidebar">
+            <!-- 사이드바 헤더 -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="sidebar-logo-icon">💪</span>
+                    <span class="sidebar-logo-text">Diet Mate</span>
+                </div>
+            </div>
 
-        <div class="content">
+            <!-- 사이드바 메뉴 -->
+            <nav class="sidebar-nav">
+                <div class="nav-item-sidebar active" onclick="switchTab('home')" data-tab="home">
+                    <span class="nav-icon-sidebar">🏠</span>
+                    <span class="nav-label-sidebar">홈</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('plan')" data-tab="plan">
+                    <span class="nav-icon-sidebar">📋</span>
+                    <span class="nav-label-sidebar">플랜</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('fasting')" data-tab="fasting">
+                    <span class="nav-icon-sidebar">⏱️</span>
+                    <span class="nav-label-sidebar">단식</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('album')" data-tab="album">
+                    <span class="nav-icon-sidebar">📸</span>
+                    <span class="nav-label-sidebar">앨범</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('calendar')" data-tab="calendar">
+                    <span class="nav-icon-sidebar">📅</span>
+                    <span class="nav-label-sidebar">캘린더</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('community')" data-tab="community">
+                    <span class="nav-icon-sidebar">💬</span>
+                    <span class="nav-label-sidebar">소통</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('notification')" data-tab="notification">
+                    <span class="nav-icon-sidebar">🔔</span>
+                    <span class="nav-label-sidebar">알림</span>
+                </div>
+                <div class="nav-item-sidebar" onclick="switchTab('settings')" data-tab="settings">
+                    <span class="nav-icon-sidebar">⚙️</span>
+                    <span class="nav-label-sidebar">설정</span>
+                </div>
+            </nav>
+
+            <!-- 사이드바 푸터 -->
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">👤</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name" id="sidebarUserName">사용자</div>
+                        <div class="sidebar-user-status">활동 중</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 메인 컨텐츠 영역 -->
+        <div class="main-content" id="mainContent">
+            <div class="header">
+                <h1 class="header-title">Diet Mate</h1>
+                <p class="header-subtitle" id="headerSubtitle">안녕하세요!</p>
+            </div>
+
+            <div class="content">
             <!-- 홈 탭 -->
             <div id="tab-home" class="tab-content active">
                 <div class="health-metrics">
@@ -3483,7 +3959,7 @@
             </div>
         </div>
 
-        <!-- 하단 네비게이션 -->
+        <!-- 하단 네비게이션 (사이드바로 대체됨 - 숨김 처리) -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="switchTab('home')">
                 <div class="nav-icon">🏠</div>
@@ -3518,6 +3994,14 @@
                 <div class="nav-label">설정</div>
             </div>
         </div>
+
+        <!-- 모바일 햄버거 메뉴 버튼 -->
+        <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">
+            <span style="font-size: 24px;">☰</span>
+        </button>
+
+        <!-- 모바일 사이드바 오버레이 -->
+        <div class="sidebar-overlay" onclick="closeMobileSidebar()"></div>
     </div>
 
     <!-- 프로필 재설정 모달 -->
@@ -5487,11 +5971,23 @@ ${userMessage}
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
 
+            // 사이드바 네비게이션 업데이트
+            document.querySelectorAll('.nav-item-sidebar').forEach(nav => nav.classList.remove('active'));
+            const activeNav = document.querySelector(`.nav-item-sidebar[data-tab="${tabName}"]`);
+            if (activeNav) activeNav.classList.add('active');
+
             // 선택된 탭 활성화
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
 
             currentTab = tabName;
+
+            // 모바일에서 사이드바 닫기
+            if (window.innerWidth <= 768) {
+                closeMobileSidebar();
+            }
 
             // 소통 탭의 입력창 표시/숨김
             const chatInput = document.getElementById('chatInputContainer');
@@ -5511,6 +6007,31 @@ ${userMessage}
             } else if (tabName === 'community') {
                 loadCommunityMessages();
             }
+        }
+
+        // ==================== 모바일 사이드바 제어 ====================
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('mobile-open');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('mobile-open') ? 'hidden' : '';
+            }
+        }
+
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            if (sidebar) {
+                sidebar.classList.remove('mobile-open');
+            }
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+            document.body.style.overflow = '';
         }
 
         // ==================== 홈 탭 ====================
