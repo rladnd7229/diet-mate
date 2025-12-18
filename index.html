@@ -478,6 +478,12 @@
             border-radius: 10px;
         }
 
+        .unit-label {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1rem;
+        }
+
         /* [수정] 물 마시기 화면이 폰에서 잘리는 문제 해결 */
         .water-tracker {
             display: flex;
@@ -2348,8 +2354,14 @@
                 <div class="card">
                     <h3 class="card-title">💧 스마트 물 마시기</h3>
                     <div class="water-settings">
-                        <input type="number" id="cupSize" placeholder="컵 용량 (ml)" value="250">
-                        <input type="number" id="waterGoal" placeholder="목표 (L)" value="2" step="0.1">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="cupSize" placeholder="250" value="250" style="width: 80px;">
+                            <span class="unit-label">ml</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input type="number" id="waterGoal" placeholder="2" value="2" step="0.1" style="width: 60px;">
+                            <span class="unit-label">L</span>
+                        </div>
                         <button class="btn-add-weight" onclick="updateWaterTracker()">설정</button>
                     </div>
                     <!-- ========== Phase 2: 물 섭취량 표시 ========== -->
@@ -2368,9 +2380,6 @@
                     <div class="plan-date" id="planDate">오늘의 플랜</div>
                     <button class="btn-add-plan" onclick="openAddPlanModal()">+ 추가</button>
                 </div>
-                <button class="btn-add-plan" style="width: 100%; margin-bottom: 15px;" onclick="suggestPlanWithAI()">
-                    🤖 AI 플랜 추천받기
-                </button>
                 <div id="planList"></div>
 
                 <!-- ========== Phase 2: 시간표 입력 UI ========== -->
@@ -2446,6 +2455,22 @@
 
                 <div class="fasting-info">
                     <details>
+                        <summary>🔬 자가포식(Autophagy)이란?</summary>
+                        <div style="padding: 10px; line-height: 1.6;">
+                            <p style="margin-bottom: 10px;"><strong>자가포식은</strong> 세포가 손상되거나 불필요한 부분을 스스로 분해하고 재활용하는 과정입니다.</p>
+
+                            <h4 style="margin: 15px 0 10px 0; color: #667eea;">언제 시작되나요?</h4>
+                            <p style="margin-bottom: 5px;">✅ 약 12~16시간 단식 후 본격적으로 활성화</p>
+                            <p style="margin-bottom: 10px;">✅ 24시간 이상일 때 최대 효과</p>
+
+                            <h4 style="margin: 15px 0 10px 0; color: #667eea;">효과는?</h4>
+                            <p style="margin-bottom: 5px;">🔹 세포 노화 방지</p>
+                            <p style="margin-bottom: 5px;">🔹 염증 감소</p>
+                            <p style="margin-bottom: 5px;">🔹 면역력 강화</p>
+                            <p style="margin-bottom: 5px;">🔹 대사 건강 개선</p>
+                        </div>
+                    </details>
+                    <details>
                         <summary>단식의 효과</summary>
                         <p style="padding: 10px; line-height: 1.6;">
                             • 체중 감량 및 체지방 감소<br>
@@ -2455,13 +2480,17 @@
                         </p>
                     </details>
                     <details>
-                        <summary>주의사항</summary>
-                        <p style="padding: 10px; line-height: 1.6;">
-                            • 충분한 수분 섭취 필수<br>
-                            • 처음엔 짧은 시간부터 시작<br>
-                            • 어지러움 느끼면 즉시 중단<br>
-                            • 임산부/수유부/질환자는 의사 상담 필요
-                        </p>
+                        <summary>⚠️ 주의사항</summary>
+                        <div style="padding: 10px; line-height: 1.6;">
+                            <h4 style="margin-bottom: 10px; color: #ff5252;">이런 분은 주의하세요:</h4>
+                            <p style="margin-bottom: 5px;">❌ 당뇨병 환자 (저혈당 위험)</p>
+                            <p style="margin-bottom: 5px;">❌ 임산부 및 수유부</p>
+                            <p style="margin-bottom: 5px;">❌ 성장기 청소년</p>
+                            <p style="margin-bottom: 10px;">❌ 섭식 장애 병력이 있는 분</p>
+
+                            <h4 style="margin: 15px 0 10px 0; color: #ff5252;">단식 중 이상 증상 발생 시:</h4>
+                            <p>어지럼증, 극심한 피로, 두통이 심하면 즉시 중단하고 음식을 섭취하세요.</p>
+                        </div>
                     </details>
                 </div>
 
@@ -2501,7 +2530,7 @@
                         <button class="album-tab" onclick="changeAlbumTab('exercise')">운동</button>
                     </div>
                     <div class="photo-grid" id="photoGrid">
-                        <div class="photo-item add-photo" onclick="addPhoto()">+</div>
+                        <!-- '전체' 탭이 기본이므로 + 버튼 없음, JavaScript가 탭 전환 시 동적으로 추가 -->
                     </div>
                 </div>
             </div>
@@ -2544,6 +2573,9 @@
                     <h3 class="card-title">🔔 알림 관리</h3>
                     <button class="btn-add-plan" style="width: 100%; margin-bottom: 15px;" onclick="openAddNotificationModal()">
                         + 새 알림 추가
+                    </button>
+                    <button class="btn-add-plan" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);" onclick="addWaterNotificationPreset()">
+                        💧 물 마시기 알림 (5회) 한번에 추가
                     </button>
                     <div class="notification-list" id="notificationList"></div>
                 </div>
@@ -3820,6 +3852,31 @@
                     }
                 });
 
+                // todayIntake에서도 식사 정보 가져오기
+                const mealCount = todayIntake.meals ? todayIntake.meals.length : 0;
+                const caloriesRemaining = dailyNutrition.totalCalories - (todayIntake.calories || 0);
+
+                // 물 섭취량 가져오기
+                const waterSettings = JSON.parse(localStorage.getItem(LS_KEYS.WATER_SETTINGS) || '{"cupSize": 250, "goalLiters": 2, "filled": []}');
+                const waterIntake = (waterSettings.filled ? waterSettings.filled.length : 0) * waterSettings.cupSize;
+                const waterGoal = waterSettings.goalLiters * 1000;
+
+                // 오늘의 단식 기록 가져오기
+                let fastingDuration = 0;
+                const fastingRecords = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('fastingRecords')
+                    .where('date', '==', today.toISOString().split('T')[0])
+                    .get();
+
+                fastingRecords.forEach(doc => {
+                    const record = doc.data();
+                    fastingDuration += record.duration || 0;
+                });
+
+                const fastingHours = Math.floor(fastingDuration / (1000 * 60 * 60));
+                const fastingMinutes = Math.floor((fastingDuration % (1000 * 60 * 60)) / (1000 * 60));
+
                 // 현재 체중 가져오기
                 const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
                     .collection('logs')
@@ -3830,6 +3887,27 @@
                 const currentWeight = weightsSnapshot.empty
                     ? currentProfile.startWeight
                     : weightsSnapshot.docs[0].data().weight;
+
+                // 함께한 날 계산
+                const createdAt = currentProfile.createdAt ? currentProfile.createdAt.toDate() : new Date();
+                const daysActive = Math.floor((new Date() - createdAt) / (1000 * 60 * 60 * 24));
+
+                // 주간 체중 변화 계산
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                const weeklyWeights = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('logs')
+                    .where('date', '>=', firebase.firestore.Timestamp.fromDate(sevenDaysAgo))
+                    .orderBy('date', 'asc')
+                    .get();
+
+                let weeklyWeightChange = 0;
+                if (!weeklyWeights.empty && weeklyWeights.docs.length >= 2) {
+                    const firstWeight = weeklyWeights.docs[0].data().weight;
+                    const lastWeight = weeklyWeights.docs[weeklyWeights.docs.length - 1].data().weight;
+                    weeklyWeightChange = firstWeight - lastWeight;
+                }
 
                 // 컨텍스트 포함 프롬프트 생성 (AI 트레이너 페르소나)
                 const weightDiff = currentWeight - currentProfile.goalWeight;
@@ -3842,16 +3920,28 @@
 - 말투: 전문가답게 정중하지만, 필요시 단호하게 조언하세요
 - 태도: "힘든 거 알아요"라는 공감과 "그래도 안 됩니다"라는 원칙을 병행하세요
 - 응답: 3-4문장 이내로 간결하게, 존댓말을 사용하세요
+- 중요: 팩트만 이야기하고 과장하지 마세요. 불가능한 목표는 제시하지 마세요.
 
-**사용자 정보:**
+**사용자 프로필:**
 - 회원명: ${currentProfile.name} 회원님
+- 시작 체중: ${currentProfile.startWeight}kg
 - 현재 체중: ${currentWeight}kg
 - 목표 체중: ${currentProfile.goalWeight}kg
 - 목표: ${goalDescription}
+- 함께한 날: ${daysActive}일
 
-**오늘의 식사 기록:**
-${meals.length > 0 ? meals.join('\n') : '아직 기록된 식사가 없습니다.'}
-- 총 섭취 칼로리: ${Math.round(totalCalories)}kcal
+**오늘의 활동 기록:**
+- 식사: ${mealCount}회 (${Math.round(todayIntake.calories || 0)}kcal 섭취)
+- 남은 칼로리: ${Math.round(caloriesRemaining)}kcal
+- 물 섭취: ${waterIntake}ml / ${waterGoal}ml
+${fastingDuration > 0 ? `- 단식 시간: ${fastingHours}시간 ${fastingMinutes}분` : '- 단식: 미진행'}
+
+**오늘의 식사 내역:**
+${meals.length > 0 ? meals.map((m, i) => `${i + 1}. ${m}`).join('\n') : '아직 기록된 식사가 없습니다.'}
+
+**주간 변화:**
+- 체중 변화 (최근 7일): ${weeklyWeightChange > 0 ? '-' : '+'}${Math.abs(weeklyWeightChange).toFixed(1)}kg
+${weeklyWeightChange > 0 ? '(감량 중 👍)' : weeklyWeightChange < 0 ? '(증가 중 ⚠️)' : '(변화 없음)'}
 
 **최근 대화 내역:**
 ${recentChatText || '이전 대화 없음'}
@@ -3859,7 +3949,7 @@ ${recentChatText || '이전 대화 없음'}
 **현재 질문:**
 ${userMessage}
 
-위 정보를 바탕으로 전문 트레이너처럼 조언해주세요. 반드시 "${currentProfile.name} 회원님"이라는 호칭을 사용하세요.`;
+위 정보를 바탕으로 전문 트레이너처럼 조언해주세요. 반드시 "${currentProfile.name} 회원님"이라는 호칭을 사용하세요. 구체적이고 실천 가능한 조언을 해주세요.`;
 
                 return contextPrompt;
 
@@ -5362,7 +5452,12 @@ ${userMessage}
                 .get();
 
             const grid = document.getElementById('photoGrid');
-            grid.innerHTML = '<div class="photo-item add-photo" onclick="addPhoto()">+</div>';
+            // '전체' 탭에서는 + 버튼 제거
+            if (currentAlbumTab === 'all') {
+                grid.innerHTML = '';
+            } else {
+                grid.innerHTML = '<div class="photo-item add-photo" onclick="addPhoto()">+</div>';
+            }
 
             // Phase 4: 배치 작업을 위해 현재 표시된 항목 저장
             allPhotoItems = [];
@@ -6153,6 +6248,14 @@ ${userMessage}
                 .where('uploadedAt', '<', firebase.firestore.Timestamp.fromDate(new Date(date.getTime() + 86400000)))
                 .get();
 
+            // dailyLogs에서 영양, 운동, 단식, 물 데이터 조회
+            const dailyLog = await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('dailyLogs').doc(dateStr)
+                .get();
+
+            const logData = dailyLog.exists ? dailyLog.data() : null;
+
             // 모달 생성
             const modal = document.createElement('div');
             modal.className = 'day-report-modal';
@@ -6173,6 +6276,29 @@ ${userMessage}
                 `;
             }
 
+            // 영양 정보
+            if (logData && logData.nutrition) {
+                content += `
+                    <div class="day-report-section">
+                        <h4>🍽️ 영양</h4>
+                        <p><strong>칼로리:</strong> ${Math.round(logData.nutrition.calories)}kcal</p>
+                        <p style="font-size: 0.9rem; color: #666;">
+                            탄수화물: ${Math.round(logData.nutrition.carbs)}g /
+                            단백질: ${Math.round(logData.nutrition.protein)}g /
+                            지방: ${Math.round(logData.nutrition.fat)}g
+                        </p>
+                        ${logData.nutrition.meals && logData.nutrition.meals.length > 0 ? `
+                            <div style="margin-top: 10px; padding-left: 10px; border-left: 3px solid #667eea;">
+                                <strong style="font-size: 0.9rem;">식사 내역:</strong>
+                                ${logData.nutrition.meals.map(m => `
+                                    <p style="font-size: 0.85rem; margin: 5px 0;">• ${m.foodName} (${Math.round(m.calories)}kcal)</p>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
             // 플랜
             if (!plans.empty) {
                 content += `<div class="day-report-section"><h4>📋 플랜</h4>`;
@@ -6181,6 +6307,53 @@ ${userMessage}
                     content += `<p>${plan.time} - ${plan.activity}</p>`;
                 });
                 content += `</div>`;
+            }
+
+            // 운동 기록
+            if (logData && logData.exercises && logData.exercises.length > 0) {
+                const totalMinutes = logData.exercises.reduce((sum, ex) => sum + (ex.duration || 0), 0);
+                content += `
+                    <div class="day-report-section">
+                        <h4>🏃‍♂️ 운동</h4>
+                        <p><strong>총 시간:</strong> ${totalMinutes}분</p>
+                        ${logData.exercises.map(ex => `
+                            <p style="font-size: 0.9rem;">• ${ex.name} (${ex.duration}분)</p>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            // 단식 시간
+            if (logData && logData.fasting && logData.fasting.duration) {
+                const hours = Math.floor(logData.fasting.duration / 60);
+                const minutes = logData.fasting.duration % 60;
+                content += `
+                    <div class="day-report-section">
+                        <h4>⏱️ 단식</h4>
+                        <p><strong>총 시간:</strong> ${hours}시간 ${minutes}분</p>
+                        <p style="font-size: 0.85rem; color: #666;">
+                            ${logData.fasting.startTime ? `시작: ${new Date(logData.fasting.startTime).toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit'})}` : ''}
+                            ${logData.fasting.endTime ? ` → 종료: ${new Date(logData.fasting.endTime).toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit'})}` : ''}
+                        </p>
+                        ${logData.fasting.stage ? `<p style="font-size: 0.9rem;">단계: ${logData.fasting.stage}</p>` : ''}
+                    </div>
+                `;
+            }
+
+            // 물 섭취량
+            if (logData && logData.water) {
+                const liters = (logData.water / 1000).toFixed(1);
+                const goalLiters = 2; // 기본 목표
+                const percentage = Math.round((logData.water / (goalLiters * 1000)) * 100);
+                content += `
+                    <div class="day-report-section">
+                        <h4>💧 물 섭취</h4>
+                        <p><strong>${logData.water}ml</strong> (${liters}L)</p>
+                        <p style="font-size: 0.9rem; color: ${percentage >= 100 ? '#4caf50' : '#ff9800'};">
+                            목표 대비 ${percentage}%
+                        </p>
+                    </div>
+                `;
             }
 
             // 사진
@@ -6193,7 +6366,13 @@ ${userMessage}
                 content += `</div></div>`;
             }
 
-            if (weights.empty && plans.empty && photos.empty) {
+            // 모든 데이터 체크
+            const hasNutrition = logData && logData.nutrition;
+            const hasExercise = logData && logData.exercises && logData.exercises.length > 0;
+            const hasFasting = logData && logData.fasting && logData.fasting.duration;
+            const hasWater = logData && logData.water;
+
+            if (weights.empty && plans.empty && photos.empty && !hasNutrition && !hasExercise && !hasFasting && !hasWater) {
                 content += `<p style="text-align: center; color: #999; padding: 40px;">이 날의 기록이 없습니다.</p>`;
             }
 
@@ -6327,6 +6506,31 @@ ${userMessage}
             loadNotifications();
         }
 
+        function addWaterNotificationPreset() {
+            const notifications = JSON.parse(localStorage.getItem(LS_KEYS.NOTIFICATIONS) || '[]');
+
+            // 중복 체크
+            const hasWaterAlerts = notifications.some(n => n.title.includes('물 마시기'));
+            if (hasWaterAlerts) {
+                if (!confirm('이미 물 마시기 알림이 있습니다. 추가하시겠습니까?')) return;
+            }
+
+            // 물 마시기 알림 5회 추가 (9시, 12시, 15시, 18시, 21시)
+            const waterTimes = ['09:00', '12:00', '15:00', '18:00', '21:00'];
+            waterTimes.forEach(time => {
+                notifications.push({
+                    title: '💧 물 마시기',
+                    time: time,
+                    repeat: '매일',
+                    lastTriggered: null
+                });
+            });
+
+            localStorage.setItem(LS_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
+            loadNotifications();
+            alert('물 마시기 알림 5개가 추가되었습니다!\n(9시, 12시, 15시, 18시, 21시)');
+        }
+
         function deleteNotification(index) {
             if (!confirm('이 알림을 삭제하시겠습니까?')) return;
 
@@ -6399,8 +6603,40 @@ ${userMessage}
             const daysSince = Math.floor((new Date() - createdAt) / (1000 * 60 * 60 * 24));
             document.getElementById('totalDays').textContent = daysSince;
 
-            // 총 운동 시간 (플랜에서 운동 카테고리 합산 - 간단 버전)
-            document.getElementById('totalExercise').textContent = '0';
+            // 총 운동 시간 (플랜에서 운동 카테고리 합산)
+            try {
+                const plansSnapshot = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('plans').get();
+
+                let totalExerciseMinutes = 0;
+                plansSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.category === '운동' && data.value) {
+                        // value에서 숫자 추출 (예: "30분", "1시간" 등)
+                        const match = data.value.match(/(\d+)/);
+                        if (match) {
+                            const num = parseInt(match[1]);
+                            if (data.value.includes('시간')) {
+                                totalExerciseMinutes += num * 60;
+                            } else {
+                                totalExerciseMinutes += num;
+                            }
+                        }
+                    }
+                });
+
+                // 단식 기록에서도 운동 시간 추가 (단식 중 운동한 경우)
+                const fastingRecords = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('fastingRecords').get();
+
+                // 운동 시간 표시
+                document.getElementById('totalExercise').textContent = totalExerciseMinutes;
+            } catch (error) {
+                console.error('운동 시간 계산 실패:', error);
+                document.getElementById('totalExercise').textContent = '0';
+            }
 
             // 절약 칼로리 (간단 계산)
             const startWeight = currentProfile.startWeight || 0;
@@ -6412,18 +6648,59 @@ ${userMessage}
             const caloriesSaved = Math.floor(weightLost * 7700); // 1kg = 약 7700kcal
             document.getElementById('totalCalories').textContent = caloriesSaved > 0 ? caloriesSaved : 0;
 
-            // AI 예측 달성일 (간단 버전)
+            // AI 예측 달성일 (최근 30일 데이터 기반)
             const goalWeight = currentProfile.goalWeight || 0;
             const remaining = currentWeight - goalWeight;
 
-            if (remaining > 0 && weightLost > 0 && daysSince > 0) {
-                const avgLossPerDay = weightLost / daysSince;
-                const daysNeeded = Math.ceil(remaining / avgLossPerDay);
-                const predictedDate = new Date();
-                predictedDate.setDate(predictedDate.getDate() + daysNeeded);
-                document.getElementById('predictedDate').textContent = `${predictedDate.getMonth() + 1}/${predictedDate.getDate()}`;
+            if (remaining > 0) {
+                try {
+                    // 최근 30일 체중 데이터 가져오기
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+                    const recentWeights = await db.collection('artifacts').doc('diet-mate-v2')
+                        .collection('users').doc(currentUser.uid)
+                        .collection('logs')
+                        .where('date', '>=', firebase.firestore.Timestamp.fromDate(thirtyDaysAgo))
+                        .orderBy('date', 'asc')
+                        .get();
+
+                    if (!recentWeights.empty && recentWeights.docs.length >= 2) {
+                        const firstWeight = recentWeights.docs[0].data().weight;
+                        const lastWeight = recentWeights.docs[recentWeights.docs.length - 1].data().weight;
+                        const daysInPeriod = recentWeights.docs.length;
+
+                        const recentWeightLoss = firstWeight - lastWeight;
+
+                        if (recentWeightLoss > 0) {
+                            // 주간 감량 속도 계산
+                            const avgWeeklyLoss = (recentWeightLoss / daysInPeriod) * 7;
+                            const weeksNeeded = Math.ceil(remaining / avgWeeklyLoss);
+                            const daysNeeded = weeksNeeded * 7;
+
+                            const predictedDate = new Date();
+                            predictedDate.setDate(predictedDate.getDate() + daysNeeded);
+                            document.getElementById('predictedDate').textContent = `${predictedDate.getMonth() + 1}/${predictedDate.getDate()}`;
+                        } else {
+                            // 체중 증가 중
+                            document.getElementById('predictedDate').textContent = '체중 관리 필요';
+                        }
+                    } else if (weightLost > 0 && daysSince > 0) {
+                        // 데이터가 부족하면 전체 기간 평균 사용
+                        const avgLossPerDay = weightLost / daysSince;
+                        const daysNeeded = Math.ceil(remaining / avgLossPerDay);
+                        const predictedDate = new Date();
+                        predictedDate.setDate(predictedDate.getDate() + daysNeeded);
+                        document.getElementById('predictedDate').textContent = `${predictedDate.getMonth() + 1}/${predictedDate.getDate()}`;
+                    } else {
+                        document.getElementById('predictedDate').textContent = '-';
+                    }
+                } catch (error) {
+                    console.error('예상 달성일 계산 실패:', error);
+                    document.getElementById('predictedDate').textContent = '-';
+                }
             } else {
-                document.getElementById('predictedDate').textContent = '-';
+                document.getElementById('predictedDate').textContent = '목표 달성!';
             }
         }
 
