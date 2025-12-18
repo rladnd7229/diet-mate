@@ -23,6 +23,74 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
     <style>
+        /* ==================== CSS 변수 (디자인 시스템) ==================== */
+        :root {
+            /* 주요 색상 */
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --primary-light: #8b9df6;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+
+            /* 상태 색상 */
+            --success: #4caf50;
+            --success-light: #81c784;
+            --warning: #ff9800;
+            --warning-light: #ffb74d;
+            --error: #ff5252;
+            --error-light: #ff8a80;
+            --info: #2196f3;
+            --info-light: #64b5f6;
+
+            /* 중립 색상 */
+            --bg-primary: #f5f5f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #fafafa;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --border: #e0e0e0;
+            --border-light: #f0f0f0;
+
+            /* 그림자 */
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --shadow-primary: 0 4px 12px rgba(102, 126, 234, 0.3);
+            --shadow-success: 0 4px 12px rgba(76, 175, 80, 0.3);
+
+            /* 둥근 모서리 */
+            --radius-xs: 4px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 9999px;
+
+            /* 간격 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* 전환 효과 */
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.25s ease;
+            --transition-slow: 0.35s ease;
+
+            /* Z-index */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
         /* ==================== 기본 스타일 ==================== */
         * {
             margin: 0;
@@ -70,6 +138,81 @@
             50% { transform: translateY(-10px); }
         }
 
+        /* ==================== 추가 애니메이션 ==================== */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* 애니메이션 유틸리티 클래스 */
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .animate-slide-down {
+            animation: slideDown 0.3s ease-out;
+        }
+
         .landing-title {
             font-size: 3rem;
             font-weight: bold;
@@ -86,21 +229,77 @@
         .btn {
             padding: 15px 40px;
             border: none;
-            border-radius: 25px;
+            border-radius: var(--radius-full);
             font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: var(--bg-secondary);
+            color: var(--primary);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
         }
 
         .btn-primary:active {
-            transform: scale(0.95);
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            box-shadow: var(--shadow-success);
+        }
+
+        .btn-success:hover {
+            background: var(--success-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-success:active {
+            transform: translateY(0) scale(0.98);
         }
 
         /* ==================== 인증 페이지 ==================== */
@@ -151,16 +350,22 @@
 
         .form-input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
+            padding: var(--spacing-md);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
             font-size: 1rem;
-            transition: border 0.3s;
+            transition: all var(--transition-base);
+            background: var(--bg-secondary);
+        }
+
+        .form-input:hover {
+            border-color: var(--primary-light);
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         .error-message {
@@ -228,26 +433,34 @@
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-light);
         }
 
         .card:active {
-            transform: scale(0.98);
+            transform: translateY(-2px) scale(0.99);
+            box-shadow: var(--shadow-md);
         }
 
         .card-title {
             font-size: 1.3rem;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: var(--spacing-md);
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #333;
+            gap: var(--spacing-sm);
+            color: var(--text-primary);
         }
 
         /* ==================== 하단 네비게이션 (8개 탭) ==================== */
@@ -304,28 +517,31 @@
 
         .tab-content.active {
             display: block;
-            animation: slideIn 0.3s;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            animation: fadeInUp 0.4s ease-out;
         }
 
         /* ==================== 홈 탭: 건강 지표 ==================== */
         .health-metrics {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
         }
 
         .metric-card {
-            background: white;
-            border-radius: 15px;
-            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            border: 1px solid transparent;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
         }
 
         .metric-label {
@@ -588,6 +804,349 @@
             padding: 20px 0;
         }
 
+        /* ==================== 식사 직접 입력 버튼 ==================== */
+        .meal-input-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0 20px 0;
+        }
+
+        .meal-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .meal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .meal-btn:active {
+            transform: translateY(0);
+        }
+
+        .meal-emoji {
+            font-size: 1.8rem;
+        }
+
+        .meal-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .meal-btn-breakfast:hover {
+            border-color: #ff9800;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        }
+
+        .meal-btn-lunch:hover {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .meal-btn-dinner:hover {
+            border-color: #9c27b0;
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+        }
+
+        .meal-btn-snack:hover {
+            border-color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        }
+
+        /* ==================== 식사 입력 모달 ==================== */
+        .meal-input-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal-backdrop);
+            padding: 20px;
+            transition: background var(--transition-base);
+            backdrop-filter: blur(0px);
+        }
+
+        .meal-input-modal-overlay.show {
+            display: flex;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            animation: overlayFadeIn 0.3s ease-out;
+        }
+
+        @keyframes overlayFadeIn {
+            from {
+                background: rgba(0, 0, 0, 0);
+                backdrop-filter: blur(0px);
+            }
+            to {
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(4px);
+            }
+        }
+
+        .meal-input-modal {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-30px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .meal-input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .meal-input-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .meal-input-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group-meal {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label-meal {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .form-input-meal {
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all var(--transition-base);
+            background: var(--bg-secondary);
+        }
+
+        .form-input-meal:hover {
+            border-color: var(--primary-light);
+        }
+
+        .form-input-meal:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .ai-analyze-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .ai-analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .ai-analyze-btn:active {
+            transform: translateY(0);
+        }
+
+        .ai-analyze-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nutrition-result {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e8f0 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .nutrition-result.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .nutrition-result-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .nutrition-result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .nutrition-result-item {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .nutrition-result-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .nutrition-result-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .manual-input-toggle {
+            text-align: center;
+            margin-top: 15px;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .manual-input-toggle:hover {
+            text-decoration: underline;
+        }
+
+        .manual-input-fields {
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .manual-input-fields.show {
+            display: grid;
+        }
+
+        .save-meal-btn {
+            background: var(--success);
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            margin-top: var(--spacing-lg);
+            box-shadow: var(--shadow-success);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .save-meal-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .save-meal-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .save-meal-btn:hover {
+            background: var(--success-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(76, 175, 80, 0.4);
+        }
+
+        .save-meal-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
         /* ==================== 플랜 탭 ==================== */
         .plan-header {
             display: flex;
@@ -654,6 +1213,127 @@
             color: #f44336;
             cursor: pointer;
             font-size: 1.2rem;
+        }
+
+        /* ==================== 시간표 ==================== */
+        .timetable-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .timetable-row {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            transition: all 0.2s;
+        }
+
+        .timetable-row:hover {
+            background: #e9ecef;
+        }
+
+        .timetable-time {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #667eea;
+            min-width: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timetable-input-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timetable-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: white;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .timetable-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .timetable-input::placeholder {
+            color: #bbb;
+        }
+
+        .timetable-emoji-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .timetable-emoji-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .timetable-emoji-picker {
+            position: absolute;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            padding: 12px;
+            display: none;
+            z-index: 1000;
+            margin-top: 5px;
+        }
+
+        .timetable-emoji-picker.show {
+            display: block;
+        }
+
+        .timetable-emoji-option {
+            display: inline-block;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-size: 1.5rem;
+        }
+
+        .timetable-emoji-option:hover {
+            background: #f0f4ff;
+        }
+
+        .timetable-clear-btn {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .timetable-clear-btn:hover {
+            background: #ffebee;
+            color: #f44336;
         }
 
         /* ==================== 단식 탭 ==================== */
@@ -1799,10 +2479,32 @@
             color: #666;
         }
 
+        .notification-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .notification-edit {
+            color: #667eea;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .notification-edit:hover {
+            transform: scale(1.2);
+        }
+
         .notification-delete {
             color: #f44336;
             cursor: pointer;
             font-size: 1.3rem;
+            transition: transform 0.2s;
+        }
+
+        .notification-delete:hover {
+            transform: scale(1.2);
         }
 
         /* ==================== 누적 단식 통계 ==================== */
@@ -2076,11 +2778,13 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            z-index: var(--z-modal-backdrop);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(4px);
         }
 
         .modal-overlay {
@@ -2093,49 +2797,75 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            z-index: var(--z-modal);
+            animation: fadeIn 0.3s ease-out;
+            backdrop-filter: blur(4px);
         }
 
         .modal-content {
-            background: white;
-            border-radius: 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
             padding: 25px;
             max-width: 400px;
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .modal-header {
             font-size: 1.5rem;
             font-weight: bold;
-            margin-bottom: 20px;
-            color: #667eea;
+            margin-bottom: var(--spacing-lg);
+            color: var(--primary);
         }
 
         .modal-footer {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
         }
 
         .modal-btn {
             flex: 1;
             padding: 12px;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             font-weight: bold;
             cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-btn:active {
+            transform: translateY(0) scale(0.98);
         }
 
         .modal-btn-primary {
-            background: #667eea;
+            background: var(--primary);
             color: white;
+            box-shadow: var(--shadow-primary);
+        }
+
+        .modal-btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
         }
 
         .modal-btn-secondary {
-            background: #f5f5f5;
-            color: #333;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal-btn-secondary:hover {
+            background: var(--border);
         }
 
         /* ==================== 차트 컨테이너 ==================== */
@@ -2146,21 +2876,118 @@
         }
 
         /* ==================== 반응형 ==================== */
-        @media (max-width: 360px) {
-            .landing-title {
-                font-size: 2.5rem;
+        @media (max-width: 768px) {
+            /* 텍스트 잘림 방지 */
+            * {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
             }
 
-            .landing-subtitle {
+            /* 카드 반응형 */
+            .card {
+                max-width: 100%;
+                box-sizing: border-box;
+                margin: 10px 0;
+                padding: 15px;
+            }
+
+            .card-title {
                 font-size: 1.1rem;
             }
 
-            .health-metrics {
+            /* 식사 버튼 2열로 */
+            .meal-input-buttons {
                 grid-template-columns: repeat(2, 1fr);
             }
 
+            /* 시간표 텍스트 크기 조정 */
+            .timetable-time {
+                min-width: 50px;
+                font-size: 0.9rem;
+            }
+
+            .timetable-input {
+                font-size: 0.85rem;
+                padding: 8px 10px;
+            }
+
+            /* 영양 카드 */
+            .nutrition-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .nutrition-card {
+                padding: 12px;
+            }
+
+            .nutrition-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .landing-title {
+                font-size: 2.2rem;
+            }
+
+            .landing-subtitle {
+                font-size: 1rem;
+            }
+
+            /* 건강 지표 1열로 */
+            .health-metrics {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            /* 사진 그리드 2열로 */
             .photo-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* 식사 버튼 모바일 최적화 */
+            .meal-btn {
+                padding: 10px 6px;
+                font-size: 0.85rem;
+            }
+
+            .meal-emoji {
+                font-size: 1.5rem;
+            }
+
+            /* 모달 패딩 줄이기 */
+            .meal-input-modal,
+            .day-report-content {
+                padding: 20px;
+            }
+
+            /* 테이블 오버플로우 방지 */
+            .timetable-row {
+                gap: 8px;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .card {
+                padding: 12px;
+                margin: 8px 0;
+            }
+
+            /* 식사 버튼 더 작게 */
+            .meal-input-buttons {
+                gap: 8px;
+            }
+
+            .meal-btn {
+                padding: 8px 4px;
+            }
+
+            /* 영양 카드 간격 */
+            .nutrition-grid {
+                gap: 6px;
             }
         }
     </style>
@@ -2283,6 +3110,27 @@
                     <div class="nutrition-summary">
                         <span id="todayMealCount">0</span>회 식사
                     </div>
+
+                    <!-- 식사 직접 입력 버튼 -->
+                    <div class="meal-input-buttons">
+                        <button class="meal-btn meal-btn-breakfast" onclick="openMealInputModal('아침')">
+                            <span class="meal-emoji">🌅</span>
+                            <span class="meal-label">아침</span>
+                        </button>
+                        <button class="meal-btn meal-btn-lunch" onclick="openMealInputModal('점심')">
+                            <span class="meal-emoji">☀️</span>
+                            <span class="meal-label">점심</span>
+                        </button>
+                        <button class="meal-btn meal-btn-dinner" onclick="openMealInputModal('저녁')">
+                            <span class="meal-emoji">🌙</span>
+                            <span class="meal-label">저녁</span>
+                        </button>
+                        <button class="meal-btn meal-btn-snack" onclick="openMealInputModal('간식')">
+                            <span class="meal-emoji">🍪</span>
+                            <span class="meal-label">간식</span>
+                        </button>
+                    </div>
+
                     <div class="nutrition-grid">
                         <div class="nutrition-card nutrition-calories">
                             <div class="nutrition-label">칼로리</div>
@@ -2376,20 +3224,17 @@
 
             <!-- 플랜 탭 -->
             <div id="tab-plan" class="tab-content">
-                <div class="plan-header">
-                    <div class="plan-date" id="planDate">오늘의 플랜</div>
-                    <button class="btn-add-plan" onclick="openAddPlanModal()">+ 추가</button>
-                </div>
-                <div id="planList"></div>
-
-                <!-- ========== Phase 2: 시간표 입력 UI ========== -->
-                <div class="card" style="margin-top: 20px;">
+                <div class="card">
                     <h3 class="card-title">📅 오늘의 일정</h3>
-                    <button class="btn-add-plan" style="width: 100%; margin-bottom: 10px;" onclick="addScheduleItem()">+ 일정 추가</button>
-                    <div id="scheduleList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">시간을 클릭하여 일정을 입력하세요</p>
+
+                    <!-- 시간표 -->
+                    <div class="timetable-container" id="timetableContainer">
+                        <!-- 06:00부터 23:00까지 시간표가 동적으로 생성됩니다 -->
+                    </div>
                 </div>
 
-                <!-- ========== Phase 2: 일기 기능 ========== -->
+                <!-- 일기 기능 -->
                 <div class="card" style="margin-top: 20px;">
                     <h3 class="card-title">📝 오늘의 일기</h3>
                     <textarea id="dailyDiary"
@@ -2401,7 +3246,6 @@
                         <span id="diaryCharCount">0</span> / 500자
                     </div>
                 </div>
-                <!-- =========================================== -->
             </div>
 
             <!-- 단식 탭 -->
@@ -2601,19 +3445,19 @@
                     </div>
 
                     <div class="stats-grid">
-                        <div class="stat-item">
+                        <div class="stat-item" onclick="showDaysActiveDetail()" style="cursor: pointer;">
                             <div class="stat-value" id="totalDays">0</div>
                             <div class="stat-label">함께한 날</div>
                         </div>
-                        <div class="stat-item">
+                        <div class="stat-item" onclick="showExerciseTimeDetail()" style="cursor: pointer;">
                             <div class="stat-value" id="totalExercise">0</div>
                             <div class="stat-label">운동 시간 (분)</div>
                         </div>
-                        <div class="stat-item">
+                        <div class="stat-item" onclick="showCalorieSavingsDetail()" style="cursor: pointer;">
                             <div class="stat-value" id="totalCalories">0</div>
                             <div class="stat-label">절약 칼로리</div>
                         </div>
-                        <div class="stat-item">
+                        <div class="stat-item" onclick="showExpectedCompletionDetail()" style="cursor: pointer;">
                             <div class="stat-value" id="predictedDate">-</div>
                             <div class="stat-label">예상 달성일</div>
                         </div>
@@ -4932,85 +5776,173 @@ ${userMessage}
             // ==========================================
         }
 
-        // ==================== 플랜 탭 ====================
+        // ==================== 플랜 탭 (시간표 형식) ====================
+        let timetableData = {};  // {hour: {text: '', emoji: ''}}
+
         async function loadPlanTab() {
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            document.getElementById('planDate').textContent = `${today.getMonth() + 1}월 ${today.getDate()}일 플랜`;
+            // 시간표 초기화
+            await initializeTimetable();
 
-            const plans = await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('plans')
-                .where('date', '==', todayStr)
-                .orderBy('time', 'asc')
-                .get();
+            // 일기 로드
+            await loadDailyPlan();
+        }
 
-            const planList = document.getElementById('planList');
-            planList.innerHTML = '';
+        async function initializeTimetable() {
+            const container = document.getElementById('timetableContainer');
+            container.innerHTML = '';
 
-            if (plans.empty) {
-                planList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">오늘의 플랜이 없습니다.</p>';
-                return;
+            // 오늘 저장된 시간표 불러오기
+            const today = new Date().toISOString().split('T')[0];
+            const savedTimetable = await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('timetables').doc(today).get();
+
+            if (savedTimetable.exists) {
+                timetableData = savedTimetable.data().schedule || {};
+            } else {
+                timetableData = {};
             }
 
-            plans.forEach(doc => {
-                const plan = doc.data();
-                const planDiv = document.createElement('div');
-                planDiv.className = 'plan-item';
-                planDiv.innerHTML = `
-                    <div class="plan-time">${plan.time}</div>
-                    <div class="plan-content">
-                        <div class="plan-category">${plan.category}</div>
-                        <div class="plan-activity">${plan.activity}</div>
-                        <div class="plan-value">${plan.value || ''}</div>
-                    </div>
-                    <div class="plan-delete" onclick="deletePlan('${doc.id}')">🗑️</div>
-                `;
-                planList.appendChild(planDiv);
+            // 06:00 ~ 23:00까지 시간표 생성
+            for (let hour = 6; hour <= 23; hour++) {
+                const timeStr = `${String(hour).padStart(2, '0')}:00`;
+                const row = createTimetableRow(hour, timetableData[hour] || {});
+                container.appendChild(row);
+            }
+        }
+
+        function createTimetableRow(hour, data) {
+            const row = document.createElement('div');
+            row.className = 'timetable-row';
+
+            const timeStr = `${String(hour).padStart(2, '0')}:00`;
+
+            row.innerHTML = `
+                <div class="timetable-time">${timeStr}</div>
+                <div class="timetable-input-wrapper">
+                    <button class="timetable-emoji-btn" onclick="showEmojiPicker(${hour}, event)">
+                        ${data.emoji || '➕'}
+                    </button>
+                    <input
+                        type="text"
+                        class="timetable-input"
+                        id="timetable-${hour}"
+                        placeholder="일정을 입력하세요..."
+                        value="${data.text || ''}"
+                        oninput="saveTimetableDebounced(${hour})"
+                    />
+                    ${data.text ? `<button class="timetable-clear-btn" onclick="clearTimetableRow(${hour})">✕</button>` : ''}
+                </div>
+            `;
+
+            return row;
+        }
+
+        // 디바운스로 자동 저장
+        let timetableSaveTimeout = null;
+
+        function saveTimetableDebounced(hour) {
+            clearTimeout(timetableSaveTimeout);
+            timetableSaveTimeout = setTimeout(() => {
+                saveTimetable(hour);
+            }, 500);
+        }
+
+        async function saveTimetable(hour) {
+            const input = document.getElementById(`timetable-${hour}`);
+            const text = input.value.trim();
+
+            // 시간표 데이터 업데이트
+            if (!timetableData[hour]) {
+                timetableData[hour] = {};
+            }
+            timetableData[hour].text = text;
+
+            // Firebase에 저장
+            const today = new Date().toISOString().split('T')[0];
+            await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('timetables').doc(today).set({
+                    date: today,
+                    schedule: timetableData,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+            // UI 업데이트 (삭제 버튼 표시/숨김)
+            await initializeTimetable();
+        }
+
+        function showEmojiPicker(hour, event) {
+            event.stopPropagation();
+
+            // 기존 피커 제거
+            const existingPicker = document.querySelector('.timetable-emoji-picker');
+            if (existingPicker) {
+                existingPicker.remove();
+            }
+
+            const picker = document.createElement('div');
+            picker.className = 'timetable-emoji-picker show';
+
+            const emojis = ['🏃', '🍽️', '💧', '📚', '💼', '🛌', '🎯', '🎮', '📱', '🚶', '🧘', '💪', '☕', '🎵'];
+
+            emojis.forEach(emoji => {
+                const option = document.createElement('span');
+                option.className = 'timetable-emoji-option';
+                option.textContent = emoji;
+                option.onclick = () => selectEmoji(hour, emoji);
+                picker.appendChild(option);
             });
 
-            // ========== Phase 2: 일정 & 일기 로드 ==========
-            await loadDailyPlan();
-            // ============================================
+            event.target.parentElement.appendChild(picker);
+
+            // 외부 클릭 시 닫기
+            setTimeout(() => {
+                document.addEventListener('click', closeEmojiPicker, { once: true });
+            }, 0);
         }
 
-        function openAddPlanModal() {
-            const time = prompt('시간을 입력하세요 (예: 07:00)');
-            if (!time) return;
-
-            const category = prompt('카테고리를 입력하세요 (예: 운동, 식사, 물)');
-            if (!category) return;
-
-            const activity = prompt('활동명을 입력하세요');
-            if (!activity) return;
-
-            const value = prompt('예상 수치를 입력하세요 (선택사항, 예: 30분, 500kcal)') || '';
-
-            addPlan(time, category, activity, value);
+        function closeEmojiPicker() {
+            const picker = document.querySelector('.timetable-emoji-picker');
+            if (picker) {
+                picker.remove();
+            }
         }
 
-        async function addPlan(time, category, activity, value) {
+        async function selectEmoji(hour, emoji) {
+            if (!timetableData[hour]) {
+                timetableData[hour] = {};
+            }
+            timetableData[hour].emoji = emoji;
+
+            // Firebase에 저장
             const today = new Date().toISOString().split('T')[0];
-
-            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('plans').add({
+            await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('timetables').doc(today).set({
                     date: today,
-                    time: time,
-                    category: category,
-                    activity: activity,
-                    value: value,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                    schedule: timetableData,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
 
-            await loadPlanTab();
+            closeEmojiPicker();
+            await initializeTimetable();
         }
 
-        async function deletePlan(planId) {
-            if (!confirm('이 플랜을 삭제하시겠습니까?')) return;
+        async function clearTimetableRow(hour) {
+            timetableData[hour] = { text: '', emoji: '' };
 
-            await db.collection('artifacts').doc('diet-mate-v2').collection('users').doc(currentUser.uid)
-                .collection('plans').doc(planId).delete();
+            // Firebase에 저장
+            const today = new Date().toISOString().split('T')[0];
+            await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('timetables').doc(today).set({
+                    date: today,
+                    schedule: timetableData,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
 
-            await loadPlanTab();
+            await initializeTimetable();
         }
 
         // ========== Phase 2: 시간표 & 일기 함수 ==========
@@ -6256,6 +7188,22 @@ ${userMessage}
 
             const logData = dailyLog.exists ? dailyLog.data() : null;
 
+            // 일기 데이터 조회
+            const dailyPlan = await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('dailyPlans').doc(dateStr)
+                .get();
+
+            const diaryData = dailyPlan.exists ? dailyPlan.data() : null;
+
+            // 시간표 데이터 조회
+            const timetable = await db.collection('artifacts').doc('diet-mate-v2')
+                .collection('users').doc(currentUser.uid)
+                .collection('timetables').doc(dateStr)
+                .get();
+
+            const timetableData = timetable.exists ? timetable.data() : null;
+
             // 모달 생성
             const modal = document.createElement('div');
             modal.className = 'day-report-modal';
@@ -6356,6 +7304,38 @@ ${userMessage}
                 `;
             }
 
+            // 시간표
+            if (timetableData && timetableData.schedule) {
+                const schedule = timetableData.schedule;
+                const scheduleEntries = Object.entries(schedule).filter(([hour, data]) => data.text);
+
+                if (scheduleEntries.length > 0) {
+                    content += `
+                        <div class="day-report-section">
+                            <h4>📅 오늘의 일정</h4>
+                            ${scheduleEntries.map(([hour, data]) => {
+                                const timeStr = `${String(hour).padStart(2, '0')}:00`;
+                                return `
+                                    <p style="font-size: 0.9rem; margin: 5px 0;">
+                                        <strong>${timeStr}</strong> ${data.emoji || ''} ${data.text}
+                                    </p>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+            }
+
+            // 일기
+            if (diaryData && diaryData.diary) {
+                content += `
+                    <div class="day-report-section">
+                        <h4>📝 오늘의 일기</h4>
+                        <p style="white-space: pre-wrap; line-height: 1.6; color: #555;">${diaryData.diary}</p>
+                    </div>
+                `;
+            }
+
             // 사진
             if (!photos.empty) {
                 content += `<div class="day-report-section"><h4>📸 사진</h4><div style="display: flex; gap: 10px; flex-wrap: wrap;">`;
@@ -6371,8 +7351,10 @@ ${userMessage}
             const hasExercise = logData && logData.exercises && logData.exercises.length > 0;
             const hasFasting = logData && logData.fasting && logData.fasting.duration;
             const hasWater = logData && logData.water;
+            const hasDiary = diaryData && diaryData.diary;
+            const hasTimetable = timetableData && timetableData.schedule && Object.keys(timetableData.schedule).length > 0;
 
-            if (weights.empty && plans.empty && photos.empty && !hasNutrition && !hasExercise && !hasFasting && !hasWater) {
+            if (weights.empty && plans.empty && photos.empty && !hasNutrition && !hasExercise && !hasFasting && !hasWater && !hasDiary && !hasTimetable) {
                 content += `<p style="text-align: center; color: #999; padding: 40px;">이 날의 기록이 없습니다.</p>`;
             }
 
@@ -6476,7 +7458,10 @@ ${userMessage}
                         <div class="notification-title">${notif.title}</div>
                         <div class="notification-details">${notif.time} - ${notif.repeat}</div>
                     </div>
-                    <div class="notification-delete" onclick="deleteNotification(${index})">🗑️</div>
+                    <div class="notification-actions">
+                        <div class="notification-edit" onclick="editNotification(${index})">✏️</div>
+                        <div class="notification-delete" onclick="deleteNotification(${index})">🗑️</div>
+                    </div>
                 `;
                 list.appendChild(notifDiv);
             });
@@ -6538,6 +7523,55 @@ ${userMessage}
             notifications.splice(index, 1);
             localStorage.setItem(LS_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
             loadNotifications();
+        }
+
+        let editingNotificationIndex = null;
+
+        function editNotification(index) {
+            editingNotificationIndex = index;
+            const notifications = JSON.parse(localStorage.getItem(LS_KEYS.NOTIFICATIONS) || '[]');
+            const notif = notifications[index];
+
+            // 모달에 현재 값 채우기
+            document.getElementById('editNotifTitle').value = notif.title;
+            document.getElementById('editNotifTime').value = notif.time;
+            document.getElementById('editNotifRepeat').value = notif.repeat;
+
+            // 모달 열기
+            document.getElementById('editNotificationModalOverlay').classList.add('show');
+        }
+
+        function closeEditNotificationModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('editNotificationModalOverlay');
+            modal.classList.remove('show');
+            editingNotificationIndex = null;
+        }
+
+        function saveEditedNotification() {
+            if (editingNotificationIndex === null) return;
+
+            const title = document.getElementById('editNotifTitle').value.trim();
+            const time = document.getElementById('editNotifTime').value;
+            const repeat = document.getElementById('editNotifRepeat').value;
+
+            if (!title || !time) {
+                alert('알림 내용과 시간을 모두 입력해주세요.');
+                return;
+            }
+
+            const notifications = JSON.parse(localStorage.getItem(LS_KEYS.NOTIFICATIONS) || '[]');
+            notifications[editingNotificationIndex] = {
+                title: title,
+                time: time,
+                repeat: repeat,
+                lastTriggered: notifications[editingNotificationIndex].lastTriggered
+            };
+
+            localStorage.setItem(LS_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
+            loadNotifications();
+            closeEditNotificationModal();
+            showSuccessToast('알림이 수정되었습니다!');
         }
 
         function startNotificationCheck() {
@@ -6780,6 +7814,192 @@ ${userMessage}
             input.click();
         }
 
+        // ==================== 식사 직접 입력 기능 ====================
+        let currentMealType = '';
+        let analyzedNutrition = null;
+
+        function openMealInputModal(mealType) {
+            currentMealType = mealType;
+            const modal = document.getElementById('mealInputModalOverlay');
+            const title = document.getElementById('mealInputTitle');
+
+            // 이모지 매핑
+            const emojiMap = {
+                '아침': '🌅',
+                '점심': '☀️',
+                '저녁': '🌙',
+                '간식': '🍪'
+            };
+
+            title.textContent = `${emojiMap[mealType]} ${mealType} 입력`;
+            modal.classList.add('show');
+
+            // 입력 필드 초기화
+            document.getElementById('mealFoodName').value = '';
+            document.getElementById('mealGrams').value = '';
+            document.getElementById('nutritionResult').classList.remove('show');
+            document.getElementById('manualInputFields').classList.remove('show');
+            analyzedNutrition = null;
+        }
+
+        function closeMealInputModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('mealInputModalOverlay');
+            modal.classList.remove('show');
+        }
+
+        async function analyzeMealWithAI() {
+            const foodName = document.getElementById('mealFoodName').value.trim();
+            const grams = document.getElementById('mealGrams').value.trim();
+
+            if (!foodName) {
+                alert('음식명을 입력해주세요.');
+                return;
+            }
+
+            const btn = document.getElementById('aiAnalyzeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span><span>분석 중...</span>';
+
+            try {
+                // Gemini API로 영양 분석
+                const prompt = `당신은 ${currentProfile.name} 회원님을 담당하는 전문 영양사입니다.
+
+**회원 정보:**
+- 현재 체중: ${currentProfile.currentWeight}kg
+- 목표 체중: ${currentProfile.goalWeight}kg
+
+**회원님이 섭취한 음식:**
+- 음식명: ${foodName}
+${grams ? `- 양: ${grams}g` : ''}
+
+위 음식의 영양 성분을 분석하여 **반드시 JSON 형식으로만** 응답해주세요:
+
+{
+  "calories": 숫자,
+  "carbs": 숫자,
+  "protein": 숫자,
+  "fat": 숫자,
+  "foodName": "음식명",
+  "advice": "${currentProfile.name} 회원님으로 시작하는 한 줄 조언 (50자 이내)"
+}
+
+주의: JSON 외 다른 텍스트는 절대 포함하지 마세요.`;
+
+                const response = await callGeminiAPI(prompt);
+                const nutrition = parseNutritionResponse(response);
+
+                if (nutrition) {
+                    analyzedNutrition = nutrition;
+
+                    // 결과 표시
+                    document.getElementById('resultCalories').textContent = Math.round(nutrition.calories);
+                    document.getElementById('resultCarbs').textContent = Math.round(nutrition.carbs);
+                    document.getElementById('resultProtein').textContent = Math.round(nutrition.protein);
+                    document.getElementById('resultFat').textContent = Math.round(nutrition.fat);
+
+                    document.getElementById('nutritionResult').classList.add('show');
+
+                    showAIToast(nutrition.advice || '영양 분석 완료!', 3000);
+                } else {
+                    throw new Error('영양 분석 실패');
+                }
+
+            } catch (error) {
+                console.error('AI 분석 오류:', error);
+                alert('영양 분석에 실패했습니다. 수동으로 입력해주세요.');
+                document.getElementById('nutritionResult').classList.add('show');
+                document.getElementById('manualInputFields').classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>🤖</span><span>AI로 영양 분석</span>';
+            }
+        }
+
+        function toggleManualInput() {
+            const manualFields = document.getElementById('manualInputFields');
+            manualFields.classList.toggle('show');
+
+            if (manualFields.classList.contains('show')) {
+                // AI 분석 결과를 수동 입력 필드에 채우기
+                if (analyzedNutrition) {
+                    document.getElementById('manualCalories').value = Math.round(analyzedNutrition.calories);
+                    document.getElementById('manualCarbs').value = Math.round(analyzedNutrition.carbs);
+                    document.getElementById('manualProtein').value = Math.round(analyzedNutrition.protein);
+                    document.getElementById('manualFat').value = Math.round(analyzedNutrition.fat);
+                }
+            }
+        }
+
+        async function saveMealInput() {
+            const foodName = document.getElementById('mealFoodName').value.trim();
+
+            if (!foodName) {
+                alert('음식명을 입력해주세요.');
+                return;
+            }
+
+            // 수동 입력 값 확인
+            const manualFields = document.getElementById('manualInputFields');
+            let nutrition;
+
+            if (manualFields.classList.contains('show')) {
+                // 수동 입력 모드
+                nutrition = {
+                    calories: parseFloat(document.getElementById('manualCalories').value) || 0,
+                    carbs: parseFloat(document.getElementById('manualCarbs').value) || 0,
+                    protein: parseFloat(document.getElementById('manualProtein').value) || 0,
+                    fat: parseFloat(document.getElementById('manualFat').value) || 0,
+                    foodName: foodName,
+                    advice: `${currentMealType} 식사 기록 완료!`
+                };
+            } else if (analyzedNutrition) {
+                // AI 분석 결과 사용
+                nutrition = analyzedNutrition;
+            } else {
+                alert('영양 분석을 먼저 진행하거나 수동으로 입력해주세요.');
+                return;
+            }
+
+            if (nutrition.calories === 0) {
+                if (!confirm('칼로리가 0입니다. 그래도 저장하시겠습니까?')) {
+                    return;
+                }
+            }
+
+            try {
+                // Firestore에 저장
+                const today = new Date();
+                const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+                // photos 컬렉션에 텍스트 식사 기록 저장
+                await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('photos').add({
+                        category: 'food',
+                        text: `${currentMealType}: ${foodName}`,
+                        nutrition: nutrition,
+                        uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        mealType: currentMealType
+                    });
+
+                // Phase 1: 실시간 영양 추적에 반영
+                addMeal(currentMealType, foodName, nutrition);
+
+                // 오늘의 영양 데이터 새로고침
+                await refreshDashboardNutrition();
+
+                // 모달 닫기
+                closeMealInputModal();
+
+                showSuccessToast(`${currentMealType} 식사가 기록되었습니다!`);
+
+            } catch (error) {
+                console.error('식사 저장 실패:', error);
+                alert('식사 기록 저장에 실패했습니다.');
+            }
+        }
+
         // ==================== PWA 기능 ====================
         function initializePWA() {
             // PWA 설치 프롬프트 감지
@@ -6816,6 +8036,303 @@ ${userMessage}
             }
 
             deferredPrompt = null;
+        }
+
+        // ==================== 프로필 통계 상세 모달 ====================
+        function showDaysActiveDetail() {
+            if (!currentProfile.createdAt) {
+                alert('프로필 정보를 먼저 설정해주세요.');
+                return;
+            }
+
+            const startDate = currentProfile.createdAt.toDate();
+            const today = new Date();
+            const diffDays = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+
+            const badges = [];
+            if (diffDays >= 30) badges.push('🏆 30일 달성!');
+            if (diffDays >= 100) badges.push('🏆 100일 달성!');
+            if (diffDays >= 365) badges.push('🏆 365일 달성!');
+
+            const modal = document.createElement('div');
+            modal.className = 'day-report-modal';
+            modal.innerHTML = `
+                <div class="day-report-content" style="max-width: 400px;">
+                    <div class="day-report-header">🗓️ 함께한 날</div>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <div style="font-size: 3rem; font-weight: bold; color: #667eea;">${diffDays}일</div>
+                        <p style="margin-top: 10px; color: #666;">시작일: ${startDate.toLocaleDateString('ko-KR')}</p>
+                        <p style="margin-top: 20px; line-height: 1.6; color: #555;">
+                            ${diffDays}일 동안 열심히 노력하셨어요! 👏
+                        </p>
+                        ${badges.length > 0 ? `
+                            <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 12px;">
+                                ${badges.map(b => `<div style="margin: 5px 0; font-weight: bold;">${b}</div>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <button class="modal-btn modal-btn-primary" onclick="this.closest('.day-report-modal').remove()">닫기</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        async function showExerciseTimeDetail() {
+            try {
+                // dailyLogs에서 모든 운동 데이터 수집
+                const logsSnapshot = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyLogs').get();
+
+                const exerciseBreakdown = {};
+                let totalMinutes = 0;
+
+                logsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.exercises && data.exercises.length > 0) {
+                        data.exercises.forEach(ex => {
+                            if (!exerciseBreakdown[ex.name]) {
+                                exerciseBreakdown[ex.name] = 0;
+                            }
+                            exerciseBreakdown[ex.name] += ex.duration || 0;
+                            totalMinutes += ex.duration || 0;
+                        });
+                    }
+                });
+
+                const totalHours = Math.floor(totalMinutes / 60);
+                const remainingMinutes = totalMinutes % 60;
+
+                const sortedExercises = Object.entries(exerciseBreakdown)
+                    .sort((a, b) => b[1] - a[1]);
+
+                const modal = document.createElement('div');
+                modal.className = 'day-report-modal';
+                modal.innerHTML = `
+                    <div class="day-report-content" style="max-width: 400px;">
+                        <div class="day-report-header">💪 총 운동 시간</div>
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div style="font-size: 2.5rem; font-weight: bold; color: #667eea;">
+                                ${totalHours}시간 ${remainingMinutes}분
+                            </div>
+                            <p style="margin-top: 5px; color: #999; font-size: 0.9rem;">총 ${totalMinutes}분</p>
+                        </div>
+                        ${sortedExercises.length > 0 ? `
+                            <div style="margin-top: 20px;">
+                                <h4 style="margin-bottom: 15px; color: #333;">운동별 누적 시간:</h4>
+                                ${sortedExercises.map(([name, minutes]) => `
+                                    <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 8px; margin-bottom: 8px;">
+                                        <span style="font-weight: 600;">${name}</span>
+                                        <span style="color: #667eea;">${Math.floor(minutes / 60)}시간 ${minutes % 60}분</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p style="text-align: center; color: #999;">아직 운동 기록이 없습니다.</p>'}
+                        ${totalMinutes >= 360 ? '<div style="margin-top: 20px; padding: 12px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 12px; text-align: center; font-weight: bold; color: #2e7d32;">🏆 6시간 이상 운동 달성!</div>' : ''}
+                        <button class="modal-btn modal-btn-primary" onclick="this.closest('.day-report-modal').remove()">닫기</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } catch (error) {
+                console.error('운동 시간 조회 실패:', error);
+                alert('운동 시간 조회에 실패했습니다.');
+            }
+        }
+
+        async function showCalorieSavingsDetail() {
+            try {
+                // dailyLogs에서 영양 데이터 수집
+                const logsSnapshot = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyLogs').get();
+
+                const dailyTarget = currentProfile.recommendedCalories || 2400;
+                let totalSaved = 0;
+                let totalOverage = 0;
+                let daysCount = 0;
+
+                logsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.nutrition && data.nutrition.calories) {
+                        daysCount++;
+                        const diff = dailyTarget - data.nutrition.calories;
+                        if (diff > 0) {
+                            totalSaved += diff;
+                        } else {
+                            totalOverage += Math.abs(diff);
+                        }
+                    }
+                });
+
+                const netSavings = totalSaved - totalOverage;
+                const avgDailySavings = daysCount > 0 ? Math.round(netSavings / daysCount) : 0;
+
+                const modal = document.createElement('div');
+                modal.className = 'day-report-modal';
+                modal.innerHTML = `
+                    <div class="day-report-content" style="max-width: 400px;">
+                        <div class="day-report-header">🔥 절약 칼로리</div>
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div style="font-size: 2.5rem; font-weight: bold; color: ${netSavings >= 0 ? '#4caf50' : '#ff5252'};">
+                                ${netSavings >= 0 ? '' : '+'}${Math.abs(netSavings).toLocaleString()}kcal
+                            </div>
+                        </div>
+                        ${netSavings >= 0 ? `
+                            <div style="padding: 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 12px; margin-bottom: 20px;">
+                                <p style="font-weight: bold; color: #2e7d32; margin-bottom: 5px;">✅ 목표보다 ${netSavings.toLocaleString()}kcal 덜 섭취했어요!</p>
+                                <p style="font-size: 0.9rem; color: #555;">이대로만 계속하면 목표 달성이 가까워요! 💪</p>
+                            </div>
+                        ` : `
+                            <div style="padding: 15px; background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-radius: 12px; margin-bottom: 20px;">
+                                <p style="font-weight: bold; color: #c62828; margin-bottom: 5px;">⚠️ 목표보다 ${Math.abs(netSavings).toLocaleString()}kcal 더 섭취했어요</p>
+                                <p style="font-size: 0.9rem; color: #555;">조금만 더 절제하면 좋은 결과를 얻을 수 있어요!</p>
+                            </div>
+                        `}
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>총 절약:</span>
+                                <span style="color: #4caf50; font-weight: bold;">${totalSaved.toLocaleString()}kcal</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                <span>총 초과:</span>
+                                <span style="color: #ff5252; font-weight: bold;">+${totalOverage.toLocaleString()}kcal</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-weight: bold; padding-top: 10px; border-top: 2px solid #e0e0e0;">
+                                <span>순 절약:</span>
+                                <span style="color: ${netSavings >= 0 ? '#4caf50' : '#ff5252'};">${netSavings.toLocaleString()}kcal</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.9rem; color: #666;">
+                                <span>일평균:</span>
+                                <span>${avgDailySavings.toLocaleString()}kcal</span>
+                            </div>
+                        </div>
+                        <button class="modal-btn modal-btn-primary" style="margin-top: 20px;" onclick="this.closest('.day-report-modal').remove()">닫기</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } catch (error) {
+                console.error('칼로리 조회 실패:', error);
+                alert('칼로리 절약량 조회에 실패했습니다.');
+            }
+        }
+
+        async function showExpectedCompletionDetail() {
+            if (!currentProfile.goalWeight) {
+                alert('목표 체중을 먼저 설정해주세요.');
+                return;
+            }
+
+            try {
+                // 최근 30일 체중 데이터 가져오기
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+                const weightsSnapshot = await db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('logs')
+                    .where('date', '>=', firebase.firestore.Timestamp.fromDate(thirtyDaysAgo))
+                    .orderBy('date', 'desc')
+                    .get();
+
+                if (weightsSnapshot.empty) {
+                    alert('체중 기록이 부족합니다. 최소 2개 이상의 체중 기록이 필요합니다.');
+                    return;
+                }
+
+                const weights = [];
+                weightsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    weights.push({
+                        date: data.date.toDate(),
+                        weight: data.weight
+                    });
+                });
+
+                weights.reverse(); // 오래된 순으로 정렬
+
+                if (weights.length < 2) {
+                    alert('체중 기록이 부족합니다. 최소 2개 이상의 체중 기록이 필요합니다.');
+                    return;
+                }
+
+                // 평균 주간 감량 속도 계산
+                const firstWeight = weights[0].weight;
+                const lastWeight = weights[weights.length - 1].weight;
+                const daysDiff = (weights[weights.length - 1].date - weights[0].date) / (1000 * 60 * 60 * 24);
+                const totalLoss = firstWeight - lastWeight;
+                const weeklyLoss = (totalLoss / daysDiff) * 7;
+
+                const currentWeight = lastWeight;
+                const goalWeight = currentProfile.goalWeight;
+                const remainingWeight = currentWeight - goalWeight;
+
+                if (weeklyLoss <= 0) {
+                    const modal = document.createElement('div');
+                    modal.className = 'day-report-modal';
+                    modal.innerHTML = `
+                        <div class="day-report-content" style="max-width: 400px;">
+                            <div class="day-report-header">📅 예상 달성일</div>
+                            <div style="text-align: center; margin: 30px 0;">
+                                <p style="font-size: 1.2rem; color: #ff5252; font-weight: bold;">⚠️ 현재 체중이 증가 중이거나 변화가 없습니다</p>
+                                <p style="margin-top: 20px; color: #666; line-height: 1.6;">
+                                    체중 감량을 위해 식단 조절과 운동을 시작해보세요!
+                                </p>
+                            </div>
+                            <button class="modal-btn modal-btn-primary" onclick="this.closest('.day-report-modal').remove()">닫기</button>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                    return;
+                }
+
+                const weeksNeeded = Math.ceil(remainingWeight / weeklyLoss);
+                const daysNeeded = weeksNeeded * 7;
+
+                const expectedDate = new Date();
+                expectedDate.setDate(expectedDate.getDate() + daysNeeded);
+
+                const originalGoalDate = currentProfile.targetDate ? currentProfile.targetDate.toDate() : null;
+                let daysDifference = 0;
+                if (originalGoalDate) {
+                    daysDifference = Math.ceil((expectedDate - originalGoalDate) / (1000 * 60 * 60 * 24));
+                }
+
+                const modal = document.createElement('div');
+                modal.className = 'day-report-modal';
+                modal.innerHTML = `
+                    <div class="day-report-content" style="max-width: 400px;">
+                        <div class="day-report-header">📅 예상 달성일</div>
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #667eea;">${expectedDate.toLocaleDateString('ko-KR')}</div>
+                            <p style="margin-top: 10px; color: #999; font-size: 0.9rem;">약 ${daysNeeded}일 후</p>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;"><strong>최근 감량 속도:</strong> 주당 ${weeklyLoss.toFixed(2)}kg</p>
+                            ${originalGoalDate ? `<p><strong>원래 목표일:</strong> ${originalGoalDate.toLocaleDateString('ko-KR')}</p>` : ''}
+                        </div>
+                        ${originalGoalDate ? (daysDifference < 0 ? `
+                            <div style="padding: 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 12px;">
+                                <p style="font-weight: bold; color: #2e7d32; margin-bottom: 5px;">🎉 목표일보다 ${Math.abs(daysDifference)}일 빨라요!</p>
+                                <p style="font-size: 0.9rem; color: #555;">현재 페이스가 완벽해요! 이대로만 가면 목표를 달성할 수 있어요!</p>
+                            </div>
+                        ` : daysDifference > 0 ? `
+                            <div style="padding: 15px; background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 12px;">
+                                <p style="font-weight: bold; color: #e65100; margin-bottom: 5px;">⚠️ 목표일보다 ${daysDifference}일 늦을 것 같아요</p>
+                                <p style="font-size: 0.9rem; color: #555;">조금 더 노력하면 목표일에 맞출 수 있어요!</p>
+                            </div>
+                        ` : `
+                            <div style="padding: 15px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 12px;">
+                                <p style="font-weight: bold; color: #2e7d32;">✅ 목표일에 정확히 맞춰가고 있어요!</p>
+                            </div>
+                        `) : ''}
+                        <button class="modal-btn modal-btn-primary" style="margin-top: 20px;" onclick="this.closest('.day-report-modal').remove()">닫기</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            } catch (error) {
+                console.error('예상 달성일 계산 실패:', error);
+                alert('예상 달성일 계산에 실패했습니다.');
+            }
         }
 
         // ==================== 프로필 재설정 ====================
@@ -7024,6 +8541,117 @@ ${userMessage}
             <div class="meal-list" id="mealList">
                 <!-- 식사 목록이 여기에 동적으로 생성됨 -->
                 <div class="meal-list-loading">불러오는 중...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 식사 직접 입력 모달 -->
+    <div class="meal-input-modal-overlay" id="mealInputModalOverlay" onclick="closeMealInputModal(event)">
+        <div class="meal-input-modal" onclick="event.stopPropagation()">
+            <div class="meal-input-header">
+                <h2 class="meal-input-title" id="mealInputTitle">🍽️ 식사 입력</h2>
+                <button class="modal-close" onclick="closeMealInputModal()">&times;</button>
+            </div>
+
+            <div class="meal-input-form">
+                <div class="form-group-meal">
+                    <label class="form-label-meal">음식명</label>
+                    <input type="text" id="mealFoodName" class="form-input-meal" placeholder="예: 고구마, 닭가슴살 샐러드">
+                </div>
+
+                <div class="form-group-meal">
+                    <label class="form-label-meal">양 (그람)</label>
+                    <input type="number" id="mealGrams" class="form-input-meal" placeholder="예: 150">
+                </div>
+
+                <button class="ai-analyze-btn" id="aiAnalyzeBtn" onclick="analyzeMealWithAI()">
+                    <span>🤖</span>
+                    <span>AI로 영양 분석</span>
+                </button>
+
+                <div class="nutrition-result" id="nutritionResult">
+                    <div class="nutrition-result-title">📊 분석 결과</div>
+                    <div class="nutrition-result-grid">
+                        <div class="nutrition-result-item">
+                            <div class="nutrition-result-label">칼로리</div>
+                            <div class="nutrition-result-value" id="resultCalories">0</div>
+                            <div class="nutrition-result-label">kcal</div>
+                        </div>
+                        <div class="nutrition-result-item">
+                            <div class="nutrition-result-label">탄수화물</div>
+                            <div class="nutrition-result-value" id="resultCarbs">0</div>
+                            <div class="nutrition-result-label">g</div>
+                        </div>
+                        <div class="nutrition-result-item">
+                            <div class="nutrition-result-label">단백질</div>
+                            <div class="nutrition-result-value" id="resultProtein">0</div>
+                            <div class="nutrition-result-label">g</div>
+                        </div>
+                        <div class="nutrition-result-item">
+                            <div class="nutrition-result-label">지방</div>
+                            <div class="nutrition-result-value" id="resultFat">0</div>
+                            <div class="nutrition-result-label">g</div>
+                        </div>
+                    </div>
+
+                    <div class="manual-input-toggle" onclick="toggleManualInput()">
+                        💡 수동으로 직접 입력하기
+                    </div>
+
+                    <div class="manual-input-fields" id="manualInputFields">
+                        <div class="form-group-meal">
+                            <label class="form-label-meal">칼로리 (kcal)</label>
+                            <input type="number" id="manualCalories" class="form-input-meal" placeholder="0">
+                        </div>
+                        <div class="form-group-meal">
+                            <label class="form-label-meal">탄수화물 (g)</label>
+                            <input type="number" id="manualCarbs" class="form-input-meal" placeholder="0">
+                        </div>
+                        <div class="form-group-meal">
+                            <label class="form-label-meal">단백질 (g)</label>
+                            <input type="number" id="manualProtein" class="form-input-meal" placeholder="0">
+                        </div>
+                        <div class="form-group-meal">
+                            <label class="form-label-meal">지방 (g)</label>
+                            <input type="number" id="manualFat" class="form-input-meal" placeholder="0">
+                        </div>
+                    </div>
+
+                    <button class="save-meal-btn" onclick="saveMealInput()">저장하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 수정 모달 -->
+    <div class="meal-input-modal-overlay" id="editNotificationModalOverlay" onclick="closeEditNotificationModal(event)">
+        <div class="meal-input-modal" onclick="event.stopPropagation()">
+            <div class="meal-input-header">
+                <h2 class="meal-input-title">✏️ 알림 수정</h2>
+                <button class="modal-close" onclick="closeEditNotificationModal()">&times;</button>
+            </div>
+
+            <div class="meal-input-form">
+                <div class="form-group-meal">
+                    <label class="form-label-meal">알림 내용</label>
+                    <input type="text" id="editNotifTitle" class="form-input-meal" placeholder="예: 물 마시기">
+                </div>
+
+                <div class="form-group-meal">
+                    <label class="form-label-meal">알림 시간</label>
+                    <input type="time" id="editNotifTime" class="form-input-meal">
+                </div>
+
+                <div class="form-group-meal">
+                    <label class="form-label-meal">반복 주기</label>
+                    <select id="editNotifRepeat" class="form-input-meal">
+                        <option value="매일">매일</option>
+                        <option value="매주">매주</option>
+                        <option value="한 번만">한 번만</option>
+                    </select>
+                </div>
+
+                <button class="save-meal-btn" onclick="saveEditedNotification()">저장하기</button>
             </div>
         </div>
     </div>
