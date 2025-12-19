@@ -1144,10 +1144,88 @@
             color: #666;
         }
 
+        .nutrition-remaining {
+            font-size: 0.75rem;
+            color: #4caf50;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .nutrition-remaining.over {
+            color: #ff5252;
+        }
+
         .nutrition-chart-container {
             max-width: 300px;
             margin: 0 auto;
             padding: 20px 0;
+        }
+
+        /* 권장 섭취량 섹션 */
+        .recommended-intake-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .recommended-intake-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .rec-intake-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .rec-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .rec-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 4px 0;
+        }
+
+        .rec-unit {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* 입력 방법 선택 버튼 */
+        .input-method-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .input-method-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .input-method-btn:active {
+            transform: translateY(0);
         }
 
         /* ==================== 식사 직접 입력 버튼 ==================== */
@@ -1660,6 +1738,56 @@
             border-radius: 6px;
             transition: background 0.2s;
             font-size: 1.5rem;
+        }
+
+        /* 플랜 탭 모바일 최적화 */
+        @media (max-width: 768px) {
+            .timetable-container {
+                gap: 8px;
+                width: 100%;
+                padding: 0;
+            }
+
+            .timetable-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px;
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .timetable-time {
+                font-size: 0.85rem;
+                min-width: 50px;
+                max-width: 50px;
+                flex-shrink: 0;
+                padding: 0;
+            }
+
+            .timetable-input-wrapper {
+                flex: 1;
+                min-width: 0;
+                gap: 6px;
+            }
+
+            .timetable-input {
+                flex: 1;
+                min-width: 0;
+                padding: 8px 10px;
+                font-size: 0.85rem;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .timetable-emoji-btn {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+                flex-shrink: 0;
+                font-size: 1.1rem;
+            }
         }
 
         .timetable-emoji-option:hover {
@@ -3146,6 +3274,8 @@
             z-index: var(--z-modal);
             animation: fadeIn 0.3s ease-out;
             backdrop-filter: blur(4px);
+            overflow-y: auto; /* 모달 자체 스크롤 */
+            -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
         }
 
         .modal-content {
@@ -3158,6 +3288,65 @@
             overflow-y: auto;
             box-shadow: var(--shadow-xl);
             animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* 프로필 설정 모달 모바일 최적화 */
+        @media (max-width: 768px) {
+            #initialProfileSetupModal {
+                align-items: flex-start;
+            }
+
+            #initialProfileSetupModal .modal-content {
+                background: white;
+                border-radius: 20px 20px 0 0;
+                padding: 20px;
+                padding-bottom: 80px; /* 하단 고정 버튼 공간 확보 */
+                margin: 0;
+                margin-top: auto;
+                min-height: 100vh;
+                max-height: none;
+                width: 100%;
+                max-width: 100%;
+                position: relative;
+                animation: slideUp 0.35s ease-out;
+            }
+
+            #initialProfileSetupModal .modal-content h3 {
+                position: sticky;
+                top: 0;
+                background: white;
+                padding: 15px 0;
+                margin: -20px -20px 20px -20px;
+                padding: 15px 20px;
+                border-bottom: 1px solid #f0f0f0;
+                z-index: 10;
+            }
+
+            #initialProfileSetupModal .modal-content > p {
+                margin-top: 0;
+            }
+
+            #initialProfileSetupModal .merge-btn.merge-confirm {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                margin: 0;
+                padding: 18px;
+                border-radius: 0;
+                z-index: 11;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
@@ -3270,6 +3459,93 @@
 
             .nutrition-value {
                 font-size: 1.5rem;
+            }
+
+            /* 권장 섭취량 그리드 */
+            .recommended-intake-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .rec-intake-item {
+                padding: 8px;
+            }
+
+            .rec-value {
+                font-size: 1.1rem;
+            }
+
+            /* 입력 방법 버튼 */
+            .input-method-btn {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+
+            /* 버튼 전체 */
+            .btn, button {
+                max-width: 100%;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+
+            /* 입력 필드 (iOS 자동 줌 방지) */
+            input, select, textarea {
+                max-width: 100%;
+                font-size: 16px !important;
+            }
+
+            /* 헤더 */
+            .header {
+                padding: 20px 15px;
+                border-radius: 0 0 20px 20px;
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+            }
+
+            /* 컨텐츠 */
+            .content {
+                padding: 15px;
+            }
+
+            /* 하단 네비게이션 */
+            .bottom-nav {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                padding: 10px 5px;
+            }
+
+            .bottom-nav::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-item {
+                min-width: 65px;
+                padding: 5px 8px;
+            }
+
+            .nav-icon {
+                font-size: 1.3rem;
+            }
+
+            .nav-label {
+                font-size: 0.65rem;
+            }
+
+            /* 물 마시기 */
+            .water-tracker {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px;
+                justify-content: center;
+            }
+
+            .water-cup {
+                width: calc(25% - 8px);
+                min-width: 60px;
+                aspect-ratio: 1;
             }
 
             /* ==================== 사이드바 모바일 드래워 ==================== */
@@ -3583,66 +3859,107 @@
                 <!-- 영양 대시보드 -->
                 <div class="card">
                     <h3 class="card-title">🍽️ 오늘의 영양 섭취</h3>
-                    <div class="nutrition-summary">
-                        <span id="todayMealCount">0</span>회 식사
+
+                    <!-- 권장 섭취량 (자동 계산) -->
+                    <div class="recommended-intake-section">
+                        <h4 style="font-size: 0.95rem; color: #666; margin-bottom: 10px;">📊 권장 섭취량 (자동 계산)</h4>
+                        <div class="recommended-intake-grid">
+                            <div class="rec-intake-item">
+                                <span class="rec-label">칼로리</span>
+                                <span class="rec-value" id="recommendedCalories">2400</span>
+                                <span class="rec-unit">kcal</span>
+                            </div>
+                            <div class="rec-intake-item">
+                                <span class="rec-label">탄수화물</span>
+                                <span class="rec-value" id="recommendedCarbs">300</span>
+                                <span class="rec-unit">g</span>
+                            </div>
+                            <div class="rec-intake-item">
+                                <span class="rec-label">단백질</span>
+                                <span class="rec-value" id="recommendedProtein">100</span>
+                                <span class="rec-unit">g</span>
+                            </div>
+                            <div class="rec-intake-item">
+                                <span class="rec-label">지방</span>
+                                <span class="rec-value" id="recommendedFat">80</span>
+                                <span class="rec-unit">g</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- 식사 직접 입력 버튼 -->
-                    <div class="meal-input-buttons">
-                        <button class="meal-btn meal-btn-breakfast" onclick="openMealInputModal('아침')">
-                            <span class="meal-emoji">🌅</span>
-                            <span class="meal-label">아침</span>
-                        </button>
-                        <button class="meal-btn meal-btn-lunch" onclick="openMealInputModal('점심')">
-                            <span class="meal-emoji">☀️</span>
-                            <span class="meal-label">점심</span>
-                        </button>
-                        <button class="meal-btn meal-btn-dinner" onclick="openMealInputModal('저녁')">
-                            <span class="meal-emoji">🌙</span>
-                            <span class="meal-label">저녁</span>
-                        </button>
-                        <button class="meal-btn meal-btn-snack" onclick="openMealInputModal('간식')">
-                            <span class="meal-emoji">🍪</span>
-                            <span class="meal-label">간식</span>
-                        </button>
+                    <div style="border-top: 1px solid #e0e0e0; margin: 20px 0;"></div>
+
+                    <!-- 현재 섭취량 -->
+                    <h4 style="font-size: 0.95rem; color: #666; margin-bottom: 10px;">📈 현재 섭취량</h4>
+                    <div class="nutrition-summary">
+                        오늘 <span id="todayMealCount">0</span>회 식사
                     </div>
 
                     <div class="nutrition-grid">
                         <div class="nutrition-card nutrition-calories">
                             <div class="nutrition-label">칼로리</div>
                             <div class="nutrition-value" id="todayCalories">0</div>
-                            <div class="nutrition-unit">kcal</div>
+                            <div class="nutrition-remaining" id="remainingCalories">2400 남음</div>
                         </div>
                         <div class="nutrition-card nutrition-carbs">
                             <div class="nutrition-label">탄수화물</div>
                             <div class="nutrition-value" id="todayCarbs">0</div>
-                            <div class="nutrition-unit">g</div>
+                            <div class="nutrition-remaining" id="remainingCarbs">300 남음</div>
                         </div>
                         <div class="nutrition-card nutrition-protein">
                             <div class="nutrition-label">단백질</div>
                             <div class="nutrition-value" id="todayProtein">0</div>
-                            <div class="nutrition-unit">g</div>
+                            <div class="nutrition-remaining" id="remainingProtein">100 남음</div>
                         </div>
                         <div class="nutrition-card nutrition-fat">
                             <div class="nutrition-label">지방</div>
                             <div class="nutrition-value" id="todayFat">0</div>
-                            <div class="nutrition-unit">g</div>
+                            <div class="nutrition-remaining" id="remainingFat">80 남음</div>
                         </div>
                     </div>
+
+                    <div style="border-top: 1px solid #e0e0e0; margin: 20px 0;"></div>
+
+                    <!-- 식사 입력 -->
+                    <h4 style="font-size: 0.95rem; color: #666; margin-bottom: 10px;">🍴 식사 기록하기</h4>
+                    <div class="meal-input-buttons">
+                        <button class="meal-btn meal-btn-breakfast" onclick="selectMeal('아침')">
+                            <span class="meal-emoji">🌅</span>
+                            <span class="meal-label">아침</span>
+                        </button>
+                        <button class="meal-btn meal-btn-lunch" onclick="selectMeal('점심')">
+                            <span class="meal-emoji">☀️</span>
+                            <span class="meal-label">점심</span>
+                        </button>
+                        <button class="meal-btn meal-btn-dinner" onclick="selectMeal('저녁')">
+                            <span class="meal-emoji">🌙</span>
+                            <span class="meal-label">저녁</span>
+                        </button>
+                        <button class="meal-btn meal-btn-snack" onclick="selectMeal('간식')">
+                            <span class="meal-emoji">🍪</span>
+                            <span class="meal-label">간식</span>
+                        </button>
+                    </div>
+
+                    <!-- 입력 방법 선택 (선택된 식사 타입이 있을 때 표시) -->
+                    <div id="mealInputMethod" style="display: none; margin-top: 15px;">
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                            <div style="text-align: center; font-weight: bold; margin-bottom: 10px; color: #333;">
+                                <span id="selectedMealType">아침</span> 입력 방법을 선택하세요
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: center;">
+                                <button class="input-method-btn" onclick="openMealInputModal()">
+                                    ✍️ 글로 입력
+                                </button>
+                                <button class="input-method-btn" onclick="uploadFoodPhoto()">
+                                    📷 사진 촬영
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="nutrition-chart-container">
                         <canvas id="nutritionChart"></canvas>
-                    </div>
-                </div>
-                <!-- 권장 칼로리 카드 (새로 추가) -->
-                <div class="card">
-                    <h3 class="card-title">🎯 맞춤 권장 섭취량</h3>
-                    <div class="calorie-recommendation">
-                        <div class="calorie-rec-title">오늘의 목표 칼로리</div>
-                        <div>
-                            <span class="calorie-rec-value" id="recommendedCalories">0</span>
-                            <span class="calorie-rec-unit">kcal</span>
-                        </div>
-                        <div class="calorie-rec-desc">나이, 키, 체중 기반 계산</div>
                     </div>
                 </div>
 
@@ -4090,36 +4407,36 @@
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">닉네임</label>
                 <input type="text" id="initialSetupName" class="form-input"
-                       placeholder="예: 홍길동" required>
+                       placeholder="예: 홍길동" value="" required>
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">현재 체중 (kg)</label>
                 <input type="number" id="initialSetupStartWeight" class="form-input"
-                       step="0.1" placeholder="예: 70.0" required>
+                       step="0.1" placeholder="예: 70.0" value="" required>
             </div>
 
             <div class="form-group" style="margin-bottom: 30px;">
                 <label class="form-label">목표 체중 (kg)</label>
                 <input type="number" id="initialSetupGoalWeight" class="form-input"
-                       step="0.1" placeholder="예: 65.0" required>
+                       step="0.1" placeholder="예: 65.0" value="" required>
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">나이</label>
                 <input type="number" id="initialSetupAge" class="form-input"
-                       placeholder="예: 30" min="10" max="120">
+                       placeholder="예: 30" min="10" max="120" value="">
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">키 (cm)</label>
                 <input type="number" id="initialSetupHeight" class="form-input"
-                       step="0.1" placeholder="예: 170.0">
+                       step="0.1" placeholder="예: 170.0" value="">
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">성별</label>
                 <select id="initialSetupGender" class="form-input">
-                    <option value="">선택하세요</option>
+                    <option value="" selected>선택하세요</option>
                     <option value="male">남성</option>
                     <option value="female">여성</option>
                 </select>
@@ -4127,7 +4444,7 @@
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label class="form-label">목표 날짜</label>
-                <input type="date" id="initialSetupTargetDate" class="form-input">
+                <input type="date" id="initialSetupTargetDate" class="form-input" value="">
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
@@ -4190,6 +4507,8 @@
         let aiToastTimeout = null;
         let pendingMealData = null;
         let recentMealDocId = null;
+        let currentMealType = '아침'; // 현재 선택된 식사 타입
+        const GEMINI_API_KEY = 'AIzaSyB9qZ82FYcbW73FPXdUngIp7HD_kYU6Odg'; // Gemini API 키
 
 
         // ==================== 알림 권한 요청 ====================
@@ -4837,13 +5156,123 @@
             // ========================================
         }
 
+        // 권장 섭취량 자동 계산 (Harris-Benedict 공식)
+        function calculateRecommendedIntake() {
+            if (!currentProfile || !currentProfile.age || !currentProfile.height || !currentProfile.startWeight) {
+                // 프로필 미입력 시 기본값
+                return {
+                    calories: 2400,
+                    carbs: 300,
+                    protein: 100,
+                    fat: 80
+                };
+            }
+
+            const { age, height, startWeight, gender, activityLevel, goal } = currentProfile;
+            const weight = startWeight;
+
+            // 기초대사량 계산 (Harris-Benedict)
+            let bmr;
+            if (gender === 'male' || gender === '남성') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            // 활동량 계수
+            const activityMultipliers = {
+                'sedentary': 1.2,
+                'light': 1.375,
+                'moderate': 1.55,
+                'active': 1.725,
+                'veryActive': 1.9
+            };
+            const activityMultiplier = activityMultipliers[activityLevel] || 1.55;
+
+            // 총 에너지 소비량 (TDEE)
+            let tdee = Math.round(bmr * activityMultiplier);
+
+            // 목표에 따라 칼로리 조정
+            if (goal === 'lose') {
+                tdee = tdee - 500; // 체중 감량: -500kcal
+            } else if (goal === 'gain') {
+                tdee = tdee + 500; // 체중 증가: +500kcal
+            }
+
+            const targetCalories = Math.max(1200, tdee); // 최소 1200kcal 보장
+
+            return {
+                calories: targetCalories,
+                carbs: Math.round(targetCalories * 0.5 / 4), // 50% 탄수화물
+                protein: Math.round(targetCalories * 0.3 / 4), // 30% 단백질
+                fat: Math.round(targetCalories * 0.2 / 9) // 20% 지방
+            };
+        }
+
         // UI 업데이트 함수
         function updateNutritionUI() {
+            // 권장 섭취량 계산
+            const recommended = calculateRecommendedIntake();
+
+            // 권장 섭취량 표시
+            document.getElementById('recommendedCalories').textContent = recommended.calories;
+            document.getElementById('recommendedCarbs').textContent = recommended.carbs;
+            document.getElementById('recommendedProtein').textContent = recommended.protein;
+            document.getElementById('recommendedFat').textContent = recommended.fat;
+
+            // 현재 섭취량 표시
             document.getElementById('todayMealCount').textContent = todayIntake.meals.length;
             document.getElementById('todayCalories').textContent = Math.round(todayIntake.calories);
             document.getElementById('todayCarbs').textContent = Math.round(todayIntake.carbs);
             document.getElementById('todayProtein').textContent = Math.round(todayIntake.protein);
             document.getElementById('todayFat').textContent = Math.round(todayIntake.fat);
+
+            // 남은 섭취량 계산 및 표시
+            const remainingCalories = recommended.calories - todayIntake.calories;
+            const remainingCarbs = recommended.carbs - todayIntake.carbs;
+            const remainingProtein = recommended.protein - todayIntake.protein;
+            const remainingFat = recommended.fat - todayIntake.fat;
+
+            const caloriesElem = document.getElementById('remainingCalories');
+            const carbsElem = document.getElementById('remainingCarbs');
+            const proteinElem = document.getElementById('remainingProtein');
+            const fatElem = document.getElementById('remainingFat');
+
+            // 칼로리
+            if (remainingCalories >= 0) {
+                caloriesElem.textContent = `${Math.round(remainingCalories)} 남음`;
+                caloriesElem.className = 'nutrition-remaining';
+            } else {
+                caloriesElem.textContent = `${Math.abs(Math.round(remainingCalories))} 초과`;
+                caloriesElem.className = 'nutrition-remaining over';
+            }
+
+            // 탄수화물
+            if (remainingCarbs >= 0) {
+                carbsElem.textContent = `${Math.round(remainingCarbs)}g 남음`;
+                carbsElem.className = 'nutrition-remaining';
+            } else {
+                carbsElem.textContent = `${Math.abs(Math.round(remainingCarbs))}g 초과`;
+                carbsElem.className = 'nutrition-remaining over';
+            }
+
+            // 단백질
+            if (remainingProtein >= 0) {
+                proteinElem.textContent = `${Math.round(remainingProtein)}g 남음`;
+                proteinElem.className = 'nutrition-remaining';
+            } else {
+                proteinElem.textContent = `${Math.abs(Math.round(remainingProtein))}g 초과`;
+                proteinElem.className = 'nutrition-remaining over';
+            }
+
+            // 지방
+            if (remainingFat >= 0) {
+                fatElem.textContent = `${Math.round(remainingFat)}g 남음`;
+                fatElem.className = 'nutrition-remaining';
+            } else {
+                fatElem.textContent = `${Math.abs(Math.round(remainingFat))}g 초과`;
+                fatElem.className = 'nutrition-remaining over';
+            }
 
             // 차트 업데이트
             if (todayIntake.carbs > 0 || todayIntake.protein > 0 || todayIntake.fat > 0) {
@@ -5074,6 +5503,39 @@
 
             } catch (error) {
                 console.error('❌ 일일 로그 저장 실패:', error);
+            }
+        }
+
+        // 캘린더에서 특정 타입의 데이터 삭제
+        async function removeFromDailyLog(date, type) {
+            if (!currentUser) {
+                console.warn('⚠️ 사용자가 로그인되지 않음');
+                return;
+            }
+
+            try {
+                // 날짜를 YYYY-MM-DD 형식으로 변환
+                const dateObj = date instanceof Date ? date : new Date(date);
+                const dateStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+
+                // Firestore에서 해당 필드 삭제
+                const logRef = db.collection('artifacts').doc('diet-mate-v2')
+                    .collection('users').doc(currentUser.uid)
+                    .collection('dailyLogs').doc(dateStr);
+
+                await logRef.update({
+                    [type]: firebase.firestore.FieldValue.delete()
+                });
+
+                console.log(`🗑️ 캘린더에서 삭제 완료 [${dateStr}] ${type}`);
+
+            } catch (error) {
+                // 문서가 존재하지 않는 경우는 무시
+                if (error.code === 'not-found') {
+                    console.log('삭제할 데이터가 없습니다.');
+                } else {
+                    console.error('❌ 캘린더 데이터 삭제 실패:', error);
+                }
             }
         }
 
@@ -5835,6 +6297,11 @@ ${userMessage}
 
             modal.style.display = 'flex';
 
+            // 뒤 배경 스크롤 막기 (모바일 최적화)
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+
             // 기존 데이터가 있으면 미리 채우기 (복구 시도)
             if (currentProfile) {
                 if (currentProfile.name && currentProfile.name !== '회원') {
@@ -5919,6 +6386,11 @@ ${userMessage}
 
                 // 모달 닫기
                 document.getElementById('initialProfileSetupModal').style.display = 'none';
+
+                // 스크롤 복구
+                document.body.style.overflow = '';
+                document.body.style.position = '';
+                document.body.style.width = '';
 
                 // 앱 초기화 및 대시보드 표시
                 document.getElementById('dashboard').classList.remove('hidden');
@@ -6290,9 +6762,13 @@ ${userMessage}
             const totalIntake = settings.filled.length * cupSize;
 
             if (totalIntake > 0) {
+                // 물 섭취량이 있으면 캘린더에 저장
                 saveToDailyLog(new Date(), 'water', {
                     amount: totalIntake
                 });
+            } else {
+                // 0ml이면 캘린더에서 삭제
+                removeFromDailyLog(new Date(), 'water');
             }
             // ==========================================
         }
@@ -8336,11 +8812,165 @@ ${userMessage}
         }
 
         // ==================== 식사 직접 입력 기능 ====================
-        let currentMealType = '';
         let analyzedNutrition = null;
 
-        function openMealInputModal(mealType) {
+        // 식사 타입 선택
+        function selectMeal(mealType) {
             currentMealType = mealType;
+            document.getElementById('selectedMealType').textContent = mealType;
+            document.getElementById('mealInputMethod').style.display = 'block';
+        }
+
+        // 사진으로 음식 분석 (Gemini Vision API)
+        async function uploadFoodPhoto() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.capture = 'camera'; // 모바일에서 카메라 직접 열기
+
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                showLoading('AI가 음식을 분석 중...');
+
+                try {
+                    // 1. Firebase Storage에 업로드
+                    const timestamp = Date.now();
+                    const storageRef = storage.ref(`meals/${currentUser.uid}/${timestamp}.jpg`);
+                    await storageRef.put(file);
+                    const photoURL = await storageRef.getDownloadURL();
+
+                    // 2. 이미지를 Base64로 변환
+                    const base64Image = await fileToBase64(file);
+
+                    // 3. Gemini Flash 1.5로 음식 분석
+                    const analysis = await analyzeImageWithGemini(base64Image);
+
+                    hideLoading();
+
+                    if (analysis) {
+                        // 4. 영양 섭취에 추가
+                        addMeal(currentMealType, analysis.foodName, {
+                            calories: analysis.calories,
+                            carbs: analysis.carbs,
+                            protein: analysis.protein,
+                            fat: analysis.fat,
+                            timestamp: new Date(),
+                            photo: photoURL
+                        });
+
+                        // 5. 앨범에 저장
+                        await db.collection('artifacts').doc('diet-mate-v2')
+                            .collection('users').doc(currentUser.uid)
+                            .collection('photos').add({
+                                category: 'food',
+                                url: photoURL,
+                                meal: currentMealType,
+                                food: analysis.foodName,
+                                nutrition: {
+                                    calories: analysis.calories,
+                                    carbs: analysis.carbs,
+                                    protein: analysis.protein,
+                                    fat: analysis.fat
+                                },
+                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+
+                        // 6. UI 업데이트
+                        updateNutritionUI();
+
+                        // 7. 입력 방법 선택 영역 숨기기
+                        document.getElementById('mealInputMethod').style.display = 'none';
+
+                        showAIToast(`📸 ${analysis.foodName} 추가 완료!\n칼로리: ${analysis.calories}kcal`, 5000);
+                    } else {
+                        alert('음식 분석에 실패했습니다. 다시 시도해주세요.');
+                    }
+
+                } catch (error) {
+                    console.error('음식 사진 분석 오류:', error);
+                    hideLoading();
+                    alert('음식 분석 중 오류가 발생했습니다: ' + error.message);
+                }
+            };
+
+            input.click();
+        }
+
+        // 파일을 Base64로 변환
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // data:image/jpeg;base64,... 형식에서 base64 부분만 추출
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Gemini Flash 1.5로 이미지 분석
+        async function analyzeImageWithGemini(base64Image) {
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+                const requestBody = {
+                    contents: [{
+                        parts: [
+                            {
+                                text: "이 음식 사진을 분석하여 다음 정보를 JSON 형식으로 정확하게 제공해주세요:\n1. foodName: 음식 이름 (한국어)\n2. calories: 예상 칼로리 (숫자만)\n3. carbs: 탄수화물 (g, 숫자만)\n4. protein: 단백질 (g, 숫자만)\n5. fat: 지방 (g, 숫자만)\n\n응답 형식:\n{\"foodName\": \"닭가슴살 샐러드\", \"calories\": 250, \"carbs\": 15, \"protein\": 30, \"fat\": 8}\n\n참고: 음식의 양과 종류를 고려하여 실제에 가까운 영양 정보를 제공해주세요."
+                            },
+                            {
+                                inline_data: {
+                                    mime_type: "image/jpeg",
+                                    data: base64Image
+                                }
+                            }
+                        ]
+                    }],
+                    generationConfig: {
+                        temperature: 0.4,
+                        maxOutputTokens: 200,
+                    }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Gemini API 오류: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const text = data.candidates[0].content.parts[0].text;
+
+                // JSON 추출 (```json으로 감싸져 있을 수 있음)
+                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    const nutritionData = JSON.parse(jsonMatch[0]);
+                    return nutritionData;
+                } else {
+                    throw new Error('JSON 형식을 찾을 수 없습니다');
+                }
+
+            } catch (error) {
+                console.error('Gemini API 분석 실패:', error);
+                return null;
+            }
+        }
+
+        function openMealInputModal(mealType) {
+            if (mealType) {
+                currentMealType = mealType;
+            }
             const modal = document.getElementById('mealInputModalOverlay');
             const title = document.getElementById('mealInputTitle');
 
