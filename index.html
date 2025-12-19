@@ -110,6 +110,45 @@
             --z-tooltip: 1070;
         }
 
+        /* ==================== 테마 시스템 ==================== */
+        /* 다크 모드 */
+        [data-theme="dark"] {
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-tertiary: #1a202c;
+            --text-primary: #f7fafc;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #a0aec0;
+            --border: #4a5568;
+            --border-light: #2d3748;
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 소프트 파스텔 */
+        [data-theme="pastel"] {
+            --primary: #ff9a9e;
+            --primary-dark: #fbc2eb;
+            --primary-light: #ffeaa7;
+            --bg-primary: #fef6f6;
+            --bg-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+        }
+
+        /* 하이 컨트라스트 */
+        [data-theme="high-contrast"] {
+            --primary: #0066cc;
+            --primary-dark: #004499;
+            --primary-light: #3399ff;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f4f8;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --border: #0066cc;
+        }
+
         /* ==================== 화려한 그라데이션 프리셋 ==================== */
         /* 민트 → 시안 → 파랑 (메인 그라데이션) */
         .gradient-vibrant-1 {
@@ -1161,48 +1200,6 @@
             padding: 20px 0;
         }
 
-        /* 권장 섭취량 섹션 */
-        .recommended-intake-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .recommended-intake-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .rec-intake-item {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            border: 2px solid #e0e0e0;
-        }
-
-        .rec-label {
-            display: block;
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 4px;
-        }
-
-        .rec-value {
-            display: block;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #667eea;
-            margin: 4px 0;
-        }
-
-        .rec-unit {
-            font-size: 0.75rem;
-            color: #999;
-        }
 
         /* 입력 방법 선택 버튼 */
         .input-method-btn {
@@ -2707,6 +2704,8 @@
             padding: 25px;
             max-width: 400px;
             width: 100%;
+            max-height: 90vh; /* 화면 높이의 90%로 제한 */
+            overflow-y: auto; /* 스크롤 가능 */
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             transform: scale(1);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3108,17 +3107,6 @@
             font-weight: 600;
         }
 
-        .calorie-rec-value {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .calorie-rec-unit {
-            font-size: 1rem;
-            color: #667eea;
-        }
-
         .calorie-rec-desc {
             font-size: 0.8rem;
             color: #777;
@@ -3338,6 +3326,13 @@
                 z-index: 11;
                 box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             }
+
+            /* 프로필 재설정 모달 스크롤 최적화 */
+            .category-change-modal {
+                max-height: 85vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         @keyframes slideUp {
@@ -3461,19 +3456,6 @@
                 font-size: 1.5rem;
             }
 
-            /* 권장 섭취량 그리드 */
-            .recommended-intake-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-
-            .rec-intake-item {
-                padding: 8px;
-            }
-
-            .rec-value {
-                font-size: 1.1rem;
-            }
 
             /* 입력 방법 버튼 */
             .input-method-btn {
@@ -3496,7 +3478,7 @@
 
             /* 헤더 */
             .header {
-                padding: 20px 15px;
+                padding: 20px 15px 20px 80px; /* 왼쪽에 햄버거 메뉴 공간 확보 */
                 border-radius: 0 0 20px 20px;
             }
 
@@ -3623,10 +3605,26 @@
                 font-size: 1rem;
             }
 
-            /* 건강 지표 1열로 */
+            /* 건강 지표 3열 유지 (가로 배치) */
             .health-metrics {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .metric-card {
+                padding: 12px 8px;
+            }
+
+            .metric-label {
+                font-size: 0.75rem;
+            }
+
+            .metric-value {
+                font-size: 1.2rem;
+            }
+
+            .metric-unit {
+                font-size: 0.75rem;
             }
 
             /* 사진 그리드 2열로 */
@@ -3859,35 +3857,6 @@
                 <!-- 영양 대시보드 -->
                 <div class="card">
                     <h3 class="card-title">🍽️ 오늘의 영양 섭취</h3>
-
-                    <!-- 권장 섭취량 (자동 계산) -->
-                    <div class="recommended-intake-section">
-                        <h4 style="font-size: 0.95rem; color: #666; margin-bottom: 10px;">📊 권장 섭취량 (자동 계산)</h4>
-                        <div class="recommended-intake-grid">
-                            <div class="rec-intake-item">
-                                <span class="rec-label">칼로리</span>
-                                <span class="rec-value" id="recommendedCalories">2400</span>
-                                <span class="rec-unit">kcal</span>
-                            </div>
-                            <div class="rec-intake-item">
-                                <span class="rec-label">탄수화물</span>
-                                <span class="rec-value" id="recommendedCarbs">300</span>
-                                <span class="rec-unit">g</span>
-                            </div>
-                            <div class="rec-intake-item">
-                                <span class="rec-label">단백질</span>
-                                <span class="rec-value" id="recommendedProtein">100</span>
-                                <span class="rec-unit">g</span>
-                            </div>
-                            <div class="rec-intake-item">
-                                <span class="rec-label">지방</span>
-                                <span class="rec-value" id="recommendedFat">80</span>
-                                <span class="rec-unit">g</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="border-top: 1px solid #e0e0e0; margin: 20px 0;"></div>
 
                     <!-- 현재 섭취량 -->
                     <h4 style="font-size: 0.95rem; color: #666; margin-bottom: 10px;">📈 현재 섭취량</h4>
@@ -4257,6 +4226,29 @@
                     </div>
                 </div>
 
+                <!-- 테마 선택 -->
+                <div class="card" style="margin-top: 20px;">
+                    <h3 class="card-title">🎨 테마 선택</h3>
+                    <div class="theme-selector" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px;">
+                        <div class="theme-option" data-theme="light" onclick="setTheme('light')" style="border: 2px solid var(--border); padding: 15px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s;">
+                            <div style="font-size: 2rem;">☀️</div>
+                            <div style="font-size: 0.9rem; margin-top: 5px;">라이트</div>
+                        </div>
+                        <div class="theme-option" data-theme="dark" onclick="setTheme('dark')" style="border: 2px solid var(--border); padding: 15px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s;">
+                            <div style="font-size: 2rem;">🌙</div>
+                            <div style="font-size: 0.9rem; margin-top: 5px;">다크</div>
+                        </div>
+                        <div class="theme-option" data-theme="pastel" onclick="setTheme('pastel')" style="border: 2px solid var(--border); padding: 15px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s;">
+                            <div style="font-size: 2rem;">🌸</div>
+                            <div style="font-size: 0.9rem; margin-top: 5px;">파스텔</div>
+                        </div>
+                        <div class="theme-option" data-theme="high-contrast" onclick="setTheme('high-contrast')" style="border: 2px solid var(--border); padding: 15px; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s;">
+                            <div style="font-size: 2rem;">🔆</div>
+                            <div style="font-size: 0.9rem; margin-top: 5px;">고대비</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="settings-item" onclick="openProfileSettings()">
                     <span>👤 프로필 재설정</span>
                     <span>→</span>
@@ -4599,32 +4591,6 @@
             }
         }
 
-        /**
-         * 권장 칼로리 업데이트
-         */
-        function updateRecommendedCalories(profile, currentWeight) {
-            if (!profile.age || !profile.height || !currentWeight || !profile.gender) {
-                console.warn('프로필 정보 부족:', { age: profile.age, height: profile.height, weight: currentWeight, gender: profile.gender });
-                document.getElementById('recommendedCalories').textContent = '0';
-                return 0;
-            }
-
-            const bmr = calculateBMR(currentWeight, profile.height, profile.age, profile.gender);
-            const tdee = calculateTDEE(bmr, profile.activityLevel || 'light');
-            const goalCalories = calculateGoalCalories(tdee, profile.goal || 'lose');
-
-            document.getElementById('recommendedCalories').textContent = goalCalories;
-            
-            console.log(`
-🔢 권장 칼로리 계산:
-- 체중: ${currentWeight}kg, 키: ${profile.height}cm, 나이: ${profile.age}세, 성별: ${profile.gender}
-- BMR: ${Math.round(bmr)} kcal
-- TDEE: ${Math.round(tdee)} kcal
-- 목표 칼로리: ${goalCalories} kcal
-            `);
-
-            return goalCalories;
-        }
 
         // ==================== D-Day 계산 ====================
         
@@ -4722,6 +4688,8 @@
             for (let attempt = 0; attempt < retries; attempt++) {
                 try {
                     const apiKey = API_KEYS[currentAPIKeyIndex];
+                    console.log(`🔄 Gemini API 호출 시도 ${attempt + 1}/${retries}...`);
+
                     const response = await fetch(
                         `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
                         {
@@ -4736,24 +4704,28 @@
                     );
 
                     if (response.status === 429) {
-                        // 429 에러 시 조용히 다음 키로 전환
+                        console.warn('⚠️ API 할당량 초과 (429), 다음 키로 전환...');
                         currentAPIKeyIndex = (currentAPIKeyIndex + 1) % API_KEYS.length;
                         await new Promise(resolve => setTimeout(resolve, 1000));
                         continue;
                     }
 
                     if (!response.ok) {
-                        throw new Error(`API Error: ${response.status}`);
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('❌ API 오류:', response.status, errorData);
+                        throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData)}`);
                     }
 
                     const data = await response.json();
+                    console.log('✅ Gemini API 응답 성공');
                     return data.candidates[0].content.parts[0].text;
 
                 } catch (error) {
-                    console.error('Gemini API 호출 실패:', error);
+                    console.error('❌ Gemini API 호출 실패:', error);
                     if (attempt === retries - 1) {
-                        return 'AI가 휴식 중이에요. 잠시 후 다시 시도해주세요! 😊';
+                        return 'AI가 휴식 중이에요. 잠시 후 다시 시도해주세요! 😊\n(에러: ' + error.message + ')';
                     }
+                    await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
                 }
             }
         }
@@ -4773,11 +4745,13 @@
             });
         }
 
-        // Gemini Vision API 호출
+        // Gemini Vision API 호출 (Flash 1.5)
         async function callGeminiVisionAPI(prompt, base64Image, retries = 3) {
             for (let attempt = 0; attempt < retries; attempt++) {
                 try {
                     const apiKey = API_KEYS[currentAPIKeyIndex];
+                    console.log(`🔄 Gemini Vision API (Flash 1.5) 호출 시도 ${attempt + 1}/${retries}...`);
+
                     const response = await fetch(
                         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
                         {
@@ -4800,24 +4774,28 @@
                     );
 
                     if (response.status === 429) {
-                        // 429 에러 시 조용히 다음 키로 전환
+                        console.warn('⚠️ API 할당량 초과 (429), 다음 키로 전환...');
                         currentAPIKeyIndex = (currentAPIKeyIndex + 1) % API_KEYS.length;
                         await new Promise(resolve => setTimeout(resolve, 1000));
                         continue;
                     }
 
                     if (!response.ok) {
-                        throw new Error(`API Error: ${response.status}`);
+                        const errorData = await response.json().catch(() => ({}));
+                        console.error('❌ Vision API 오류:', response.status, errorData);
+                        throw new Error(`Vision API Error: ${response.status} - ${JSON.stringify(errorData)}`);
                     }
 
                     const data = await response.json();
+                    console.log('✅ Gemini Vision API 응답 성공');
                     return data.candidates[0].content.parts[0].text;
 
                 } catch (error) {
-                    console.error('Gemini Vision API 호출 실패:', error);
+                    console.error('❌ Gemini Vision API 호출 실패:', error);
                     if (attempt === retries - 1) {
-                        throw error;
+                        throw new Error('이미지 분석에 실패했습니다: ' + error.message);
                     }
+                    await new Promise(resolve => setTimeout(resolve, 500 * (attempt + 1)));
                 }
             }
         }
@@ -5156,7 +5134,7 @@
             // ========================================
         }
 
-        // 권장 섭취량 자동 계산 (Harris-Benedict 공식)
+        // 권장 섭취량 자동 계산 (Mifflin-St Jeor 공식)
         function calculateRecommendedIntake() {
             if (!currentProfile || !currentProfile.age || !currentProfile.height || !currentProfile.startWeight) {
                 // 프로필 미입력 시 기본값
@@ -5171,12 +5149,12 @@
             const { age, height, startWeight, gender, activityLevel, goal } = currentProfile;
             const weight = startWeight;
 
-            // 기초대사량 계산 (Harris-Benedict)
+            // 기초대사량 계산 (Mifflin-St Jeor 공식)
             let bmr;
             if (gender === 'male' || gender === '남성') {
-                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
             } else {
-                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
             }
 
             // 활동량 계수
@@ -5214,63 +5192,59 @@
             // 권장 섭취량 계산
             const recommended = calculateRecommendedIntake();
 
-            // 권장 섭취량 표시
-            document.getElementById('recommendedCalories').textContent = recommended.calories;
-            document.getElementById('recommendedCarbs').textContent = recommended.carbs;
-            document.getElementById('recommendedProtein').textContent = recommended.protein;
-            document.getElementById('recommendedFat').textContent = recommended.fat;
-
-            // 현재 섭취량 표시
+            // 식사 횟수 표시
             document.getElementById('todayMealCount').textContent = todayIntake.meals.length;
-            document.getElementById('todayCalories').textContent = Math.round(todayIntake.calories);
-            document.getElementById('todayCarbs').textContent = Math.round(todayIntake.carbs);
-            document.getElementById('todayProtein').textContent = Math.round(todayIntake.protein);
-            document.getElementById('todayFat').textContent = Math.round(todayIntake.fat);
 
-            // 남은 섭취량 계산 및 표시
+            // 남은 섭취량 계산
             const remainingCalories = recommended.calories - todayIntake.calories;
             const remainingCarbs = recommended.carbs - todayIntake.carbs;
             const remainingProtein = recommended.protein - todayIntake.protein;
             const remainingFat = recommended.fat - todayIntake.fat;
+
+            // 현재 섭취량 표시 (형식: "0 / 2400 kcal")
+            document.getElementById('todayCalories').textContent = `${Math.round(todayIntake.calories)} / ${recommended.calories} kcal`;
+            document.getElementById('todayCarbs').textContent = `${Math.round(todayIntake.carbs)} / ${recommended.carbs} g`;
+            document.getElementById('todayProtein').textContent = `${Math.round(todayIntake.protein)} / ${recommended.protein} g`;
+            document.getElementById('todayFat').textContent = `${Math.round(todayIntake.fat)} / ${recommended.fat} g`;
 
             const caloriesElem = document.getElementById('remainingCalories');
             const carbsElem = document.getElementById('remainingCarbs');
             const proteinElem = document.getElementById('remainingProtein');
             const fatElem = document.getElementById('remainingFat');
 
-            // 칼로리
+            // 칼로리 (형식: "(2400 남음)" 또는 "(100 초과)")
             if (remainingCalories >= 0) {
-                caloriesElem.textContent = `${Math.round(remainingCalories)} 남음`;
+                caloriesElem.textContent = `(${Math.round(remainingCalories)} 남음)`;
                 caloriesElem.className = 'nutrition-remaining';
             } else {
-                caloriesElem.textContent = `${Math.abs(Math.round(remainingCalories))} 초과`;
+                caloriesElem.textContent = `(${Math.abs(Math.round(remainingCalories))} 초과)`;
                 caloriesElem.className = 'nutrition-remaining over';
             }
 
             // 탄수화물
             if (remainingCarbs >= 0) {
-                carbsElem.textContent = `${Math.round(remainingCarbs)}g 남음`;
+                carbsElem.textContent = `(${Math.round(remainingCarbs)}g 남음)`;
                 carbsElem.className = 'nutrition-remaining';
             } else {
-                carbsElem.textContent = `${Math.abs(Math.round(remainingCarbs))}g 초과`;
+                carbsElem.textContent = `(${Math.abs(Math.round(remainingCarbs))}g 초과)`;
                 carbsElem.className = 'nutrition-remaining over';
             }
 
             // 단백질
             if (remainingProtein >= 0) {
-                proteinElem.textContent = `${Math.round(remainingProtein)}g 남음`;
+                proteinElem.textContent = `(${Math.round(remainingProtein)}g 남음)`;
                 proteinElem.className = 'nutrition-remaining';
             } else {
-                proteinElem.textContent = `${Math.abs(Math.round(remainingProtein))}g 초과`;
+                proteinElem.textContent = `(${Math.abs(Math.round(remainingProtein))}g 초과)`;
                 proteinElem.className = 'nutrition-remaining over';
             }
 
             // 지방
             if (remainingFat >= 0) {
-                fatElem.textContent = `${Math.round(remainingFat)}g 남음`;
+                fatElem.textContent = `(${Math.round(remainingFat)}g 남음)`;
                 fatElem.className = 'nutrition-remaining';
             } else {
-                fatElem.textContent = `${Math.abs(Math.round(remainingFat))}g 초과`;
+                fatElem.textContent = `(${Math.abs(Math.round(remainingFat))}g 초과)`;
                 fatElem.className = 'nutrition-remaining over';
             }
 
@@ -6551,8 +6525,7 @@ ${userMessage}
             // 물 마시기 트래커 초기화
             initializeWaterTracker();
 
-            // ========== 권장 칼로리 계산 및 D-Day 표시 (새로 추가) ==========
-            updateRecommendedCalories(currentProfile, currentWeight);
+            // ========== D-Day 표시 ==========
             if (currentProfile.targetDate) {
                 updateDDayDisplay(currentProfile.targetDate.toDate ? currentProfile.targetDate.toDate() : currentProfile.targetDate);
             }
@@ -6700,8 +6673,18 @@ ${userMessage}
         function initializeWaterTracker() {
             const settings = JSON.parse(localStorage.getItem(LS_KEYS.WATER_SETTINGS) || '{"cupSize": 250, "goalLiters": 2, "filled": []}');
 
-            document.getElementById('cupSize').value = settings.cupSize;
-            document.getElementById('waterGoal').value = settings.goalLiters;
+            // 날짜 확인 및 자동 초기화
+            const today = new Date().toISOString().split('T')[0];
+            if (settings.lastDate !== today) {
+                // 날짜가 다르면 물 마시기 초기화
+                settings.filled = [];
+                settings.lastDate = today;
+                localStorage.setItem(LS_KEYS.WATER_SETTINGS, JSON.stringify(settings));
+                console.log('✅ 물 마시기 자동 초기화 (새로운 날):', today);
+            }
+
+            document.getElementById('cupSize').value = settings.cupSize || 250;
+            document.getElementById('waterGoal').value = settings.goalLiters || 2;
 
             updateWaterTracker();
         }
@@ -6715,6 +6698,7 @@ ${userMessage}
             const settings = JSON.parse(localStorage.getItem(LS_KEYS.WATER_SETTINGS) || '{"filled": []}');
             settings.cupSize = cupSize;
             settings.goalLiters = goalLiters;
+            settings.lastDate = settings.lastDate || new Date().toISOString().split('T')[0];
 
             const tracker = document.getElementById('waterTracker');
             tracker.innerHTML = '';
@@ -6747,17 +6731,27 @@ ${userMessage}
             const settings = JSON.parse(localStorage.getItem(LS_KEYS.WATER_SETTINGS));
             if (!settings.filled) settings.filled = [];
 
+            // 오늘 날짜 확인
+            const today = new Date().toISOString().split('T')[0];
+            if (settings.lastDate !== today) {
+                // 날짜가 바뀌었으면 초기화
+                settings.filled = [];
+                settings.lastDate = today;
+            }
+
             const idx = settings.filled.indexOf(index);
             if (idx > -1) {
+                // 체크 해제
                 settings.filled.splice(idx, 1);
             } else {
+                // 체크
                 settings.filled.push(index);
             }
 
             localStorage.setItem(LS_KEYS.WATER_SETTINGS, JSON.stringify(settings));
             updateWaterTracker();
 
-            // ========== Phase 2: 캘린더 동기화 ==========
+            // ========== 캘린더 동기화 (체크/체크 해제 모두 반영) ==========
             const cupSize = settings.cupSize || 250;
             const totalIntake = settings.filled.length * cupSize;
 
@@ -9604,6 +9598,49 @@ ${grams ? `- 양: ${grams}g` : ''}
 
         // ==================== 초기 실행 ====================
         // Firebase Auth State Listener가 자동으로 초기화 시작
+
+        // ==================== 테마 시스템 ====================
+
+        // 테마 설정 함수
+        function setTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('diet-mate-theme', themeName);
+
+            // 모든 테마 옵션의 스타일 초기화
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.style.borderColor = 'var(--border)';
+                option.style.backgroundColor = 'transparent';
+            });
+
+            // 선택된 테마 강조
+            const selectedOption = document.querySelector(`.theme-option[data-theme="${themeName}"]`);
+            if (selectedOption) {
+                selectedOption.style.borderColor = 'var(--primary)';
+                selectedOption.style.backgroundColor = 'var(--bg-tertiary)';
+            }
+
+            console.log('✅ 테마 변경:', themeName);
+        }
+
+        // 테마 로드 함수
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('diet-mate-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            // 페이지 로드 후 선택된 테마 강조
+            setTimeout(() => {
+                const selectedOption = document.querySelector(`.theme-option[data-theme="${savedTheme}"]`);
+                if (selectedOption) {
+                    selectedOption.style.borderColor = 'var(--primary)';
+                    selectedOption.style.backgroundColor = 'var(--bg-tertiary)';
+                }
+            }, 100);
+
+            console.log('✅ 테마 로드:', savedTheme);
+        }
+
+        // 앱 시작 시 테마 로드
+        loadTheme();
     </script>
 
     <!-- AI 토스트 팝업 -->
