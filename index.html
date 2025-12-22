@@ -2648,9 +2648,10 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 0.85rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow: visible;
+            word-wrap: break-word;
+            min-height: 48px;
         }
         
         @media (max-width: 480px) {
@@ -2695,9 +2696,10 @@
             font-size: 1rem;
             font-weight: 600;
             color: #333;
-            max-height: 60px;
-            overflow: hidden;
-            line-height: 1.4;
+            max-height: none;
+            overflow: visible;
+            line-height: 1.5;
+            word-wrap: break-word;
         }
 
         .text-card-nutrition {
@@ -2911,9 +2913,9 @@
 
         .preview-item {
             font-size: 0.7rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow: visible;
+            word-wrap: break-word;
             max-width: 100%;
         }
 
@@ -5726,6 +5728,622 @@
                 gap: 6px;
             }
         }
+
+        /* ==================== 🔥 모바일 텍스트 잘림 방지 & 여유 있는 레이아웃 ==================== */
+        @media (max-width: 768px) {
+            /* === 전역 텍스트 설정 === */
+            body, html {
+                line-height: 1.5;
+            }
+
+            /* === 모든 텍스트 요소 line-height 보장 === */
+            p, span, div, li, td, th, label, input, textarea, select, button {
+                line-height: 1.4 !important;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                line-height: 1.5 !important;
+            }
+
+            /* === 버튼 높이 자동 조정 === */
+            .btn, button, .modal-btn, .action-btn {
+                height: auto !important;
+                min-height: 48px;
+                padding: 14px 24px !important;
+                line-height: 1.4 !important;
+                white-space: normal;
+                word-wrap: break-word;
+            }
+
+            .btn-primary, .btn-secondary, .btn-success {
+                height: auto !important;
+                min-height: 50px;
+                padding: 16px 28px !important;
+            }
+
+            /* === 카드 여유 있게 === */
+            .card {
+                padding: 20px !important;
+                margin-bottom: 20px !important;
+                line-height: 1.5 !important;
+            }
+
+            .card-title {
+                font-size: 1.2rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 16px !important;
+            }
+
+            /* === 건강 지표 카드 === */
+            .metric-card {
+                height: auto !important;
+                min-height: 90px;
+                padding: 16px 12px !important;
+            }
+
+            .metric-label {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 8px !important;
+            }
+
+            .metric-value {
+                font-size: 1.3rem !important;
+                line-height: 1.3 !important;
+            }
+
+            /* === 진행률 섹션 === */
+            .progress-section {
+                height: auto !important;
+                min-height: 80px;
+                padding: 18px !important;
+                line-height: 1.5 !important;
+            }
+
+            /* === 영양 카드 === */
+            .nutrition-card {
+                height: auto !important;
+                min-height: 100px;
+                padding: 18px 16px !important;
+            }
+
+            .nutrition-label {
+                font-size: 0.85rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 10px !important;
+            }
+
+            .nutrition-value {
+                font-size: 1.6rem !important;
+                line-height: 1.3 !important;
+            }
+
+            /* === 식사 버튼 === */
+            .meal-btn {
+                height: auto !important;
+                min-height: 70px;
+                padding: 12px 10px !important;
+                line-height: 1.5 !important;
+            }
+
+            .meal-emoji {
+                font-size: 1.8rem !important;
+                margin-bottom: 6px !important;
+            }
+
+            .meal-label {
+                font-size: 0.85rem !important;
+                line-height: 1.3 !important;
+            }
+
+            /* === 입력 필드 === */
+            input, select, textarea {
+                height: auto !important;
+                min-height: 48px;
+                padding: 14px 16px !important;
+                line-height: 1.4 !important;
+            }
+
+            textarea {
+                min-height: 120px !important;
+                line-height: 1.5 !important;
+            }
+
+            .form-input {
+                height: auto !important;
+                min-height: 50px;
+                padding: 15px 18px !important;
+            }
+
+            /* === 시간표 (플랜 탭) === */
+            .timetable-row {
+                height: auto !important;
+                min-height: 60px;
+                padding: 14px 12px !important;
+            }
+
+            .timetable-time {
+                line-height: 1.4 !important;
+            }
+
+            .timetable-input {
+                height: auto !important;
+                min-height: 44px;
+                padding: 12px 14px !important;
+                line-height: 1.4 !important;
+            }
+
+            .timetable-emoji-btn {
+                width: 44px !important;
+                height: 44px !important;
+                min-width: 44px !important;
+                min-height: 44px !important;
+            }
+
+            /* === 캘린더 === */
+            .calendar-day {
+                padding: 10px 6px !important;
+                overflow: visible !important;
+            }
+
+            .calendar-day-number {
+                font-size: 1.05rem !important;
+                line-height: 1.3 !important;
+                margin-bottom: 6px !important;
+            }
+
+            .preview-item {
+                font-size: 0.75rem !important;
+                line-height: 1.3 !important;
+                overflow: visible !important;
+                white-space: normal !important;
+            }
+
+            /* === 앨범 사진/텍스트 카드 === */
+            .photo-item, .text-card {
+                height: auto !important;
+                min-height: 180px;
+                padding: 12px !important;
+            }
+
+            .text-card {
+                min-height: 160px !important;
+                padding: 20px !important;
+            }
+
+            .text-card-content {
+                max-height: none !important;
+                overflow: visible !important;
+                line-height: 1.5 !important;
+            }
+
+            .text-card-emoji {
+                font-size: 2.8rem !important;
+                margin-bottom: 12px !important;
+            }
+
+            /* === 통계 카드 === */
+            .stat-circle {
+                width: 46px !important;
+                height: 46px !important;
+                line-height: 46px !important;
+                font-size: 0.8rem !important;
+            }
+
+            .stat-day {
+                font-size: 0.85rem !important;
+                line-height: 1.3 !important;
+                margin-top: 6px !important;
+            }
+
+            /* === 네비게이션 === */
+            .nav-item {
+                padding: 8px 12px !important;
+                min-height: 70px;
+            }
+
+            .nav-icon {
+                font-size: 1.4rem !important;
+                margin-bottom: 6px !important;
+            }
+
+            .nav-label {
+                font-size: 0.7rem !important;
+                line-height: 1.3 !important;
+            }
+
+            /* === 사이드바 네비게이션 === */
+            .nav-item-sidebar {
+                height: auto !important;
+                min-height: 50px;
+                padding: 14px 18px !important;
+                line-height: 1.4 !important;
+            }
+
+            .nav-label-sidebar {
+                font-size: 1.05rem !important;
+                line-height: 1.4 !important;
+            }
+
+            /* === 헤더 === */
+            .header {
+                padding: 25px 15px 25px 80px !important;
+            }
+
+            .header-title {
+                font-size: 1.6rem !important;
+                line-height: 1.3 !important;
+                margin-bottom: 12px !important;
+            }
+
+            .header-subtitle {
+                font-size: 1.15rem !important;
+                line-height: 1.4 !important;
+            }
+
+            /* === 모달 === */
+            .modal-content {
+                padding: 24px !important;
+                line-height: 1.5 !important;
+            }
+
+            .modal-header {
+                font-size: 1.6rem !important;
+                line-height: 1.3 !important;
+                margin-bottom: 20px !important;
+            }
+
+            .modal-btn {
+                height: auto !important;
+                min-height: 50px;
+                padding: 15px 20px !important;
+                line-height: 1.4 !important;
+            }
+
+            /* === 음식 정보 표시 === */
+            .food-info-card, .nutrition-info {
+                padding: 16px !important;
+                line-height: 1.5 !important;
+            }
+
+            /* === 리스트 아이템 === */
+            .food-item, .exercise-item, .plan-item {
+                height: auto !important;
+                min-height: 60px;
+                padding: 14px 16px !important;
+                line-height: 1.4 !important;
+            }
+
+            /* === 체크박스/라디오 버튼 === */
+            .select-checkbox {
+                width: 28px !important;
+                height: 28px !important;
+            }
+
+            /* === 사진 모달 버튼 === */
+            .photo-modal-btn {
+                height: auto !important;
+                min-height: 44px;
+                padding: 12px 16px !important;
+                line-height: 1.3 !important;
+            }
+
+            /* === 입력 방법 버튼 === */
+            .input-method-btn {
+                height: auto !important;
+                min-height: 60px;
+                padding: 14px 18px !important;
+                line-height: 1.4 !important;
+            }
+
+            /* === AI 조언 텍스트 === */
+            #aiAdviceText, .ai-advice-container {
+                padding: 16px 18px !important;
+                line-height: 1.6 !important;
+            }
+
+            /* === 일기/메모 텍스트 === */
+            .diary-content, .note-content {
+                line-height: 1.6 !important;
+                padding: 16px !important;
+            }
+
+            /* === 컨텐츠 영역 === */
+            .content {
+                padding: 18px !important;
+            }
+
+            /* === 전체 텍스트 잘림 방지 === */
+            * {
+                overflow-wrap: break-word !important;
+                word-wrap: break-word !important;
+            }
+
+            /* overflow: hidden이 필요한 요소만 유지 (이미지, 프로그레스바, 애니메이션) */
+            img, .progress-bar, .progress-fill, canvas, video {
+                overflow: hidden;
+            }
+        }
+
+        /* ==================== 🔥 더 작은 화면 (480px 이하) 추가 최적화 ==================== */
+        @media (max-width: 480px) {
+            /* === 랜딩 페이지 === */
+            .landing {
+                padding: 30px 20px !important;
+            }
+
+            .landing-logo {
+                font-size: 4rem !important;
+                margin-bottom: 25px !important;
+            }
+
+            .landing-title {
+                font-size: 2.4rem !important;
+                line-height: 1.3 !important;
+                margin-bottom: 15px !important;
+            }
+
+            .landing-subtitle {
+                font-size: 1.1rem !important;
+                line-height: 1.5 !important;
+                margin-bottom: 40px !important;
+            }
+
+            /* === 인증 페이지 === */
+            .auth-container {
+                padding: 25px 20px !important;
+            }
+
+            .auth-logo-icon {
+                width: 90px !important;
+                height: 90px !important;
+                font-size: 3.5rem !important;
+            }
+
+            .auth-title {
+                font-size: 1.8rem !important;
+                line-height: 1.3 !important;
+                margin-bottom: 35px !important;
+            }
+
+            .form-group {
+                margin-bottom: 18px !important;
+            }
+
+            .form-label {
+                font-size: 0.95rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 10px !important;
+            }
+
+            .error-message, .success-message {
+                padding: 14px 16px !important;
+                line-height: 1.5 !important;
+                font-size: 0.95rem !important;
+            }
+
+            .link-text {
+                font-size: 0.95rem !important;
+                line-height: 1.4 !important;
+                margin-top: 18px !important;
+            }
+
+            /* === 카드 더 여유롭게 === */
+            .card {
+                padding: 18px !important;
+                margin-bottom: 18px !important;
+            }
+
+            .card-title {
+                font-size: 1.15rem !important;
+                margin-bottom: 14px !important;
+            }
+
+            /* === 건강 지표 === */
+            .metric-card {
+                min-height: 95px !important;
+                padding: 14px 10px !important;
+            }
+
+            .metric-label {
+                font-size: 0.75rem !important;
+            }
+
+            .metric-value {
+                font-size: 1.25rem !important;
+            }
+
+            .metric-unit {
+                font-size: 0.8rem !important;
+            }
+
+            /* === 영양 카드 === */
+            .nutrition-card {
+                min-height: 110px !important;
+                padding: 16px 14px !important;
+            }
+
+            .nutrition-label {
+                font-size: 0.8rem !important;
+            }
+
+            .nutrition-value {
+                font-size: 1.5rem !important;
+            }
+
+            /* === 식사 버튼 === */
+            .meal-btn {
+                min-height: 75px !important;
+                padding: 14px 8px !important;
+            }
+
+            .meal-emoji {
+                font-size: 1.7rem !important;
+            }
+
+            .meal-label {
+                font-size: 0.8rem !important;
+            }
+
+            /* === 헤더 === */
+            .header {
+                padding: 22px 15px 22px 75px !important;
+            }
+
+            .header-title {
+                font-size: 1.5rem !important;
+            }
+
+            .header-subtitle {
+                font-size: 1.1rem !important;
+            }
+
+            /* === 컨텐츠 === */
+            .content {
+                padding: 16px !important;
+            }
+
+            /* === 버튼 === */
+            .btn, button {
+                min-height: 50px !important;
+                padding: 15px 22px !important;
+                font-size: 1rem !important;
+            }
+
+            /* === 모달 === */
+            .modal-content {
+                padding: 22px !important;
+            }
+
+            .modal-header {
+                font-size: 1.5rem !important;
+                margin-bottom: 18px !important;
+            }
+
+            /* === 입력 필드 === */
+            input, select, textarea, .form-input {
+                min-height: 50px !important;
+                padding: 15px 16px !important;
+                font-size: 1rem !important;
+            }
+
+            textarea {
+                min-height: 130px !important;
+            }
+        }
+
+        /* ==================== 🔥 아주 작은 화면 (360px 이하) 추가 최적화 ==================== */
+        @media (max-width: 360px) {
+            /* === 기본 간격 조정 === */
+            .card {
+                padding: 16px !important;
+                margin: 12px 0 !important;
+            }
+
+            .card-title {
+                font-size: 1.1rem !important;
+                margin-bottom: 12px !important;
+            }
+
+            /* === 건강 지표 더 컴팩트하게 === */
+            .metric-card {
+                min-height: 88px !important;
+                padding: 12px 8px !important;
+            }
+
+            .metric-label {
+                font-size: 0.7rem !important;
+            }
+
+            .metric-value {
+                font-size: 1.15rem !important;
+            }
+
+            /* === 식사 버튼 === */
+            .meal-btn {
+                min-height: 68px !important;
+                padding: 10px 6px !important;
+            }
+
+            .meal-emoji {
+                font-size: 1.5rem !important;
+            }
+
+            .meal-label {
+                font-size: 0.75rem !important;
+            }
+
+            /* === 영양 카드 === */
+            .nutrition-card {
+                min-height: 105px !important;
+                padding: 14px 12px !important;
+            }
+
+            .nutrition-value {
+                font-size: 1.4rem !important;
+            }
+
+            /* === 헤더 === */
+            .header {
+                padding: 20px 12px 20px 70px !important;
+            }
+
+            .header-title {
+                font-size: 1.4rem !important;
+            }
+
+            .header-subtitle {
+                font-size: 1.05rem !important;
+            }
+
+            /* === 컨텐츠 === */
+            .content {
+                padding: 14px !important;
+            }
+
+            /* === 버튼 === */
+            .btn, button {
+                min-height: 48px !important;
+                padding: 14px 20px !important;
+                font-size: 0.95rem !important;
+            }
+
+            /* === 입력 필드 === */
+            input, select, textarea, .form-input {
+                min-height: 48px !important;
+                padding: 14px !important;
+            }
+
+            /* === 모달 === */
+            .modal-content {
+                padding: 20px !important;
+            }
+
+            .modal-header {
+                font-size: 1.4rem !important;
+                margin-bottom: 16px !important;
+            }
+
+            /* === 랜딩 페이지 === */
+            .landing-title {
+                font-size: 2.2rem !important;
+            }
+
+            .landing-subtitle {
+                font-size: 1.05rem !important;
+            }
+
+            /* === 인증 페이지 === */
+            .auth-logo-icon {
+                width: 80px !important;
+                height: 80px !important;
+                font-size: 3rem !important;
+            }
+
+            .auth-title {
+                font-size: 1.7rem !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -7280,7 +7898,41 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- 🔥 사진 기기 저장 모달 -->
+    <div id="saveToDeviceModal" class="modal-overlay" style="display: none; z-index: 10000;">
+        <div class="modal-content" style="max-width: 400px;">
+            <h3 style="margin-bottom: 16px; font-size: 1.2rem; color: #1f2937;">📱 기기에 저장</h3>
+            <p style="margin-bottom: 20px; color: #666; line-height: 1.6;">
+                이 사진을 휴대폰 갤러리에도 저장하시겠습니까?
+            </p>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn-secondary" onclick="closeSaveToDeviceModal()" style="flex: 1; padding: 12px; font-size: 1rem;">
+                    취소
+                </button>
+                <button class="btn-primary" onclick="downloadPhotoToDevice()" style="flex: 1; padding: 12px; font-size: 1rem; background: linear-gradient(135deg, #00B89A 0%, #009688 100%);">
+                    기기에 같이 저장
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔥 여러 음식 선택 모달 -->
+    <div id="multipleFoodsModal" class="modal-overlay" style="display: none; z-index: 10000;">
+        <div class="modal-content" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e5e7eb;">
+                <h3 style="margin: 0; font-size: 1.3rem; color: #1f2937;">📸 분석된 음식 목록</h3>
+                <button onclick="closeMultipleFoodsModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6b7280; padding: 0; width: 32px; height: 32px;">&times;</button>
+            </div>
+            <div id="multipleFoodsList"></div>
+            <div style="display: flex; gap: 12px; margin-top: 20px; position: sticky; bottom: 0; background: white; padding-top: 15px; border-top: 2px solid #e5e7eb;">
+                <button class="btn-secondary" onclick="closeMultipleFoodsModal()" style="flex: 1; padding: 12px; font-size: 1rem;">취소</button>
+                <button class="btn-primary" onclick="addSelectedFoods()" style="flex: 2; padding: 12px; font-size: 1rem; background: linear-gradient(135deg, #00B89A 0%, #009688 100%);">선택한 항목 추가</button>
+                <button class="btn-primary" onclick="addAllFoods()" style="flex: 2; padding: 12px; font-size: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">전체 추가</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 🎯 Mealo 스타일 음식 분석 결과 카드 -->
     <div id="foodAnalysisResultModal" class="modal-overlay" style="display: none; z-index: 10000;">
         <div class="modal-content" style="max-width: 500px; padding: 0; overflow: hidden;">
@@ -9341,52 +9993,233 @@ JSON 형식으로만 출력:
 
         // ==================== 🔥 v3.9.0: 음식 검색 데이터베이스 (5개 이상 브랜드 + 탄단지) ====================
         
-        async function searchFoodDatabase(foodName) {
-            if (!foodName || foodName.trim() === '') {
-                console.warn('음식명이 비어있습니다.');
+        // 로컬 DB (localStorage) 관리 함수들
+        function normalizeSearchTerm(term) {
+            // 검색어 정규화: 소문자, 공백 제거, 특수문자 제거
+            return term.trim().toLowerCase().replace(/[^\w가-힣]/g, '');
+        }
+
+        function saveFoodToDB(searchTerm, foodData) {
+            try {
+                const normalizedTerm = normalizeSearchTerm(searchTerm);
+                const key = `foodDB_${normalizedTerm}`;
+                
+                // 데이터 검증: 모든 필수 필드가 있는지 확인
+                const validFoods = foodData.filter(food => {
+                    return food.brand && 
+                           typeof food.calories === 'number' && food.calories > 0 &&
+                           typeof food.carbs === 'number' && food.carbs >= 0 &&
+                           typeof food.protein === 'number' && food.protein >= 0 &&
+                           typeof food.fat === 'number' && food.fat >= 0;
+                });
+
+                if (validFoods.length === 0) {
+                    console.warn('저장할 유효한 음식 데이터가 없습니다.');
+                    return false;
+                }
+
+                localStorage.setItem(key, JSON.stringify({
+                    searchTerm: searchTerm,
+                    foods: validFoods,
+                    savedAt: new Date().toISOString()
+                }));
+                
+                console.log(`💾 [DB 저장] "${searchTerm}" → ${validFoods.length}개 항목 저장됨`);
+                return true;
+            } catch (error) {
+                console.error('❌ [DB 저장 실패]:', error);
+                return false;
+            }
+        }
+
+        function searchFoodInDB(searchTerm) {
+            try {
+                const normalizedTerm = normalizeSearchTerm(searchTerm);
+                const key = `foodDB_${normalizedTerm}`;
+                const stored = localStorage.getItem(key);
+                
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    console.log(`📦 [DB 조회 성공] "${searchTerm}" → ${data.foods.length}개 항목 발견`);
+                    return data.foods;
+                }
+
+                // 부분 일치 검색 (검색어가 포함된 키 찾기)
+                const allKeys = Object.keys(localStorage);
+                const matchingKeys = allKeys.filter(k => k.startsWith('foodDB_') && k.includes(normalizedTerm));
+                
+                if (matchingKeys.length > 0) {
+                    // 가장 관련성 높은 결과 반환 (첫 번째 매칭)
+                    const bestMatch = localStorage.getItem(matchingKeys[0]);
+                    if (bestMatch) {
+                        const data = JSON.parse(bestMatch);
+                        console.log(`📦 [DB 부분 일치] "${searchTerm}" → ${data.foods.length}개 항목 발견`);
+                        return data.foods;
+                    }
+                }
+
+                return null;
+            } catch (error) {
+                console.error('❌ [DB 조회 실패]:', error);
+                return null;
+            }
+        }
+
+        // 데이터 검증 및 정제 함수
+        function validateAndCleanFoodData(foodArray) {
+            if (!Array.isArray(foodArray)) {
                 return [];
             }
 
+            return foodArray
+                .map(food => {
+                    // 필수 필드 확인 및 기본값 설정
+                    const cleaned = {
+                        brand: String(food.brand || food.name || food.foodName || '').trim(),
+                        calories: Math.round(Number(food.calories) || 0),
+                        carbs: parseFloat((Number(food.carbs) || 0).toFixed(1)),
+                        protein: parseFloat((Number(food.protein) || 0).toFixed(1)),
+                        fat: parseFloat((Number(food.fat) || 0).toFixed(1))
+                    };
+
+                    // 유효성 검사: brand가 비어있거나, 모든 영양소가 0이면 제외
+                    if (!cleaned.brand || cleaned.brand === 'undefined' || cleaned.brand === '알 수 없음') {
+                        return null;
+                    }
+
+                    if (cleaned.calories === 0 && cleaned.carbs === 0 && cleaned.protein === 0 && cleaned.fat === 0) {
+                        return null;
+                    }
+
+                    return cleaned;
+                })
+                .filter(food => food !== null); // null 제거
+        }
+
+        // ==================== Firestore 기반 음식 검색 ====================
+        
+        /**
+         * Firestore에서 음식 검색 (병렬 처리)
+         * @param {string} searchTerm - 검색어
+         * @returns {Promise<Array>} 검색 결과 배열
+         */
+        async function searchFoodInFirestore(searchTerm) {
+            if (!searchTerm || searchTerm.trim() === '') {
+                return [];
+            }
+
+            const normalizedTerm = searchTerm.trim().toLowerCase();
+            const searchUpper = normalizedTerm.charAt(0).toUpperCase() + normalizedTerm.slice(1);
+            const searchEnd = searchUpper.slice(0, -1) + String.fromCharCode(searchUpper.charCodeAt(searchUpper.length - 1) + 1);
+
             try {
-                console.log(`🔍 [음식 검색] 시작: "${foodName}"`);
-                
-                const prompt = `당신은 한국 음식 영양 데이터베이스 전문가입니다. 
-사용자가 "${foodName}"을(를) 검색했습니다.
+                console.log(`🔍 [Firestore 검색] "${searchTerm}" 시작...`);
 
-**검색 규칙:**
-1. 브랜드 제품이 있는 경우: 최소 5개 이상의 대표 브랜드 제품 정보 제공
-2. 일반 음식인 경우: 최소 5개 이상의 다양한 종류/조리법 제공
-3. 간식/과자인 경우: 최소 5개 이상의 대표 제품 브랜드 제공
+                // 병렬 처리: public_foods와 user_custom_foods 동시 조회
+                const [publicResults, customResults] = await Promise.all([
+                    // 1. public_foods (공통 DB) - Read Only
+                    db.collection('public_foods')
+                        .where('foodName', '>=', searchUpper)
+                        .where('foodName', '<', searchEnd)
+                        .orderBy('foodName')
+                        .limit(20)
+                        .get()
+                        .then(snapshot => {
+                            const results = [];
+                            snapshot.forEach(doc => {
+                                const data = doc.data();
+                                // 부분 일치 검사 (Prefix 검색만으로는 부족할 수 있음)
+                                if (data.foodName && data.foodName.toLowerCase().includes(normalizedTerm)) {
+                                    results.push({
+                                        id: doc.id,
+                                        ...data,
+                                        source: 'public'
+                                    });
+                                }
+                            });
+                            return results;
+                        })
+                        .catch(error => {
+                            console.warn('⚠️ public_foods 조회 실패:', error);
+                            return [];
+                        }),
 
-**예시 출력:**
-- "라면" 검색 시 → 신라면, 진라면, 너구리, 짜파게티, 안성탕면
-- "감자탕" 검색 시 → 누리마을 감자탕, 맛나감자탕, 일반 감자탕, 뼈해장국, 감자탕 백반
-- "초코파이" 검색 시 → 오리온 초코파이, 롯데 몽쉘, 해태 초코칩, 크라운 초코하임, 빙그레 쿠앤크
-- "김밥" 검색 시 → 참치김밥, 야채김밥, 치즈김밥, 소고기김밥, 김치김밥
-- "우유" 검색 시 → 서울우유, 매일우유, 상하목장, 빙그레 바나나맛우유, 푸르밀
+                    // 2. user_custom_foods (개인 DB) - 본인만 Read
+                    currentUser ? db.collection('user_custom_foods')
+                        .where('uid', '==', currentUser.uid)
+                        .where('foodName', '>=', searchUpper)
+                        .where('foodName', '<', searchEnd)
+                        .orderBy('foodName')
+                        .limit(20)
+                        .get()
+                        .then(snapshot => {
+                            const results = [];
+                            snapshot.forEach(doc => {
+                                const data = doc.data();
+                                if (data.foodName && data.foodName.toLowerCase().includes(normalizedTerm)) {
+                                    results.push({
+                                        id: doc.id,
+                                        ...data,
+                                        source: 'custom'
+                                    });
+                                }
+                            });
+                            return results;
+                        })
+                        .catch(error => {
+                            console.warn('⚠️ user_custom_foods 조회 실패:', error);
+                            return [];
+                        }) : Promise.resolve([])
+                ]);
 
-**필수 출력 형식 (JSON 배열, 최소 5개 이상):**
-[
-  {
-    "brand": "구체적인 브랜드명 또는 종류 (예: 오리온 초코파이, 참치김밥)",
-    "calories": 칼로리 (정수),
-    "carbs": 탄수화물 (소수점 1자리),
-    "protein": 단백질 (소수점 1자리),
-    "fat": 지방 (소수점 1자리)
-  }
-]
+                // 결과 병합: user_custom_foods를 상단에, public_foods를 하단에
+                const mergedResults = [...customResults, ...publicResults];
+
+                console.log(`✅ [Firestore 검색 완료] "${searchTerm}" → ${mergedResults.length}개 항목 발견 (개인: ${customResults.length}, 공통: ${publicResults.length})`);
+
+                return mergedResults;
+
+            } catch (error) {
+                console.error('❌ [Firestore 검색 실패]:', error);
+                return [];
+            }
+        }
+
+        /**
+         * 검색 결과가 없을 때 Gemini API로 영양 정보 찾기
+         * @param {string} searchTerm - 검색어
+         * @returns {Promise<Object|null>} 영양 정보 객체 또는 null
+         */
+        async function searchFoodWithGemini(searchTerm) {
+            if (!searchTerm || searchTerm.trim() === '') {
+                return null;
+            }
+
+            try {
+                console.log(`🤖 [Gemini 검색] "${searchTerm}" → AI에게 물어보는 중...`);
+
+                const prompt = `사용자가 '${searchTerm}'의 영양 성분을 찾고 있어. 1인분 기준으로 칼로리, 탄수화물, 단백질, 지방을 추정해서 반드시 JSON 형식으로만 대답해줘.
+
+**출력 형식 (JSON 객체):**
+{
+  "name": "음식명",
+  "serving_size": "1인분",
+  "kcal": 칼로리 (정수),
+  "carbs": 탄수화물 (소수점 1자리),
+  "protein": 단백질 (소수점 1자리),
+  "fat": 지방 (소수점 1자리)
+}
 
 **중요:**
-- 반드시 5개 이상 항목 제공
-- brand 필드에 "undefined" 사용 금지
-- 실제 존재하는 브랜드/제품명만 사용
-- JSON 배열만 출력 (다른 텍스트 금지)
-- 마크다운 코드 블록 사용 금지`;
+- JSON 객체만 출력 (다른 텍스트 금지)
+- 마크다운 코드 블록 사용 금지
+- 모든 숫자는 반드시 0 이상의 값
+- 실제 음식의 일반적인 영양 성분을 추정해서 제공`;
 
                 const responseText = await callGeminiAPI(prompt);
-                console.log('🤖 [Gemini API 응답]:', responseText);
+                console.log('🤖 [Gemini 응답]:', responseText);
 
-                // JSON 파싱 (마크다운 코드 블록 제거)
+                // JSON 파싱
                 let jsonText = responseText.trim();
                 const codeBlockMatch = jsonText.match(/```json\s*([\s\S]*?)\s*```/);
                 if (codeBlockMatch) {
@@ -9398,26 +10231,199 @@ JSON 형식으로만 출력:
                     }
                 }
 
-                const foodOptions = JSON.parse(jsonText);
-                
-                if (!Array.isArray(foodOptions)) {
-                    throw new Error('응답이 배열이 아닙니다.');
+                // JSON 객체 추출
+                const objMatch = jsonText.match(/\{[\s\S]*\}/);
+                if (!objMatch) {
+                    throw new Error('JSON 객체를 찾을 수 없습니다.');
                 }
 
-                if (foodOptions.length === 0) {
-                    throw new Error('검색 결과가 없습니다.');
+                const nutritionData = JSON.parse(objMatch[0]);
+
+                // 데이터 검증 및 정제
+                const cleaned = {
+                    name: String(nutritionData.name || searchTerm).trim(),
+                    serving_size: String(nutritionData.serving_size || '1인분').trim(),
+                    kcal: Math.round(Number(nutritionData.kcal) || 0),
+                    carbs: parseFloat((Number(nutritionData.carbs) || 0).toFixed(1)),
+                    protein: parseFloat((Number(nutritionData.protein) || 0).toFixed(1)),
+                    fat: parseFloat((Number(nutritionData.fat) || 0).toFixed(1))
+                };
+
+                if (cleaned.kcal === 0 && cleaned.carbs === 0 && cleaned.protein === 0 && cleaned.fat === 0) {
+                    throw new Error('모든 영양소가 0입니다.');
                 }
 
-                console.log(`✅ [음식 검색 성공] ${foodOptions.length}개 항목 반환:`, foodOptions);
+                console.log(`✅ [Gemini 검색 성공] "${searchTerm}" → 영양 정보 획득`);
+                return cleaned;
+
+            } catch (error) {
+                console.error('❌ [Gemini 검색 실패]:', error);
+                return null;
+            }
+        }
+
+        /**
+         * Gemini 결과를 직접 입력 화면에 자동 채우기
+         * @param {Object} nutritionData - 영양 정보 객체
+         */
+        function fillManualInputWithGeminiResult(nutritionData) {
+            if (!nutritionData) return;
+
+            // 음식명 입력
+            const mealFoodNameEl = document.getElementById('mealFoodName');
+            if (mealFoodNameEl) {
+                mealFoodNameEl.value = nutritionData.name;
+            }
+
+            // 영양소 입력 필드 채우기
+            const resultCaloriesEl = document.getElementById('resultCalories');
+            const resultCarbsEl = document.getElementById('resultCarbs');
+            const resultProteinEl = document.getElementById('resultProtein');
+            const resultFatEl = document.getElementById('resultFat');
+
+            if (resultCaloriesEl) resultCaloriesEl.textContent = nutritionData.kcal;
+            if (resultCarbsEl) resultCarbsEl.textContent = nutritionData.carbs;
+            if (resultProteinEl) resultProteinEl.textContent = nutritionData.protein;
+            if (resultFatEl) resultFatEl.textContent = nutritionData.fat;
+
+            // 직접 입력 영역 표시
+            const nutritionResult = document.getElementById('nutritionResult');
+            const manualInputFields = document.getElementById('manualInputFields');
+            
+            if (nutritionResult) {
+                nutritionResult.classList.add('show');
+            }
+            if (manualInputFields) {
+                manualInputFields.classList.add('show');
+            }
+
+            // 토스트 메시지
+            showAIToast(`🤖 AI가 "${nutritionData.name}"의 영양 정보를 찾았어요! 확인 후 저장해주세요.`, 4000);
+
+            console.log('✅ 직접 입력 화면에 Gemini 결과 채움:', nutritionData);
+        }
+
+        // Firestore 기반 검색 함수 (파라미터 있음)
+        async function searchFoodDatabaseWithParam(foodName) {
+            if (!foodName || foodName.trim() === '') {
+                console.warn('음식명이 비어있습니다.');
+                return [];
+            }
+
+            const searchTerm = foodName.trim();
+            
+            try {
+                console.log(`🔍 [음식 검색] 시작: "${searchTerm}"`);
                 
-                // UI 업데이트
-                displayFoodOptions(foodOptions);
+                // 1단계: Firestore에서 검색 (public_foods + user_custom_foods)
+                const firestoreResults = await searchFoodInFirestore(searchTerm);
                 
-                return foodOptions;
+                if (firestoreResults && firestoreResults.length > 0) {
+                    console.log(`✅ [Firestore 검색 성공] "${searchTerm}" → ${firestoreResults.length}개 항목 반환`);
+                    
+                    // Firestore 결과를 displayFoodOptions 형식에 맞게 변환
+                    const formattedResults = firestoreResults.map(item => ({
+                        brand: item.foodName || item.name || searchTerm,
+                        foodName: item.foodName || item.name || searchTerm,
+                        name: item.foodName || item.name || searchTerm,
+                        calories: item.calories || item.kcal || 0,
+                        carbs: item.carbs || 0,
+                        protein: item.protein || 0,
+                        fat: item.fat || 0,
+                        source: item.source || 'public' // 'public' 또는 'custom' 유지
+                    }));
+                    
+                    displayFoodOptions(formattedResults);
+                    return formattedResults;
+                }
+
+                // 2단계: Firestore에 없으면 로컬 DB (localStorage) 검색
+                const localResults = searchFoodInDB(searchTerm);
+                if (localResults && localResults.length > 0) {
+                    console.log(`✅ [로컬 DB 캐시] "${searchTerm}" → ${localResults.length}개 항목 반환`);
+                    displayFoodOptions(localResults);
+                    return localResults;
+                }
+
+                // 3단계: 모든 DB에 없으면 Gemini API로 단일 음식 검색
+                console.log(`🤖 [Gemini 검색] "${searchTerm}" → AI에게 물어보는 중...`);
+                
+                const geminiResult = await searchFoodWithGemini(searchTerm);
+                
+                if (geminiResult) {
+                    // Gemini 결과를 직접 입력 화면에 자동 채우기
+                    fillManualInputWithGeminiResult(geminiResult);
+                    
+                    // 검색 결과 없음 메시지 표시
+                    const container = document.getElementById('foodOptionsContainer');
+                    const resultsDiv = document.getElementById('foodSearchResults');
+                    
+                    if (container && resultsDiv) {
+                        container.innerHTML = `
+                            <div style="padding: 20px; text-align: center; color: #666;">
+                                <div style="margin-bottom: 15px; font-size: 1.1rem; font-weight: bold; color: #667eea;">
+                                    🤖 AI가 "${geminiResult.name}"의 영양 정보를 찾았어요!
+                                </div>
+                                <div style="font-size: 0.9rem; color: #999;">
+                                    아래 직접 입력 화면에서 확인 후 저장해주세요.
+                                </div>
+                            </div>
+                        `;
+                        resultsDiv.style.display = 'block';
+                    }
+                    
+                    return []; // 빈 배열 반환 (직접 입력 화면에 채워졌으므로)
+                } else {
+                    // Gemini 검색도 실패한 경우
+                    const container = document.getElementById('foodOptionsContainer');
+                    const resultsDiv = document.getElementById('foodSearchResults');
+                    
+                    if (container && resultsDiv) {
+                        container.innerHTML = `
+                            <div style="padding: 20px; text-align: center; color: #666;">
+                                <div style="margin-bottom: 15px; font-size: 1.1rem; font-weight: bold; color: #ef5350;">
+                                    검색 결과가 없습니다
+                                </div>
+                                <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">
+                                    "${searchTerm}"에 대한 정보를 찾을 수 없습니다.
+                                </div>
+                                <button onclick="document.getElementById('manualInputFields').classList.add('show'); document.getElementById('nutritionResult').classList.add('show');" 
+                                        style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                                    직접 입력하기
+                                </button>
+                            </div>
+                        `;
+                        resultsDiv.style.display = 'block';
+                    }
+                    
+                    return [];
+                }
 
             } catch (error) {
                 console.error('❌ [음식 검색 실패]:', error);
-                alert('음식 검색에 실패했습니다. 다시 시도해주세요.\n오류: ' + error.message);
+                
+                // 에러 발생 시에도 직접 입력 옵션 제공
+                const container = document.getElementById('foodOptionsContainer');
+                const resultsDiv = document.getElementById('foodSearchResults');
+                
+                if (container && resultsDiv) {
+                    container.innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: #666;">
+                            <div style="margin-bottom: 15px; font-size: 1.1rem; font-weight: bold; color: #ef5350;">
+                                검색 중 오류가 발생했습니다
+                            </div>
+                            <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">
+                                ${error.message}
+                            </div>
+                            <button onclick="document.getElementById('manualInputFields').classList.add('show'); document.getElementById('nutritionResult').classList.add('show');" 
+                                    style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                                직접 입력하기
+                            </button>
+                        </div>
+                    `;
+                    resultsDiv.style.display = 'block';
+                }
+                
                 return [];
             }
         }
@@ -9434,7 +10440,56 @@ JSON 형식으로만 출력:
 
             container.innerHTML = '';
             
-            foodOptions.forEach((option, index) => {
+            // 유효한 데이터만 필터링
+            const validOptions = foodOptions.filter(option => {
+                const brand = option.brand || option.name || option.foodName;
+                return brand && brand !== 'undefined' && brand !== '알 수 없음';
+            });
+
+            if (validOptions.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #666;">
+                        검색 결과가 없습니다. 다른 검색어를 시도해보세요.
+                    </div>
+                `;
+                resultsDiv.style.display = 'block';
+                return;
+            }
+            
+            validOptions.forEach((option, index) => {
+                // 안전한 값 추출 (undefined 방지)
+                let brand = option.brand || option.name || option.foodName || '';
+                // undefined 문자열 제거
+                brand = String(brand).replace(/undefined/gi, '').trim();
+                if (!brand || brand === '') brand = '알 수 없음';
+                
+                const calories = Math.round(Number(option.calories) || 0);
+                const carbs = parseFloat((Number(option.carbs) || 0).toFixed(1));
+                const protein = parseFloat((Number(option.protein) || 0).toFixed(1));
+                const fat = parseFloat((Number(option.fat) || 0).toFixed(1));
+                
+                // 출처 표시
+                const source = option.source || 'unknown';
+                let sourceBadge = '';
+                let sourceColor = '#999';
+                let sourceText = '';
+                
+                if (source === 'public' || source === 'firestore') {
+                    sourceText = '공공DB';
+                    sourceColor = '#3b82f6'; // 파란색
+                } else if (source === 'custom') {
+                    sourceText = '내 음식';
+                    sourceColor = '#22c55e'; // 초록색
+                } else if (source === 'gemini' || source === 'ai') {
+                    sourceText = 'AI 검색';
+                    sourceColor = '#f59e0b'; // 주황색
+                } else {
+                    sourceText = 'DB';
+                    sourceColor = '#999'; // 회색
+                }
+                
+                sourceBadge = `<span style="display: inline-block; padding: 2px 6px; background: ${sourceColor}15; color: ${sourceColor}; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 6px;">${sourceText}</span>`;
+
                 const optionDiv = document.createElement('div');
                 optionDiv.style.cssText = `
                     padding: 12px 15px;
@@ -9449,17 +10504,18 @@ JSON 형식으로만 출력:
                 optionDiv.innerHTML = `
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div style="flex: 1;">
-                            <div style="font-weight: bold; color: #333; margin-bottom: 4px;">
-                                ${option.brand || '알 수 없음'}
+                            <div style="font-weight: bold; color: #333; margin-bottom: 4px; display: flex; align-items: center;">
+                                <span>${brand}</span>
+                                ${sourceBadge}
                             </div>
                             <div style="font-size: 0.85rem; color: #666;">
-                                <span style="color: #3b82f6;">탄 ${option.carbs || 0}g</span> | 
-                                <span style="color: #22c55e;">단 ${option.protein || 0}g</span> | 
-                                <span style="color: #eab308;">지 ${option.fat || 0}g</span>
+                                <span style="color: #3b82f6;">탄 ${carbs}g</span> |
+                                <span style="color: #22c55e;">단 ${protein}g</span> |
+                                <span style="color: #eab308;">지 ${fat}g</span>
                             </div>
                         </div>
                         <div style="font-weight: bold; color: #667eea; font-size: 1.1rem;">
-                            ${option.calories || 0}kcal
+                            ${calories}kcal
                         </div>
                     </div>
                 `;
@@ -9490,11 +10546,24 @@ JSON 형식으로만 출력:
 
         // 음식 옵션 선택 (탄단지 자동 입력)
         function selectFoodOption(option) {
-            document.getElementById('mealFoodName').value = option.brand || '알 수 없음';
-            document.getElementById('resultCalories').textContent = option.calories || 0;
-            document.getElementById('resultCarbs').textContent = option.carbs || 0;
-            document.getElementById('resultProtein').textContent = option.protein || 0;
-            document.getElementById('resultFat').textContent = option.fat || 0;
+            // 안전한 값 추출 (undefined 방지)
+            const brand = String(option.brand || option.name || option.foodName || '알 수 없음').trim();
+            const calories = Math.round(Number(option.calories) || 0);
+            const carbs = parseFloat((Number(option.carbs) || 0).toFixed(1));
+            const protein = parseFloat((Number(option.protein) || 0).toFixed(1));
+            const fat = parseFloat((Number(option.fat) || 0).toFixed(1));
+
+            const mealFoodNameEl = document.getElementById('mealFoodName');
+            const resultCaloriesEl = document.getElementById('resultCalories');
+            const resultCarbsEl = document.getElementById('resultCarbs');
+            const resultProteinEl = document.getElementById('resultProtein');
+            const resultFatEl = document.getElementById('resultFat');
+
+            if (mealFoodNameEl) mealFoodNameEl.value = brand;
+            if (resultCaloriesEl) resultCaloriesEl.textContent = calories;
+            if (resultCarbsEl) resultCarbsEl.textContent = carbs;
+            if (resultProteinEl) resultProteinEl.textContent = protein;
+            if (resultFatEl) resultFatEl.textContent = fat;
             
             // 결과 영역 표시
             const nutritionResult = document.getElementById('nutritionResult');
@@ -9503,9 +10572,12 @@ JSON 형식으로만 출력:
             }
             
             // 검색 결과 숨기기
-            document.getElementById('foodSearchResults').style.display = 'none';
+            const foodSearchResults = document.getElementById('foodSearchResults');
+            if (foodSearchResults) {
+                foodSearchResults.style.display = 'none';
+            }
             
-            console.log('✅ 음식 선택:', option);
+            console.log('✅ 음식 선택:', { brand, calories, carbs, protein, fat });
         }
 
         // ==================== 영양 대시보드 함수 ====================
@@ -12448,6 +13520,11 @@ ${userMessage}
             }
 
             currentTab = tabName;
+
+            // 🔥 History API 추가
+            if (window.location.hash !== `#${tabName}`) {
+                window.history.pushState({ tab: tabName }, '', `#${tabName}`);
+            }
 
             // 모바일에서 사이드바 닫기
             if (window.innerWidth <= 768) {
@@ -17683,6 +18760,17 @@ ${userMessage}
                 const file = e.target.files[0];
                 if (!file) return;
 
+                // 🔥 사진 확인 모달
+                const previewURL = URL.createObjectURL(file);
+                const confirmed = confirm('이 사진으로 AI 분석을 진행하시겠습니까?\n\n확인: 분석 시작\n취소: 사진 선택 취소');
+
+                if (!confirmed) {
+                    URL.revokeObjectURL(previewURL);
+                    showAIToast('사진 분석이 취소되었습니다.', 2000);
+                    return;
+                }
+
+                URL.revokeObjectURL(previewURL);
                 showLoading('AI가 음식을 분석 중...');
 
                 try {
@@ -17700,7 +18788,17 @@ ${userMessage}
 
                     hideLoading();
 
-                    if (analysis) {
+                    if (analysis && Array.isArray(analysis) && analysis.length > 0) {
+                        // 🔥 배열 결과 처리
+                        // 신규 모드에서 여러 음식이면 선택 UI 표시
+                        if (!isEditMode && analysis.length > 1) {
+                            showMultipleFoodsResult(analysis, photoURL);
+                            return;
+                        }
+
+                        // 단일 음식이거나 수정 모드면 첫 번째 항목 사용
+                        const firstFood = analysis[0];
+
                         // 🔥 수정 모드 확인
                         if (isEditMode && window.editingMealData) {
                             const editData = window.editingMealData;
@@ -17714,22 +18812,22 @@ ${userMessage}
                                 todayIntake.fat -= (meal.fat || 0);
                                 
                                 // 새 영양 정보로 업데이트 (시간은 유지, 사진은 변경)
-                                meal.food = analysis.foodName;
-                                meal.foodName = analysis.foodName;
-                                meal.name = analysis.foodName;
-                                meal.calories = analysis.calories;
-                                meal.carbs = analysis.carbs;
-                                meal.protein = analysis.protein;
-                                meal.fat = analysis.fat;
+                                meal.food = firstFood.foodName;
+                                meal.foodName = firstFood.foodName;
+                                meal.name = firstFood.foodName;
+                                meal.calories = firstFood.calories;
+                                meal.carbs = firstFood.carbs;
+                                meal.protein = firstFood.protein;
+                                meal.fat = firstFood.fat;
                                 meal.photo = photoURL;
                                 meal.photoURL = photoURL;
                                 // meal.timestamp는 그대로 유지
                                 
                                 // 새 영양소 추가
-                                todayIntake.calories += analysis.calories;
-                                todayIntake.carbs += analysis.carbs;
-                                todayIntake.protein += analysis.protein;
-                                todayIntake.fat += analysis.fat;
+                                todayIntake.calories += firstFood.calories;
+                                todayIntake.carbs += firstFood.carbs;
+                                todayIntake.protein += firstFood.protein;
+                                todayIntake.fat += firstFood.fat;
                                 
                                 // Firebase 저장
                                 await saveTodayNutritionToFirestore();
@@ -17756,12 +18854,12 @@ ${userMessage}
                                         category: 'food',
                                         url: photoURL,
                                         meal: currentMealType,
-                                        food: analysis.foodName,
+                                        food: firstFood.foodName,
                                         nutrition: {
-                                            calories: analysis.calories,
-                                            carbs: analysis.carbs,
-                                            protein: analysis.protein,
-                                            fat: analysis.fat
+                                            calories: firstFood.calories,
+                                            carbs: firstFood.carbs,
+                                            protein: firstFood.protein,
+                                            fat: firstFood.fat
                                         },
                                         uploadedAt: editData.originalTimestamp || firebase.firestore.FieldValue.serverTimestamp(),
                                         mealType: currentMealType
@@ -17773,16 +18871,16 @@ ${userMessage}
                                 // 수정 데이터 초기화
                                 window.editingMealData = null;
                                 
-                                showAIToast(`✅ ${analysis.foodName} 수정 완료! (시간 유지)\n칼로리: ${analysis.calories}kcal`, 5000);
+                                showAIToast(`✅ ${firstFood.foodName} 수정 완료! (시간 유지)\n칼로리: ${firstFood.calories}kcal`, 5000);
                             }
                         } else {
                             // 🔥 신규 등록 모드
                             // 4. 영양 섭취에 추가
-                            addMeal(currentMealType, analysis.foodName, {
-                                calories: analysis.calories,
-                                carbs: analysis.carbs,
-                                protein: analysis.protein,
-                                fat: analysis.fat,
+                            addMeal(currentMealType, firstFood.foodName, {
+                                calories: firstFood.calories,
+                                carbs: firstFood.carbs,
+                                protein: firstFood.protein,
+                                fat: firstFood.fat,
                                 timestamp: new Date(),
                                 photo: photoURL
                             });
@@ -17794,12 +18892,12 @@ ${userMessage}
                                     category: 'food',
                                     url: photoURL,
                                     meal: currentMealType,
-                                    food: analysis.foodName,
+                                    food: firstFood.foodName,
                                     nutrition: {
-                                        calories: analysis.calories,
-                                        carbs: analysis.carbs,
-                                        protein: analysis.protein,
-                                        fat: analysis.fat
+                                        calories: firstFood.calories,
+                                        carbs: firstFood.carbs,
+                                        protein: firstFood.protein,
+                                        fat: firstFood.fat
                                     },
                                     uploadedAt: firebase.firestore.FieldValue.serverTimestamp(),
                                     mealType: currentMealType
@@ -17811,7 +18909,10 @@ ${userMessage}
                             // 7. 입력 방법 선택 영역 숨기기
                             document.getElementById('mealInputMethod').style.display = 'none';
 
-                            showAIToast(`📸 ${analysis.foodName} 추가 완료!\n칼로리: ${analysis.calories}kcal`, 5000);
+                            // 🔥 8. 기기 저장 모달 표시
+                            showSaveToDeviceModal(photoURL, firstFood.foodName);
+
+                            showAIToast(`📸 ${firstFood.foodName} 추가 완료!\n칼로리: ${firstFood.calories}kcal`, 5000);
                         }
                     } else {
                         alert('음식 분석에 실패했습니다. 다시 시도해주세요.');
@@ -17851,7 +18952,7 @@ ${userMessage}
                     contents: [{
                         parts: [
                             {
-                                text: "이 음식 사진을 분석하여 다음 정보를 JSON 형식으로 정확하게 제공해주세요:\n1. foodName: 음식 이름 (한국어)\n2. calories: 예상 칼로리 (숫자만)\n3. carbs: 탄수화물 (g, 숫자만)\n4. protein: 단백질 (g, 숫자만)\n5. fat: 지방 (g, 숫자만)\n6. per100g: 100g당 영양정보 객체 {calories, carbs, protein, fat}\n\n응답 형식:\n{\"foodName\": \"닭가슴살 샐러드\", \"calories\": 250, \"carbs\": 15, \"protein\": 30, \"fat\": 8, \"per100g\": {\"calories\": 120, \"carbs\": 7, \"protein\": 14, \"fat\": 4}}\n\n참고: 음식의 양과 종류를 고려하여 실제에 가까운 영양 정보를 제공해주세요."
+                                text: "이 음식 사진을 분석하여 사진에 있는 모든 음식을 찾아주세요.\n\n각 음식마다 다음 정보를 제공해주세요:\n1. foodName: 음식 이름 (한국어, 예: \"햄버거 1개\")\n2. calories: 예상 칼로리 (숫자만)\n3. carbs: 탄수화물 (g, 숫자만)\n4. protein: 단백질 (g, 숫자만)\n5. fat: 지방 (g, 숫자만)\n6. per100g: 100g당 영양정보 객체 {calories, carbs, protein, fat}\n\n응답 형식 (JSON 배열):\n[\n  {\"foodName\": \"햄버거 1개\", \"calories\": 485, \"carbs\": 49, \"protein\": 27, \"fat\": 21, \"per100g\": {\"calories\": 269, \"carbs\": 27, \"protein\": 15, \"fat\": 12}},\n  {\"foodName\": \"감자튀김 1개\", \"calories\": 200, \"carbs\": 25, \"protein\": 3, \"fat\": 10, \"per100g\": {\"calories\": 312, \"carbs\": 39, \"protein\": 4, \"fat\": 15}}\n]\n\n중요:\n- 음식이 1개만 있으면 배열에 1개만 넣어주세요: [{...}]\n- 음식이 여러 개 있으면 모두 배열에 넣어주세요: [{...}, {...}, ...]\n- 반드시 JSON 배열 형식으로만 응답해주세요."
                             },
                             {
                                 inline_data: {
@@ -17882,12 +18983,19 @@ ${userMessage}
                 const data = await response.json();
                 const text = data.candidates[0].content.parts[0].text;
 
-                // JSON 추출 (```json으로 감싸져 있을 수 있음)
-                const jsonMatch = text.match(/\{[\s\S]*\}/);
+                // 🔥 JSON 배열 추출
+                const jsonMatch = text.match(/\[[\s\S]*\]/);
                 if (jsonMatch) {
-                    const nutritionData = JSON.parse(jsonMatch[0]);
-                    return nutritionData;
+                    const foodsArray = JSON.parse(jsonMatch[0]);
+                    // 배열이 아니면 단일 객체를 배열로 변환
+                    return Array.isArray(foodsArray) ? foodsArray : [foodsArray];
                 } else {
+                    // 배열이 아니라 객체로 반환된 경우 (후방 호환성)
+                    const objMatch = text.match(/\{[\s\S]*\}/);
+                    if (objMatch) {
+                        const nutritionData = JSON.parse(objMatch[0]);
+                        return [nutritionData];  // 배열로 감싸서 반환
+                    }
                     throw new Error('JSON 형식을 찾을 수 없습니다');
                 }
 
@@ -17982,44 +19090,102 @@ ${userMessage}
         }
         
         // 🔥 새 기능: 음식 검색 (브랜드별 영양 정보 제공)
-        // 🔥 기본 음식 데이터베이스 (API 없이도 작동)
-        const BASIC_FOOD_DB = {
-            '라면': [
-                {foodName: '신라면 1인분', calories: 500, carbs: 80, protein: 10, fat: 16},
-                {foodName: '진라면 1인분', calories: 480, carbs: 78, protein: 9, fat: 15},
-                {foodName: '너구리 1인분', calories: 520, carbs: 82, protein: 11, fat: 17}
-            ],
-            '김치찌개': [
-                {foodName: '김치찌개 1인분', calories: 250, carbs: 15, protein: 18, fat: 12},
-                {foodName: '참치김치찌개 1인분', calories: 280, carbs: 16, protein: 22, fat: 14}
-            ],
-            '된장찌개': [
-                {foodName: '된장찌개 1인분', calories: 180, carbs: 12, protein: 15, fat: 8}
-            ],
-            '삼겹살': [
-                {foodName: '삼겹살 100g', calories: 518, carbs: 0, protein: 17, fat: 50},
-                {foodName: '삼겹살 1인분(200g)', calories: 1036, carbs: 0, protein: 34, fat: 100}
-            ],
-            '치킨': [
-                {foodName: '후라이드치킨 1조각', calories: 250, carbs: 12, protein: 20, fat: 15},
-                {foodName: '양념치킨 1조각', calories: 280, carbs: 18, protein: 19, fat: 16}
-            ],
-            '피자': [
-                {foodName: '피자 1조각', calories: 280, carbs: 35, protein: 12, fat: 10}
-            ],
-            '햄버거': [
-                {foodName: '불고기버거', calories: 450, carbs: 50, protein: 22, fat: 18},
-                {foodName: '치즈버거', calories: 380, carbs: 40, protein: 18, fat: 15}
-            ],
-            '밥': [
-                {foodName: '백미밥 1공기', calories: 300, carbs: 65, protein: 6, fat: 1},
-                {foodName: '잡곡밥 1공기', calories: 280, carbs: 60, protein: 7, fat: 2}
-            ],
-            '빵': [
-                {foodName: '식빵 1조각', calories: 80, carbs: 15, protein: 3, fat: 1},
-                {foodName: '크로와상 1개', calories: 230, carbs: 26, protein: 5, fat: 12}
-            ]
-        };
+        // 🔥 기본 음식 데이터베이스 (JSON 파일에서 로드)
+        let BASIC_FOOD_DB = {}; // 동적으로 로드됨
+        
+        // 음식 DB JSON 파일 로드
+        async function loadFoodDatabase() {
+            try {
+                // 로컬 파일(file://)에서는 fetch가 작동하지 않으므로 스킵
+                if (window.location.protocol === 'file:') {
+                    console.log('ℹ️ 로컬 파일 모드: food-database.json 로드 스킵 (Firestore 사용)');
+                    BASIC_FOOD_DB = {};
+                    return {};
+                }
+                
+                const response = await fetch('food-database.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                BASIC_FOOD_DB = data.foods || {};
+                console.log(`✅ 음식 DB 로드 완료: ${Object.keys(BASIC_FOOD_DB).length}개 카테고리`);
+                
+                // 자동완성 목록 업데이트
+                buildMealFoodSuggestions();
+                
+                return BASIC_FOOD_DB;
+            } catch (error) {
+                console.warn('⚠️ 음식 DB 로드 실패 (Firestore 사용):', error.message);
+                // 기본값으로 빈 객체 사용 (에러 방지)
+                // Firestore를 사용하므로 로컬 JSON이 없어도 괜찮음
+                BASIC_FOOD_DB = {};
+                return {};
+            }
+        }
+        
+        // 자동완성용 음식 이름 목록 생성
+        function buildMealFoodSuggestions() {
+            const dataList = document.getElementById('mealFoodSuggestions');
+            if (!dataList) {
+                console.warn('자동완성 datalist를 찾을 수 없습니다.');
+                return;
+            }
+
+            const nameSet = new Set();
+
+            // 1) BASIC_FOOD_DB에서 이름 모으기
+            Object.keys(BASIC_FOOD_DB).forEach(key => {
+                nameSet.add(key); // 카테고리 이름 (예: 라면, 치킨)
+                const items = BASIC_FOOD_DB[key];
+                if (Array.isArray(items)) {
+                    items.forEach(item => {
+                        if (item.foodName) {
+                            nameSet.add(item.foodName);
+                        }
+                    });
+                }
+            });
+
+            // 2) localStorage의 캐시된 음식 데이터에서도 이름 모으기
+            try {
+                const allKeys = Object.keys(localStorage);
+                allKeys.filter(k => k.startsWith('foodDB_')).forEach(k => {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(k));
+                        if (data && data.foods && Array.isArray(data.foods)) {
+                            data.foods.forEach(f => {
+                                if (f.brand) nameSet.add(f.brand);
+                                if (f.foodName) nameSet.add(f.foodName);
+                                if (f.name) nameSet.add(f.name);
+                            });
+                        }
+                    } catch (e) {
+                        // 무시
+                    }
+                });
+            } catch (e) {
+                console.warn('localStorage에서 자동완성 목록 로드 실패:', e);
+            }
+
+            // datalist 초기화 후 옵션 채우기
+            dataList.innerHTML = '';
+            const sortedNames = Array.from(nameSet).sort();
+            sortedNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                dataList.appendChild(option);
+            });
+
+            console.log(`🔤 자동완성 후보 ${sortedNames.length}개 설정 완료`);
+        }
+        
+        // 페이지 로드 시 음식 DB 로드
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadFoodDatabase);
+        } else {
+            loadFoodDatabase();
+        }
         
         async function searchFoodDatabase() {
             const foodName = document.getElementById('mealFoodName').value.trim();
@@ -18034,38 +19200,45 @@ ${userMessage}
             searchBtn.innerHTML = '⏳ 검색 중...';
             
             try {
-                // 🔥 1단계: 기본 DB에서 검색
-                let foodOptions = searchBasicDB(foodName);
+                // 🔥 새로운 검색 로직 사용 (Firestore 우선)
+                // 주의: searchFoodDatabase(foodName) 함수를 호출 (파라미터 있는 버전)
+                const results = await searchFoodDatabaseWithParam(foodName);
                 
-                // 🔥 2단계: 기본 DB에 없으면 AI 검색 시도
-                if (!foodOptions || foodOptions.length === 0) {
-                    try {
-                        const response = await callGeminiFoodSearch(foodName);
-                        foodOptions = parseFoodSearchResponse(response);
-                    } catch (apiError) {
-                        console.warn('AI 검색 실패, 기본값 제공:', apiError);
-                        // AI 실패 시 추정값 제공
-                        foodOptions = [{
-                            foodName: `${foodName} 1인분 (추정)`,
-                            calories: 300,
-                            carbs: 40,
-                            protein: 15,
-                            fat: 10
-                        }];
-                    }
-                }
-                
-                if (foodOptions && foodOptions.length > 0) {
-                    displayFoodOptions(foodOptions);
+                if (results && results.length > 0) {
+                    // 결과는 이미 displayFoodOptions로 표시됨
+                    console.log('✅ 검색 완료:', results.length, '개 항목');
                 } else {
-                    throw new Error('검색 결과가 없습니다');
+                    // 결과가 없으면 수동 입력 옵션 제공
+                    const container = document.getElementById('foodOptionsContainer');
+                    const resultsDiv = document.getElementById('foodSearchResults');
+                    
+                    if (container && resultsDiv) {
+                        container.innerHTML = `
+                            <div style="padding: 20px; text-align: center; color: #666;">
+                                <div style="margin-bottom: 15px; font-size: 1.1rem; font-weight: bold; color: #ef5350;">
+                                    검색 결과가 없습니다
+                                </div>
+                                <div style="font-size: 0.9rem; color: #999; margin-bottom: 15px;">
+                                    "${foodName}"에 대한 정보를 찾을 수 없습니다.
+                                </div>
+                                <button onclick="document.getElementById('manualInputFields').classList.add('show'); document.getElementById('nutritionResult').classList.add('show');" 
+                                        style="padding: 10px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                                    직접 입력하기
+                                </button>
+                            </div>
+                        `;
+                        resultsDiv.style.display = 'block';
+                    }
                 }
                 
             } catch (error) {
                 console.error('음식 검색 오류:', error);
                 alert('음식 검색에 실패했습니다. 수동으로 영양 정보를 입력해주세요.');
                 // 수동 입력 필드 표시
-                document.getElementById('manualInputFields').classList.add('show');
+                const manualInputFields = document.getElementById('manualInputFields');
+                const nutritionResult = document.getElementById('nutritionResult');
+                if (manualInputFields) manualInputFields.classList.add('show');
+                if (nutritionResult) nutritionResult.classList.add('show');
             } finally {
                 searchBtn.disabled = false;
                 searchBtn.innerHTML = '🔍 검색';
@@ -18076,13 +19249,20 @@ ${userMessage}
         function searchBasicDB(query) {
             const results = [];
             query = query.toLowerCase().trim();
-            
+
             for (const [key, items] of Object.entries(BASIC_FOOD_DB)) {
                 if (key.includes(query) || query.includes(key)) {
-                    results.push(...items);
+                    // name 필드 추가하여 하위 호환성 유지
+                    items.forEach(item => {
+                        results.push({
+                            ...item,
+                            name: item.foodName,
+                            brand: item.foodName  // v3.9.0 호환성
+                        });
+                    });
                 }
             }
-            
+
             return results;
         }
         
@@ -18133,33 +19313,212 @@ ${userMessage}
         function selectFoodOption(index) {
             const option = window.currentFoodOptions[index];
             if (!option) return;
-            
+
             // 음식명 업데이트
             document.getElementById('mealFoodName').value = option.name;
-            
-            // 영양 정보 자동 채우기 (100g당 정보 포함)
-            analyzedNutrition = {
-                calories: option.calories,
-                carbs: option.carbs,
-                protein: option.protein,
-                fat: option.fat,
-                foodName: option.name,
-                per100g: option.per100g || null, // 🔥 100g당 정보 저장
-                advice: `${option.name} 선택 완료!`
-            };
-            
-            // 결과 표시
-            document.getElementById('resultCalories').textContent = Math.round(option.calories);
-            document.getElementById('resultCarbs').textContent = Math.round(option.carbs);
-            document.getElementById('resultProtein').textContent = Math.round(option.protein);
-            document.getElementById('resultFat').textContent = Math.round(option.fat);
-            
+
+            // 🔥 100g당 정보 전역 저장
+            window.selectedFoodPer100g = option.per100g;
+
+            // 🔥 기본 중량 설정
+            const defaultWeight = option.defaultWeight || 100;
+            const mealGramsInput = document.getElementById('mealGrams');
+            if (mealGramsInput) {
+                mealGramsInput.value = defaultWeight;
+            }
+
+            // 🔥 자동 계산 실행
+            if (window.selectedFoodPer100g) {
+                calculateNutritionFromWeight();
+            } else {
+                // per100g 정보가 없으면 기본값 표시
+                analyzedNutrition = {
+                    calories: option.calories,
+                    carbs: option.carbs,
+                    protein: option.protein,
+                    fat: option.fat,
+                    foodName: option.name,
+                    per100g: null,
+                    advice: `${option.name} 선택 완료!`
+                };
+
+                // 결과 표시
+                document.getElementById('resultCalories').textContent = Math.round(option.calories);
+                document.getElementById('resultCarbs').textContent = Math.round(option.carbs);
+                document.getElementById('resultProtein').textContent = Math.round(option.protein);
+                document.getElementById('resultFat').textContent = Math.round(option.fat);
+            }
+
             document.getElementById('nutritionResult').classList.add('show');
             document.getElementById('foodSearchResults').style.display = 'none';
-            
+
             showAIToast(`✅ ${option.name} 선택 완료!`, 3000);
         }
-        
+
+        // 🔥 중량 기반 자동 영양소 계산 함수
+        function calculateNutritionFromWeight() {
+            const weightInput = document.getElementById('mealGrams');
+            if (!weightInput) return;
+
+            const weight = parseFloat(weightInput.value) || 100;
+
+            if (!window.selectedFoodPer100g) {
+                // 100g 기준 정보가 없으면 계산 불가
+                const autoCalcInfo = document.getElementById('autoCalculatedInfo');
+                if (autoCalcInfo) autoCalcInfo.style.display = 'none';
+                return;
+            }
+
+            // 100g 기준으로 비율 계산
+            const ratio = weight / 100;
+            const calculated = {
+                calories: Math.round(window.selectedFoodPer100g.calories * ratio),
+                carbs: Math.round(window.selectedFoodPer100g.carbs * ratio * 10) / 10,
+                protein: Math.round(window.selectedFoodPer100g.protein * ratio * 10) / 10,
+                fat: Math.round(window.selectedFoodPer100g.fat * ratio * 10) / 10
+            };
+
+            // 영양 정보 업데이트
+            analyzedNutrition = {
+                calories: calculated.calories,
+                carbs: calculated.carbs,
+                protein: calculated.protein,
+                fat: calculated.fat,
+                foodName: document.getElementById('mealFoodName').value,
+                per100g: window.selectedFoodPer100g,
+                advice: `${weight}g 기준 자동 계산`
+            };
+
+            // UI 업데이트
+            document.getElementById('resultCalories').textContent = calculated.calories;
+            document.getElementById('resultCarbs').textContent = calculated.carbs;
+            document.getElementById('resultProtein').textContent = calculated.protein;
+            document.getElementById('resultFat').textContent = calculated.fat;
+
+            // 자동 계산 표시
+            const autoCalcInfo = document.getElementById('autoCalculatedInfo');
+            const autoCalcLabel = document.getElementById('autoCalcLabel');
+            if (autoCalcInfo && autoCalcLabel) {
+                autoCalcInfo.style.display = 'block';
+                autoCalcLabel.textContent = `✅ ${weight}g 기준 자동 계산됨`;
+                autoCalcLabel.style.color = '#00B89A';
+                autoCalcLabel.style.fontWeight = 'bold';
+            }
+        }
+
+        // 🔥 여러 음식 선택 모달 관련 함수
+        function showMultipleFoodsResult(foodsArray, photoURL) {
+            window.analyzedFoodsArray = foodsArray;
+            window.currentPhotoURL = photoURL;
+
+            const listHTML = foodsArray.map((food, index) => `
+                <div class="food-item" style="border: 2px solid #e5e7eb; padding: 16px; margin-bottom: 12px; border-radius: 12px; transition: all 0.2s;">
+                    <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer;">
+                        <input type="checkbox" class="food-checkbox" data-index="${index}" checked
+                               style="width: 20px; height: 20px; margin-top: 4px; cursor: pointer; accent-color: #00B89A;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 8px; color: #1f2937;">${food.foodName}</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 0.9rem; color: #6b7280;">
+                                <div>🔥 ${food.calories}kcal</div>
+                                <div>탄 ${food.carbs}g</div>
+                                <div>단 ${food.protein}g</div>
+                                <div>지 ${food.fat}g</div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            `).join('');
+
+            document.getElementById('multipleFoodsList').innerHTML = listHTML;
+            document.getElementById('multipleFoodsModal').style.display = 'flex';
+        }
+
+        function closeMultipleFoodsModal() {
+            document.getElementById('multipleFoodsModal').style.display = 'none';
+        }
+
+        function addSelectedFoods() {
+            const checkboxes = document.querySelectorAll('.food-checkbox:checked');
+            if (checkboxes.length === 0) {
+                showAIToast('선택한 음식이 없습니다.', 2000);
+                return;
+            }
+
+            checkboxes.forEach(cb => {
+                const index = parseInt(cb.dataset.index);
+                const food = window.analyzedFoodsArray[index];
+                addMeal(currentMealType, food.foodName, {
+                    calories: food.calories,
+                    carbs: food.carbs,
+                    protein: food.protein,
+                    fat: food.fat,
+                    photo: window.currentPhotoURL,
+                    per100g: food.per100g
+                });
+            });
+
+            closeMultipleFoodsModal();
+            document.getElementById('mealInputMethod').style.display = 'none';
+            showAIToast(`✅ ${checkboxes.length}개 음식 추가 완료!`, 3000);
+        }
+
+        function addAllFoods() {
+            if (!window.analyzedFoodsArray) return;
+
+            window.analyzedFoodsArray.forEach(food => {
+                addMeal(currentMealType, food.foodName, {
+                    calories: food.calories,
+                    carbs: food.carbs,
+                    protein: food.protein,
+                    fat: food.fat,
+                    photo: window.currentPhotoURL,
+                    per100g: food.per100g
+                });
+            });
+
+            closeMultipleFoodsModal();
+            document.getElementById('mealInputMethod').style.display = 'none';
+            showAIToast(`✅ 전체 ${window.analyzedFoodsArray.length}개 음식 추가 완료!`, 3000);
+        }
+
+        // 🔥 사진 기기 저장 관련 함수
+        let currentDownloadURL = '';
+        let currentDownloadFilename = '';
+
+        function showSaveToDeviceModal(photoURL, foodName) {
+            currentDownloadURL = photoURL;
+            currentDownloadFilename = `Diet_Mate_${foodName}_${Date.now()}.jpg`;
+            document.getElementById('saveToDeviceModal').style.display = 'flex';
+        }
+
+        function closeSaveToDeviceModal() {
+            document.getElementById('saveToDeviceModal').style.display = 'none';
+        }
+
+        async function downloadPhotoToDevice() {
+            try {
+                // Firebase Storage URL에서 이미지 다운로드
+                const response = await fetch(currentDownloadURL);
+                const blob = await response.blob();
+
+                // Blob을 다운로드 링크로 변환
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentDownloadFilename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showAIToast('📷 사진이 기기에 저장되었습니다!', 3000);
+                closeSaveToDeviceModal();
+            } catch (error) {
+                console.error('다운로드 실패:', error);
+                showAIToast('❌ 저장 실패. 다시 시도해주세요.', 3000);
+            }
+        }
+
         // 🔥 수정 모달용 검색 함수
         async function searchFoodForEdit() {
             const foodName = document.getElementById('editFoodName').value.trim();
@@ -19192,6 +20551,54 @@ ${userMessage}
                 alert(fullErrText);
             }
         }
+
+        // 🔥 뒤로가기 버튼 처리 (History API)
+        let backPressedOnce = false;
+
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.tab) {
+                // 히스토리에 저장된 탭으로 이동
+                const tab = event.state.tab;
+                // switchTab 함수를 pushState 없이 호출하기 위해 임시로 hash 변경
+                window.location.hash = tab;
+                switchTab(tab);
+            } else {
+                // URL 해시에서 탭 추출
+                const hash = window.location.hash.slice(1) || 'home';
+                switchTab(hash);
+            }
+
+            // 홈에서 뒤로가기 시 종료 확인
+            if (!event.state || event.state.tab === 'home') {
+                if (backPressedOnce) {
+                    // 실제 앱 종료 시도
+                    if (confirm('앱을 종료하시겠습니까?')) {
+                        window.close();
+                    } else {
+                        // 취소하면 다시 홈으로 푸시
+                        backPressedOnce = false;
+                        window.history.pushState({ tab: 'home' }, '', '#home');
+                    }
+                } else {
+                    backPressedOnce = true;
+                    showAIToast('한 번 더 누르면 종료됩니다.', 2000);
+                    setTimeout(() => { backPressedOnce = false; }, 2000);
+
+                    // 다시 홈으로 푸시
+                    window.history.pushState({ tab: 'home' }, '', '#home');
+                }
+            } else {
+                backPressedOnce = false;
+            }
+        });
+
+        // 초기 로드 시 URL 해시 확인
+        window.addEventListener('load', () => {
+            const initialTab = window.location.hash.slice(1) || 'home';
+            if (initialTab !== 'home') {
+                switchTab(initialTab);
+            }
+        });
     </script>
     <!-- AI 토스트 팝업 -->
     <div id="aiToast" class="ai-toast hidden">
@@ -19296,11 +20703,15 @@ ${userMessage}
                     <label class="form-label-meal">음식명</label>
                     <div style="display: flex; gap: 8px;">
                         <input type="text" id="mealFoodName" class="form-input-meal" placeholder="예: 페페로, 감자탕, 라면" 
-                               style="flex: 1;" onkeypress="if(event.key==='Enter') searchFoodDatabase();">
+                               style="flex: 1;" list="mealFoodSuggestions" 
+                               onkeypress="if(event.key==='Enter') searchFoodDatabase();"
+                               autocomplete="off">
                         <button class="search-food-btn" onclick="searchFoodDatabase()" style="padding: 10px 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; white-space: nowrap;">
                             🔍 검색
                         </button>
                     </div>
+                    <!-- 자동완성 후보 목록 -->
+                    <datalist id="mealFoodSuggestions"></datalist>
                 </div>
                 
                 <!-- 음식 검색 결과 (브랜드별) -->
@@ -19315,7 +20726,11 @@ ${userMessage}
 
                 <div class="form-group-meal">
                     <label class="form-label-meal">양 (그람)</label>
-                    <input type="number" id="mealGrams" class="form-input-meal" placeholder="예: 150">
+                    <input type="number" id="mealGrams" class="form-input-meal" placeholder="예: 150"
+                           value="100" min="1" step="1" oninput="calculateNutritionFromWeight()">
+                    <div id="autoCalculatedInfo" style="font-size: 0.85rem; color: #666; margin-top: 6px; display: none;">
+                        <span id="autoCalcLabel"></span>
+                    </div>
                 </div>
                 
                 <!-- 🔥 직접 입력 / AI 분석 선택 -->
